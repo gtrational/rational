@@ -7,8 +7,8 @@ import java.util.Random;
  *  returns their name and a
  *  modified string
  *
- * @author Bob
- * @version 1.1
+ * @author Bob, Shyamal
+ * @version 1.2
  */
 public class Person2 {
     /** Holds the persons real name */

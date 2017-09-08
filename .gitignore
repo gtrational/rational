@@ -289,7 +289,7 @@ cmake-build-debug/
 # Mobile Tools for Java (J2ME)
 
 # Package Files #
-*.jar
+# *.jar
 *.zip
 *.tar.gz
 *.rar

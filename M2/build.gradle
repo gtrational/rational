@@ -1,0 +1,30 @@
+apply plugin: 'java'
+
+defaultTasks 'hello'
+
+task hello {
+    doLast {
+        println "Hello mr"
+    }
+}
+
+task bye(dependsOn: hello) {
+    doLast {
+        String aVar = "whoops"
+        println "This is bye " + aVar.toUpperCase()
+    }
+}
+
+jar  {
+    manifest {
+        attributes  'Implementation-Title' : 'Gradle Quickstart' ,
+                    'Implementation-Version' : '1.0',
+                    'Main-Class' : 'edu.gatech.oad.antlab.pkg1.AntLabMain'
+    }
+    destinationDir = file(".")
+    archiveName = 'myant.jar'
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+}

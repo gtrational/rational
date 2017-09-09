@@ -1,30 +1,24 @@
+defaultTasks 'jar'
+
 apply plugin: 'java'
 
-defaultTasks 'hello'
-
-task hello {
-    doLast {
-        println "Hello mr"
-    }
-}
-
-task bye(dependsOn: hello) {
-    doLast {
-        String aVar = "whoops"
-        println "This is bye " + aVar.toUpperCase()
-    }
-}
-
-jar  {
-    manifest {
-        attributes  'Implementation-Title' : 'Gradle Quickstart' ,
-                    'Implementation-Version' : '1.0',
-                    'Main-Class' : 'edu.gatech.oad.antlab.pkg1.AntLabMain'
-    }
-    destinationDir = file(".")
-    archiveName = 'myant.jar'
-}
+sourceCompatibility = 1.8
+version = '1.0'
 
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
 }
+
+jar {
+    manifest {
+        attributes  'Implementation-Title' : 'Gradle Quickstart',
+                    'Implementation-Version' : version,
+                    'Main-Class' : 'edu.gatech.oad.antlab.pkg1.AntLabMain',
+                    'Class-Path' : '../../lib/resources.jar'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+

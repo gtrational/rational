@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.gatech.cs2340.rational.rational.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="592dp"
+        android:gravity="center"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Rational"
+            android:textAlignment="center"
+            android:textSize="36sp"
+            android:typeface="normal"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/textViewDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Maybe a description of the app or something like that at some point. Hopefully also not hardcoded into the layout file."
+            android:textAlignment="center"
+            android:textSize="12sp"
+            android:typeface="normal"
+            android:gravity="center"
+            android:layout_below="@+id/textViewTitle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/textViewDescription"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" >
+
+            <Button
+                android:id="@+id/buttonLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:onClick="openLogin"
+                android:text="Login" />
+
+            <Button
+                android:id="@+id/buttonRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:onClick="openRegister"
+                android:text="Register" />
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

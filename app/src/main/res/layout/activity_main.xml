@@ -7,8 +7,8 @@
     tools:context="edu.gatech.cs2340.rational.rational.MainActivity">
 
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="592dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"

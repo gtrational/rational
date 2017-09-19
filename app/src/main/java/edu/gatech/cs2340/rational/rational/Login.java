@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.rational.rational;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,8 @@ public class Login extends AppCompatActivity {
         String username = ((EditText) findViewById((R.id.editTextUsername))).getText().toString();
         String password = ((EditText) findViewById((R.id.editTextPassword))).getText().toString();
         if (username.equals("user") && password.equals("pass")) {
-            Log.d("Message", "THIS IS A TEST OF THE GEORGIA TECH EMERGENCY NOTIFICATION SYSTEM");
+            Intent intent = new Intent(this, Dashboard.class);
+            startActivity(intent);
         } else {
             Log.d("Tag", "YOU DUN MESSED UP AY AY RON");
         }

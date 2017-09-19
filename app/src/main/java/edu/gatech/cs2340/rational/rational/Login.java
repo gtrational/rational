@@ -42,4 +42,8 @@ public class Login extends AppCompatActivity {
             Log.d("Tag", "YOU DUN MESSED UP AY AY RON");
         }
     }
+
+    public void cancelLogin(View view) {
+        finish();
+    }
 }

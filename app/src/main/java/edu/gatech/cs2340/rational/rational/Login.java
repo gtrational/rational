@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.rational.rational;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,5 +38,9 @@ public class Login extends AppCompatActivity {
         } else {
             Log.d("Tag", "YOU DUN MESSED UP AY AY RON");
         }
+    }
+
+    public void cancelLogin(View view) {
+        finish();
     }
 }

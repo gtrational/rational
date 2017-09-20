@@ -15,4 +15,5 @@
         completions."
     </string>
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="login_path">"login"</string>
 </resources>

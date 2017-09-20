@@ -27,7 +27,7 @@ public class Register extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void cancelLogin(View view) {
+    public void cancelRegister(View view) {
         finish();
     }
 }

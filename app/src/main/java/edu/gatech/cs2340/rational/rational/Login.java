@@ -34,7 +34,10 @@ public class Login extends AppCompatActivity {
         String username = ((EditText) findViewById((R.id.editTextUsername))).getText().toString();
         String password = ((EditText) findViewById((R.id.editTextPassword))).getText().toString();
         if (username.equals("user") && password.equals("pass")) {
-            Log.d("Message", "THIS IS A TEST OF THE GEORGIA TECH EMERGENCY NOTIFICATION SYSTEM");
+            Intent intent = new Intent(this, Dashboard.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         } else {
             Log.d("Tag", "YOU DUN MESSED UP AY AY RON");
         }

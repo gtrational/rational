@@ -60,8 +60,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //Hide keyboard if open
-        InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        View focused = getCurrentFocus();
+        if (focused != null) {
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(focused.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
 
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();

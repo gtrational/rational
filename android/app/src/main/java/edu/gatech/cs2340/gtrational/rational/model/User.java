@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.gtrational.rational.controller;
+package edu.gatech.cs2340.gtrational.rational.model;
 
 /**
  * Created by shyamal on 10/2/17.
@@ -62,11 +62,9 @@ public class User {
         return permissionLvl;
     }
 
-
     public boolean getIsLocked() {
         return isLocked;
     }
-
 
     public void lockUser() {
         isLocked = true;

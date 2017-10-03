@@ -15,10 +15,13 @@ public class WebAPI {
         public boolean success;
         public String errMsg;
         public String sessionID;
-        public LoginResult(boolean success, String err, String sess) {
+        public User.PermissionLevel permissionLevel;
+
+        public LoginResult(boolean success, String err, String sess, int permissionLevelOrdinal) {
             this.success = success;
             this.errMsg = err;
             this.sessionID = sess;
+            permissionLevel = User.PermissionLevel.values()[permissionLevelOrdinal];
         }
     }
 
@@ -41,11 +44,11 @@ public class WebAPI {
      * @return Information about the login attempt
      */
     public static LoginResult login(String username, String password) {
-        String session = FakeBackend.login(username, password);
-        if (session == null) {
+        LoginResponse response = FakeBackend.login(username, password);
+        if (response == null) {
             return new LoginResult(false, "Invalid User", null);
         } else {
-            return new LoginResult(true, null, session);
+            return new LoginResult(true, null, response.session, response.permissionLevelOrdinal);
         }
     }
 
@@ -59,4 +62,5 @@ public class WebAPI {
         boolean success = FakeBackend.register(username, password, permissionLevel.ordinal());
         return new RegisterResult(success, success ? null : "Username taken");
     }
+
 }

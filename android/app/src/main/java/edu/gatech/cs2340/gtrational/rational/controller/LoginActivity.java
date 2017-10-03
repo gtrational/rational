@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -68,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
 
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
-
-        if (username.equals("user") && password.equals("pass")) {
+        User user = new User(username, password);
+        if (user.login()) {
             Intent intent = new Intent(this, DashboardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editTextUsername"
+            android:id="@+id/editTextUsername_R"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -33,17 +33,17 @@
             tools:layout_editor_absoluteY="27dp" />
 
         <EditText
-            android:id="@+id/editTextPassword"
+            android:id="@+id/editTextPassword_R"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword"
-            android:layout_below="@+id/editTextUsername"
+            android:layout_below="@+id/editTextUsername_R"
             android:fontFamily="inherit"/>
 
         <EditText
-            android:id="@+id/editTextPasswordConfirm"
+            android:id="@+id/editTextPasswordConfirm_R"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -56,7 +56,7 @@
             android:id="@+id/editPermissionLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextPasswordConfirm">
+            android:layout_below="@+id/editTextPasswordConfirm_R">
 
             <RadioButton
                 android:id="@+id/user_button"
@@ -83,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
+                android:onClick="verifyRegister"
                 android:text="Register"/>
 
             <Button

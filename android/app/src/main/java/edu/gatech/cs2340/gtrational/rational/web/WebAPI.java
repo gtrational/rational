@@ -1,5 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.web;
 
+import edu.gatech.cs2340.gtrational.rational.model.User;
+
 /**
  * Created by Robert on 10/1/2017.
  */
@@ -53,8 +55,8 @@ public class WebAPI {
      * @param password The password
      * @return Information about the registration attempt
      */
-    public static RegisterResult register(String username, String password) {
-        boolean success = FakeBackend.register(username, password);
+    public static RegisterResult register(String username, String password, User.PermissionLevel permissionLevel) {
+        boolean success = FakeBackend.register(username, password, permissionLevel.ordinal());
         return new RegisterResult(success, success ? null : "Username taken");
     }
 }

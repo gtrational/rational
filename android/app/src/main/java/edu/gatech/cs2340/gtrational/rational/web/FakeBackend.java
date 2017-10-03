@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import edu.gatech.cs2340.gtrational.rational.model.User;
+
 /**
  * Created by Robert on 10/1/2017.
  * Fake Backend class to simulate our actual web backend that will be implemented later
@@ -55,6 +57,16 @@ public class FakeBackend {
             this.password = password;
             this.sessions = sessions;
             this.permissionLevel = permissionLevel;
+        }
+    }
+
+    public static class LoginResponse {
+        public String sessionID;
+        public int permissionLevelOrdinal;
+
+        public LoginResponse(String sessionID, FakeUser.PermissionLevel permissionLevel) {
+            this.sessionID = sessionID;
+            permissionLevelOrdinal = permissionLevel.ordinal();
         }
     }
 
@@ -117,16 +129,17 @@ public class FakeBackend {
      * Will "login" a user, by adding a sessionID to their FakeUser instance
      * @param username The username
      * @param password The password
-     * @return The newly created sessionID
+     *
+     * @return A LoginResponse object with the newly created sessionID and the permissionLevel
+     * associated with the user.
      */
-    public static String login(String username, String password) {
-        //TODO Add session to user if exists and return session, else return null
+    public static LoginResponse login(String username, String password) {
         FakeUser user = getByUsername(username);
 
         if (user != null) {
             String sessionID = newSessionID();
             user.sessions.add(sessionID);
-            return sessionID;
+            return new LoginResponse(sessionID, user.permissionLevel);
         }
 
         return null;
@@ -149,9 +162,14 @@ public class FakeBackend {
      * @param password The password
      * @return True if user added successfully, or false if the username is taken
      */
-    public static boolean register(String username, String password) {
+    public static boolean register(String username, String password, int permissionLevelOrd) {
         if (getByUsername(username) == null) {
-            users.add(new FakeUser(username, password, new ArrayList<String>(), )}))
+            users.add(new FakeUser(
+                    username,
+                    password,
+                    new ArrayList<String>(),
+                    FakeUser.PermissionLevel.values()[permissionLevelOrd]
+            ));
         }
         return false;
     }

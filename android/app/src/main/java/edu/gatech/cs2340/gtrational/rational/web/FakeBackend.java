@@ -121,6 +121,14 @@ public class FakeBackend {
      */
     public static String login(String username, String password) {
         //TODO Add session to user if exists and return session, else return null
+        FakeUser user = getByUsername(username);
+
+        if (user != null) {
+            String sessionID = newSessionID();
+            user.sessions.add(sessionID);
+            return sessionID;
+        }
+
         return null;
     }
 

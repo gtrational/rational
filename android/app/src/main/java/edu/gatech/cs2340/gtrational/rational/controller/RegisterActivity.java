@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.User;
 import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -41,9 +42,9 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordfield.getText().toString();
 
         if (admin_button.isChecked()) {
-            WebAPI.register(username , password);
+            WebAPI.register(username , password, User.PermissionLevel.ADMIN);
         } else {
-            WebAPI.register(username , password);
+            WebAPI.register(username , password, User.PermissionLevel.USER);
         }
     }
 

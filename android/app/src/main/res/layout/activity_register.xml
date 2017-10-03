@@ -52,10 +52,30 @@
             android:layout_below="@+id/editTextPassword"
             android:fontFamily="inherit"/>
 
+        <RadioGroup
+            android:id="@+id/editPermissionLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editTextPasswordConfirm">
+
+            <RadioButton
+                android:id="@+id/user_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User"/>
+
+            <RadioButton
+                android:id="@+id/admin_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin"/>
+
+        </RadioGroup>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextPasswordConfirm"
+            android:layout_below="@+id/editPermissionLevel"
             android:layout_marginTop="15dp">
 
             <Button

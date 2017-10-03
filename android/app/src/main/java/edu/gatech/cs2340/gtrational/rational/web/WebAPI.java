@@ -1,5 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.web;
 
+import edu.gatech.cs2340.gtrational.rational.model.User;
+
 /**
  * Created by Robert on 10/1/2017.
  */
@@ -13,10 +15,13 @@ public class WebAPI {
         public boolean success;
         public String errMsg;
         public String sessionID;
-        public LoginResult(boolean success, String err, String sess) {
+        public User.PermissionLevel permissionLevel;
+
+        public LoginResult(boolean success, String err, String sess, int permissionLevelOrdinal) {
             this.success = success;
             this.errMsg = err;
             this.sessionID = sess;
+            permissionLevel = User.PermissionLevel.values()[permissionLevelOrdinal];
         }
     }
 
@@ -39,11 +44,11 @@ public class WebAPI {
      * @return Information about the login attempt
      */
     public static LoginResult login(String username, String password) {
-        String session = FakeBackend.login(username, password);
-        if (session == null) {
-            return new LoginResult(false, "Invalid User", null);
+        FakeBackend.LoginResponse response = FakeBackend.login(username, password);
+        if (response == null) {
+            return new LoginResult(false, "Invalid User", null, 0);
         } else {
-            return new LoginResult(true, null, session);
+            return new LoginResult(true, null, response.sessionID, response.permissionLevelOrdinal);
         }
     }
 
@@ -53,8 +58,9 @@ public class WebAPI {
      * @param password The password
      * @return Information about the registration attempt
      */
-    public static RegisterResult register(String username, String password) {
-        boolean success = FakeBackend.register(username, password);
+    public static RegisterResult register(String username, String password, User.PermissionLevel permissionLevel) {
+        boolean success = FakeBackend.register(username, password, permissionLevel.ordinal());
         return new RegisterResult(success, success ? null : "Username taken");
     }
+
 }

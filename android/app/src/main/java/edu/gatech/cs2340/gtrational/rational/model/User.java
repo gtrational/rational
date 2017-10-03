@@ -12,27 +12,22 @@ import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 public class User {
     public enum PermissionLevel {
-        USER, ADMIN, GOVERNMENT_OFFICIAL;
+        USER, ADMIN;
     }
 
-    private String username;
-    private String password;
-    private String name;
-    private String email;
-    private PermissionLevel permissionLvl;
-    private int phoneNumber;
-    private boolean isLocked;
-    private String sessionId;
+        private String username;
+        private String password;
+        private PermissionLevel permissionLvl;
+        private String sessionId;
 
-    public User(String username, String password, String name, String email, PermissionLevel permissionlvl) {
+    public User(String username, String password, PermissionLevel permissionlvl) {
         this.username = username;
         this.password = password;
-        this.email = email;
         this.permissionLvl = permissionlvl;
     }
 
-    public User(String username, String password, String name, String email) {
-        this(username, password, name, email, PermissionLevel.USER);
+    public User(String username, String password) {
+        this(username, password, PermissionLevel.USER);
     }
 
     /**
@@ -52,54 +47,6 @@ public class User {
     }
 
     /**
-     * Retrieves the User's name
-     * @return the name of the User.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Sets the User's name
-     * @param name the name to set the User's name to.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Retrieves the User's email.
-     * @return the email address of the User.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * Sets the User's email.
-     * @param email the email to set the User's email to.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Retrieves the User's phone number.
-     * @return the User's phone number.
-     */
-    public int getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    /**
-     * Sets the User's phone number.
-     * @param phoneNumber the phone number to set the User's phone number to.
-     */
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    /**
      * Retrieves the User's permission level.
      * @return the permission level of the User.
      */
@@ -115,27 +62,6 @@ public class User {
         permissionLvl = lvl;
     }
 
-    /**
-     * Retrieves the User's locked status.
-     * @return whether the user is locked.
-     */
-    public boolean getIsLocked() {
-        return isLocked;
-    }
-
-    /**
-     * Locks the user, regardless of current status.
-     */
-    public void lockUser() {
-        isLocked = true;
-    }
-
-    /**
-     * Unlocks the user, regardless of current status.
-     */
-    public void unlockUser() {
-        isLocked = false;
-    }
 
     /**
      * Sets the User's session ID.
@@ -159,16 +85,16 @@ public class User {
 
     /**
      * Logs a User into the system and sets a session ID.
-     * @param username the username of the User to login.
-     * @param password the password of the User to login.
      * @return whether the operation was successful.
      */
-    public boolean login(String username, String password) {
+    public boolean login() {
         if (username == null || password == null) {
             return false;
         }
-        if (username.equals(this.username) && password.equals(this.password) && !isLocked) {
-            this.sessionId = (WebAPI.login(username, password)).sessionID;
+        WebAPI.LoginResult result = WebAPI.login(username, password);
+        if (result.success) {
+            sessionId = result.sessionID;
+            permissionLvl = result.permissionLevel;
             return true;
         }
         return false;

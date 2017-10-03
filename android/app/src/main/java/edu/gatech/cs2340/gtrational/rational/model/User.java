@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.web.FakeBackend;
+import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 /**
  * Created by shyamal on 10/2/17.
@@ -23,18 +24,15 @@ public class User {
     private boolean isLocked;
     private String sessionId;
 
-    private List<String> sessions;
-
-    public User(String username, String password, List<String> sessions, String name, String email, PermissionLevel permissionlvl) {
+    public User(String username, String password, String name, String email, PermissionLevel permissionlvl) {
         this.username = username;
         this.password = password;
-        this.sessions = sessions;
         this.email = email;
         this.permissionLvl = permissionlvl;
     }
 
     public User(String username, String password, String name, String email) {
-        this(username, password, new ArrayList<String>(), name, email, PermissionLevel.USER);
+        this(username, password, name, email, PermissionLevel.USER);
     }
 
     /**
@@ -170,7 +168,7 @@ public class User {
             return false;
         }
         if (username.equals(this.username) && password.equals(this.password) && !isLocked) {
-            this.sessionId = FakeBackend.login(username, password);
+            this.sessionId = (WebAPI.login(username, password)).sessionID;
             return true;
         }
         return false;

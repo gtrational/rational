@@ -170,6 +170,8 @@ public class FakeBackend {
                     new ArrayList<String>(),
                     FakeUser.PermissionLevel.values()[permissionLevelOrd]
             ));
+            
+            return true;
         }
         return false;
     }

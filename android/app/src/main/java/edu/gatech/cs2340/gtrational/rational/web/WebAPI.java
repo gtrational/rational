@@ -44,11 +44,11 @@ public class WebAPI {
      * @return Information about the login attempt
      */
     public static LoginResult login(String username, String password) {
-        LoginResponse response = FakeBackend.login(username, password);
+        FakeBackend.LoginResponse response = FakeBackend.login(username, password);
         if (response == null) {
-            return new LoginResult(false, "Invalid User", null);
+            return new LoginResult(false, "Invalid User", null, 0);
         } else {
-            return new LoginResult(true, null, response.session, response.permissionLevelOrdinal);
+            return new LoginResult(true, null, response.sessionID, response.permissionLevelOrdinal);
         }
     }
 

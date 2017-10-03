@@ -137,7 +137,10 @@ public class FakeBackend {
      * @param sessionID The user's sessionID
      */
     public static void logout(String sessionID) {
-        //TODO Clear session from user if exists
+        FakeUser user = getBySessionID(sessionID);
+        if (user != null) {
+            user.sessions.remove(sessionID);
+        }
     }
 
     /**
@@ -147,7 +150,9 @@ public class FakeBackend {
      * @return True if user added successfully, or false if the username is taken
      */
     public static boolean register(String username, String password) {
-        //TODO Add user
+        if (getByUsername(username) == null) {
+            users.add(new FakeUser(username, password, new ArrayList<String>(), )}))
+        }
         return false;
     }
 }

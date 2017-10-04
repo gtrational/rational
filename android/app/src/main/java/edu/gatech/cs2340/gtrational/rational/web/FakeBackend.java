@@ -136,7 +136,7 @@ public class FakeBackend {
     public static LoginResponse login(String username, String password) {
         FakeUser user = getByUsername(username);
 
-            if (user != null && user.password.equals(password)) {
+        if (user != null && user.password.equals(password)) {
             String sessionID = newSessionID();
             user.sessions.add(sessionID);
             return new LoginResponse(sessionID, user.permissionLevel);

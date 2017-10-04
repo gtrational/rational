@@ -37,6 +37,10 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Verifies that inputs user entered in make valid registration.
+     * @param view The View object
+     */
     public void verifyRegister(View view) {
         EditText usernamefield = (EditText) findViewById(R.id.editTextUsername_R);
         EditText passwordfield = (EditText) findViewById(R.id.editTextPassword_R);
@@ -100,6 +104,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If user presses "cancel", registration is cancelled and activity finishes.
+     * @param view The View object
+     */
     public void cancelRegister(View view) {
         finish();
     }

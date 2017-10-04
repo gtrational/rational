@@ -37,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Verifies if the login information the user inputs is valid.
+     * @param view The View object.
+     */
     public void verifyLogin(View view) {
         EditText usernameField = (EditText) findViewById((R.id.editTextUsername));
         EditText passwordField = (EditText) findViewById((R.id.editTextPassword));
@@ -82,6 +86,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If user cancels login, login is terminated and activity finishes.
+     * @param view The View object
+     */
     public void cancelLogin(View view) {
         finish();
     }

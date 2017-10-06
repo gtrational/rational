@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="edu.gatech.cs2340.gtrational.rational.controller.DashboardActivity"
-    tools:showIn="@layout/activity_dashboard">
+    tools:context="edu.gatech.cs2340.gtrational.rational.controller.MainDashboardActivity"
+    tools:showIn="@layout/app_bar_main_dashboard">
 
     <LinearLayout
         android:layout_width="match_parent"

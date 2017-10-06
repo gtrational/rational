@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
         User user = new User(username, password);
         if (user.login()) {
-            Intent intent = new Intent(this, DashboardActivity.class);
+            Intent intent = new Intent(this, MainDashboardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

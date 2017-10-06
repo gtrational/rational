@@ -8,24 +8,12 @@
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.MainDashboardActivity"
     tools:showIn="@layout/app_bar_main_dashboard">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome to the Dashboard!"/>
 
-    </LinearLayout>
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

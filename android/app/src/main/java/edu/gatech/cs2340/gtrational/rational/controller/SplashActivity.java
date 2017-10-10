@@ -8,6 +8,9 @@ import java.util.concurrent.TimeUnit;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 
+/**
+ * A splash screen that determines whether a user is logged in and directs them to the correct screen.
+ */
 public class SplashActivity extends AppCompatActivity {
 
     @Override

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import edu.gatech.cs2340.gtrational.rational.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * A fragment for the dashboard screen.
  */
 public class DashboardFragment extends Fragment {
 

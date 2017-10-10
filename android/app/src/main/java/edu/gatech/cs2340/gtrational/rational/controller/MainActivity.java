@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * When James is lazy, he does things to make his life easier.
+     * @param view
+     */
     public void lazyLogin(View view) {
         Intent intent = new Intent(this, MainDashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -28,15 +28,17 @@ public class MainDashboardActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Generate floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Put add new rat sighting here", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
+        // Generate navigation drawer.
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -46,6 +48,7 @@ public class MainDashboardActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Sets Dashboard as default fragment when launched.
         setTitle("Dashboard");
         DashboardFragment dashboardFragment = new DashboardFragment();
         FragmentManager fragmentManager = getFragmentManager();
@@ -76,48 +79,40 @@ public class MainDashboardActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_logout) {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(intent);
-//            finish();
-//            return true;
-//        }
-
         return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        // Choose
+        if (id == R.id.nav_dashboard) {
             setTitle("Dashboard");
             DashboardFragment dashboardFragment = new DashboardFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, dashboardFragment).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_nearby) {
             setTitle("Nearby");
             NearbyFragment nearbyFragment = new NearbyFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, nearbyFragment).commit();
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_map) {
             setTitle("Map");
             MapFragment mapFragment = new MapFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, mapFragment).commit();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_sightings) {
             setTitle("All Sightings");
             ListFragment listFragment = new ListFragment();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, listFragment).commit();
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_help) {
 
         }
 

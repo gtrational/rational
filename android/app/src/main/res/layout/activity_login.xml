@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
-    tools:context="edu.gatech.cs2340.gtrational.rational.controller.LoginActivity">
+    android:background="@color/colorPrimary"
+    tools:context="edu.gatech.cs2340.gtrational.rational.controller.RegisterActivity">
 
     <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:tint="@color/oppositeColor"
+            android:src="@mipmap/logo"/>
 
         <EditText
             android:id="@+id/editTextUsername"
@@ -29,8 +39,12 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="Name"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="27dp" />
+            android:textColor="@color/oppositeColor"
+            android:textColorHint="@color/oppositeColor"
+            android:textColorHighlight="@color/oppositeColor"
+            android:backgroundTint="@color/oppositeColor"
+            android:layout_below="@+id/logo"
+            android:layout_margin="5dp" />
 
         <EditText
             android:id="@+id/editTextPassword"
@@ -38,33 +52,45 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Password"
+            android:textColor="@color/oppositeColor"
+            android:textColorHint="@color/oppositeColor"
+            android:textColorHighlight="@color/oppositeColor"
+            android:backgroundTint="@color/oppositeColor"
             android:inputType="textPassword"
             android:layout_below="@+id/editTextUsername"
+            android:layout_margin="5dp"
             android:fontFamily="inherit"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editTextPassword"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="40dp">
 
             <Button
                 android:id="@+id/buttonLogin"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/oppositeColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:onClick="verifyLogin"
-                android:text="Login" />
+                android:text="Login"
+                android:layout_marginRight="5dp" />
 
             <Button
                 android:id="@+id/buttonCancel"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/oppositeColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:onClick="cancelLogin"
+                android:layout_marginLeft="5dp"
                 android:text="Cancel"/>
         </LinearLayout>
 
     </RelativeLayout>
 
-</android.support.v4.widget.DrawerLayout>
+</ScrollView>

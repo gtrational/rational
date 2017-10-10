@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/colorPrimary"
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.RegisterActivity">
 
     <RelativeLayout
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
         app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_constraintLeft_creator="1">
+        android:layout_margin="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            android:tint="@color/oppositeColor"
+            android:src="@mipmap/logo"/>
 
         <EditText
+            android:layout_below="@+id/logo"
             android:id="@+id/editTextUsername_R"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="textPersonName"
             android:hint="Name"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="27dp" />
+            android:textColor="@color/oppositeColor"
+            android:textColorHint="@color/oppositeColor"
+            android:textColorHighlight="@color/oppositeColor"
+            android:backgroundTint="@color/oppositeColor"
+            android:layout_margin="5dp"/>
 
         <EditText
             android:id="@+id/editTextPassword_R"
@@ -42,7 +54,12 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:layout_below="@+id/editTextUsername_R"
-            android:fontFamily="inherit"/>
+            android:fontFamily="inherit"
+            android:textColor="@color/oppositeColor"
+            android:textColorHint="@color/oppositeColor"
+            android:textColorHighlight="@color/oppositeColor"
+            android:backgroundTint="@color/oppositeColor"
+            android:layout_margin="5dp"/>
 
         <EditText
             android:id="@+id/editTextPasswordConfirm_R"
@@ -52,25 +69,46 @@
             android:hint="Confirm Password"
             android:inputType="textPassword"
             android:layout_below="@+id/editTextPassword_R"
-            android:fontFamily="inherit"/>
+            android:fontFamily="inherit"
+            android:textColor="@color/oppositeColor"
+            android:textColorHint="@color/oppositeColor"
+            android:textColorHighlight="@color/oppositeColor"
+            android:backgroundTint="@color/oppositeColor"
+            android:layout_margin="5dp"/>
 
         <RadioGroup
             android:id="@+id/editPermissionLevel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextPasswordConfirm_R">
+            android:layout_below="@+id/editTextPasswordConfirm_R"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
 
             <RadioButton
                 android:id="@+id/user_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User"/>
+                android:text="User"
+                android:textColor="@color/oppositeColor"
+                android:textColorHint="@color/oppositeColor"
+                android:textColorHighlight="@color/oppositeColor"
+                android:backgroundTint="@color/oppositeColor"
+                android:buttonTint="@color/oppositeColor"
+                android:checked="true"
+                android:layout_marginRight="30dp"/>
 
             <RadioButton
                 android:id="@+id/admin_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Admin"/>
+                android:text="Admin"
+                android:textColor="@color/oppositeColor"
+                android:textColorHint="@color/oppositeColor"
+                android:textColorHighlight="@color/oppositeColor"
+                android:backgroundTint="@color/oppositeColor"
+                android:buttonTint="@color/oppositeColor"
+                android:layout_marginLeft="30dp"/>
 
         </RadioGroup>
 
@@ -78,25 +116,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editPermissionLevel"
-            android:layout_marginTop="15dp">
+            android:layout_marginBottom="40dp">
 
             <Button
-                android:id="@+id/buttonRegister"
+                android:id="@+id/buttonLogin"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/oppositeColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:onClick="verifyRegister"
-                android:text="Register"/>
+                android:text="Register"
+                android:layout_marginRight="5dp" />
 
             <Button
                 android:id="@+id/buttonCancel"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/oppositeColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
                 android:onClick="cancelRegister"
-                android:text="Cancel" />
+                android:layout_marginLeft="5dp"
+                android:text="Cancel"/>
         </LinearLayout>
-
     </RelativeLayout>
 
-</android.support.v4.widget.DrawerLayout>
+</ScrollView>

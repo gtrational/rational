@@ -33,8 +33,8 @@ public class MainDashboardActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Put add new rat sighting here", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainDashboardActivity.this, NewSightingActivity.class);
+                startActivity(intent);
             }
         });
 

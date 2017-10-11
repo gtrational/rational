@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void lazyLogin(View view) {
-        WebAPI.fetchPrelimRatData();
+        // WebAPI.fetchPrelimRatData(); was trying to test 
         Intent intent = new Intent(this, MainDashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

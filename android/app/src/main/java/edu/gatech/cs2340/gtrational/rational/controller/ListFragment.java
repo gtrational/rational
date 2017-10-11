@@ -13,11 +13,14 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 /**
  * A fragment for the "all rat sightings" screen.
@@ -35,20 +38,22 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_list, container, false);
 
-        String[][] testData = {
-                {"426313", "2017-10-10T13:24:25", "Flushing, Queens, New York"},
-                {"102932", "2017-10-10T13:14:25", "Upper East Side, Manhattan, New York"},
-                {"719238", "2017-10-10T12:57:15", "Hell's Kitchen, Manhattan, New York"},
-                {"192859", "2017-10-10T12:21:28", "Laguardia, Queens, New York"}
-        };
+        List<WebAPI.RatData> data = WebAPI.fetchPrelimRatData();
+
+//        String[][] testData = {
+//                {"426313", "2017-10-10T13:24:25", "Flushing, Queens, New York"},
+//                {"102932", "2017-10-10T13:14:25", "Upper East Side, Manhattan, New York"},
+//                {"719238", "2017-10-10T12:57:15", "Hell's Kitchen, Manhattan, New York"},
+//                {"192859", "2017-10-10T12:21:28", "Laguardia, Queens, New York"}
+//        };
 
         ArrayList<HashMap<String, String>> newList = new ArrayList<>();
 
-        for (int i = 0; i < testData.length; i++) {
+        for (int i = 0; i < data.size(); i++) {
             HashMap<String, String> item = new HashMap<>();
-            item.put("line1", testData[i][0]);
-            item.put("line2", testData[i][1]);
-            item.put("line3", testData[i][2]);
+            item.put("line1", data.get(i).uniqueKey + "");
+            item.put("line2", new SimpleDateFormat("yyyy/mm/dd KK:mm:ss aa").format(new Date(data.get(i).createdTime)) + "");
+            item.put("line3", data.get(i).borough + ", " + data.get(i).city) ;
             newList.add(item);
         }
 

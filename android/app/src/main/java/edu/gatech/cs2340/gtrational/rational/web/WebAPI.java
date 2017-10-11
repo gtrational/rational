@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational.web;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -51,6 +52,10 @@ public class WebAPI {
             this.success = success;
             this.errMsg = err;
         }
+    }
+
+    public static class RatData {
+
     }
 
     private static String readStream(InputStream stream) {
@@ -125,6 +130,14 @@ public class WebAPI {
     public static RegisterResult register(String username, String password, User.PermissionLevel permissionLevel) {
         boolean success = FakeBackend.register(username, password, permissionLevel.ordinal());
         return new RegisterResult(success, success ? null : "Username taken");
+    }
+
+    public static void fetchPrelimRatData() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        JSONObject param = new JSONObject();
+        JSONObject ratData = webRequest("/api/fetchPrelimRatData", param);
+        System.out.println(ratData);
     }
 
 }

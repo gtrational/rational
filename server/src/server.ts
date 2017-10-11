@@ -17,7 +17,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/api/fetchPrelimRatData', function(req, res) {
-    var rows = db.getPrelimRatData();
+    res.send(db.getPrelimRatData())
 });
 
 http.listen(config.port, function () {

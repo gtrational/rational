@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
      * @param view
      */
     public void lazyLogin(View view) {
+        WebAPI.fetchPrelimRatData();
         Intent intent = new Intent(this, MainDashboardActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

@@ -59,11 +59,11 @@ public class ListFragment extends Fragment {
         theList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), ViewDataActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("text", (String) ((TextView) view.findViewById(R.id.line1)).getText());
-                intent.putExtras(bundle);
-                startActivity(intent);
+            Intent intent = new Intent(getActivity(), ViewDataActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("text", (String) ((TextView) view.findViewById(R.id.line1)).getText());
+            intent.putExtras(bundle);
+            startActivity(intent);
             }
         });
 

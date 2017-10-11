@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational.web;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -21,7 +22,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = "http://rational.tk/";
+    private static final String serverUrl = "http://10.0.2.2:8081/";
 
     /**
      * A class to hold information about the login attempt
@@ -84,6 +85,9 @@ public class WebAPI {
      * @return the server's response as a JSONObject.
      */
     private static JSONObject webRequest(String endpoint, JSONObject data) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         String content = data.toString();
         try {
             URL url = new URL(serverUrl + endpoint);
@@ -159,7 +163,7 @@ public class WebAPI {
                     .put("username", username)
                     .put("password", password)
                     .put("permLevel", permissionLevel.ordinal());
-            JSONObject response = webRequest("api/login", loginRequest);
+            JSONObject response = webRequest("api/register", loginRequest);
 
             if (response == null) {
                 return new RegisterResult(false, "No server response");

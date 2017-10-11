@@ -43,7 +43,7 @@ function Database(conninfo) {
     _this.example = function (name, age) {
         return new Promise(function (resolve, reject) {
             _this.conn.query('SELECT * FROM users WHERE name=? AND age=?', [name, age], function (error, results, fields) {
-                if (_this.checkErrorCallback(error,  reject)) return;
+                if (_this.checkErrorCallback(error, reject)) return;
                 if (results.length == 0) {
                     reject({error: 'User not found'});
                 } else {
@@ -54,17 +54,13 @@ function Database(conninfo) {
     };
 
     _this.getPrelimRatData = function () {
-    return new Promise(function (resolve, reject) {
-        _this.conn.query('SELECT * FROM rat_sighting LIMIT = 20', [], function (error, results, fields) {
-            if (_this.checkErrorCallback(error,  reject)) return;
-            if (results.length == 0) {
-                reject({error: 'Rat Data not found'});
-            } else {
+        return new Promise(function (resolve, reject) {
+            _this.conn.query('SELECT * FROM rat_sightings LIMIT 20', [], function (error, results, fields) {
+                if (_this.checkErrorCallback(error, reject)) return;
                 resolve({ratData: results});
-            }
+            });
         });
-    });
-};
+    };
 }
 
 module.exports = {

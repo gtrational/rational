@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational.web;
 
+import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -21,7 +22,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = "http://10.0.2.2:987/";
+    private static final String serverUrl = "http://10.0.2.2:8081/";
 
     /**
      * A class to hold information about the login attempt
@@ -53,6 +54,12 @@ public class WebAPI {
         }
     }
 
+    /**
+     * Reads all lines of an InputStream into a string and returns it.
+     *
+     * @param stream InputStream
+     * @return String of all lines of InputStream
+     */
     private static String readStream(InputStream stream) {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
@@ -62,39 +69,55 @@ public class WebAPI {
                 str.append(line);
             }
             return str.toString();
+
         } catch (IOException e) {
             return null;
         }
     }
 
+    /**
+     * Makes a HTTP POST request to the server at the route specified route, and
+     * returns with the server's response.
+     *
+     * @param endpoint the route to which to make the request on the server.
+     * @param data a JSONObject containing the data to send to the server as part of the request.
+     *
+     * @return the server's response as a JSONObject.
+     */
     private static JSONObject webRequest(String endpoint, JSONObject data) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         String content = data.toString();
         try {
             URL url = new URL(serverUrl + endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // Set flags on request
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Content-Length", content.length() + "");
-            OutputStream os = conn.getOutputStream();
-            os.write(content.getBytes());
+
+            OutputStream outputStream = conn.getOutputStream();
+            outputStream.write(content.getBytes());
 
             String resp = readStream(conn.getInputStream());
 
             if (resp == null) {
                 String err = readStream(conn.getErrorStream());
-                Log.d("Tag", "Http Error (code " + conn.getResponseCode() + "): " + err);
+                Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
                 return null;
             }
 
             try {
                 return new JSONObject(resp);
             } catch (JSONException e) {
-                e.printStackTrace();
+                Log.w("WebAPI", e);
                 return null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.w("WebAPI", e);
             return null;
         }
     }
@@ -107,11 +130,23 @@ public class WebAPI {
      * @return Information about the login attempt
      */
     public static LoginResult login(String username, String password) {
-        FakeBackend.LoginResponse response = FakeBackend.login(username, password);
-        if (response == null) {
-            return new LoginResult(false, "Invalid User", null, 0);
-        } else {
-            return new LoginResult(true, null, response.sessionID, response.permissionLevelOrdinal);
+        try {
+            JSONObject loginRequest = new JSONObject()
+                    .put("username", username)
+                    .put("password", password);
+            JSONObject response = webRequest("api/login", loginRequest);
+
+            if (response == null) {
+                return new LoginResult(false, "No server response", null, 0);
+            } else if (response.has("err")) {
+                return new LoginResult(false, response.getString("err"), null, 0);
+            } else {
+                return new LoginResult(true, null, response.getString("sessionID"), 0);
+            }
+
+        } catch (JSONException e) {
+            Log.w("WebAPI", e);
+            return new LoginResult(false, "Invalid username or password", null, 0);
         }
     }
 
@@ -123,8 +158,25 @@ public class WebAPI {
      * @return Information about the registration attempt
      */
     public static RegisterResult register(String username, String password, User.PermissionLevel permissionLevel) {
-        boolean success = FakeBackend.register(username, password, permissionLevel.ordinal());
-        return new RegisterResult(success, success ? null : "Username taken");
+        try {
+            JSONObject loginRequest = new JSONObject()
+                    .put("username", username)
+                    .put("password", password)
+                    .put("permLevel", permissionLevel.ordinal());
+            JSONObject response = webRequest("api/register", loginRequest);
+
+            if (response == null) {
+                return new RegisterResult(false, "No server response");
+            } else if (response.has("err")) {
+                return new RegisterResult(false, response.getString("err"));
+            } else {
+                return new RegisterResult(true, null);
+            }
+
+        } catch (JSONException e) {
+            Log.w("WebAPI", e);
+            return new RegisterResult(true, "Invalid data entered");
+        }
     }
 
 }

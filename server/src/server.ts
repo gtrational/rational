@@ -16,6 +16,10 @@ app.get('/', function(req, res) {
     res.send("Hello Daniel");
 });
 
+app.post('/api/fetchPrelimRatData', function(req, res) {
+    var rows = db.getPrelimRatData();
+});
+
 http.listen(config.port, function () {
     console.log('Listening on *:' + config.port);
 });

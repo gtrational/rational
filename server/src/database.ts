@@ -52,6 +52,19 @@ function Database(conninfo) {
             });
         });
     };
+
+    _this.getPrelimRatData = function () {
+    return new Promise(function (resolve, reject) {
+        _this.conn.query('SELECT * FROM rat_sighting LIMIT = 20', [], function (error, results, fields) {
+            if (_this.checkErrorCallback(error,  reject)) return;
+            if (results.length == 0) {
+                reject({error: 'Rat Data not found'});
+            } else {
+                resolve({ratData: results});
+            }
+        });
+    });
+};
 }
 
 module.exports = {

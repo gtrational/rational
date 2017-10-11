@@ -2,10 +2,11 @@
   "name": "rational-server",
   "version": "1.0.0",
   "description": "This is the rational decision.",
-  "main": "server.js",
+  "main": "build/server.js",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "typescript": "^2.5.3"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/nav_nearby"
+            android:icon="@drawable/ic_near_me"
+            android:title="Nearby" />
+        <item
+            android:id="@+id/nav_map"
+            android:icon="@drawable/ic_map"
+            android:title="Map" />
+        <item
+            android:id="@+id/nav_sightings"
+            android:icon="@drawable/ic_view_list"
+            android:title="All Sightings" />
+    </group>
+
+    <item android:title="Settings">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="Help" />
+        </menu>
+    </item>
+
+</menu>

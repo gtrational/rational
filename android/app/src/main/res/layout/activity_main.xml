@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,37 +17,45 @@
         tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp">
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        >
 
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Welcome to Rational"
+            android:text="@string/title_welcome"
             android:textAlignment="center"
-            android:textSize="36sp"
+            android:textSize="16sp"
             android:typeface="normal"
             android:gravity="center" />
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTitle"
+            android:src="@mipmap/logo"/>
 
         <TextView
             android:id="@+id/textViewDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Maybe a description of the app or something like that at some point. Hopefully also not hardcoded into the layout file."
+            android:text="@string/info_welcome"
             android:textAlignment="center"
+            android:layout_marginTop="20dp"
             android:textSize="12sp"
             android:typeface="normal"
             android:gravity="center"
-            android:layout_below="@+id/textViewTitle"/>
+            android:layout_below="@+id/logo"/>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:layout_below="@+id/textViewDescription"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp" >
+            android:layout_below="@+id/textViewDescription">
 
             <Button
                 android:id="@+id/buttonLogin"
@@ -68,7 +77,13 @@
 
         </LinearLayout>
 
-
+        <Button
+            android:id="@+id/buttonLazy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout"
+            android:onClick="lazyLogin"
+            android:text="James is Lazy"/>
 
     </RelativeLayout>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

@@ -5,7 +5,7 @@
     <string name="title_welcome">WELCOME TO</string>
     <string name="info_welcome">Welcome to rational. rational is the world\'s premiere rat-tracking
         app. Just tap and go! Your rat data will be logged and analyzed for any potential public
-        health hazards. Just login or registered to make the world a safer place.</string>
+        health hazards. Just login or register to make the world a safer place.</string>
 
     <!-- Strings related to login -->
     <string name="title_activity_login">Login</string>

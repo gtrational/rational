@@ -24,6 +24,14 @@ app.get('/', function(req, res) {
     res.send("Hello World");
 });
 
+app.post('/api/fetchPrelimRatData', function(req, res) {
+    db.getPrelimRatData().then(function (data) {
+        res.send(JSON.stringify(data));
+    }, function (err) {
+        res.send(JSON.stringify({err: err}));
+    });
+});
+
 //Handle login & register
 var token;
 (function () {

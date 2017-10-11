@@ -3,6 +3,10 @@ console.log('----- Starting Rational Backend -----');
 //Load config
 var config = require('./config.json');
 
+//Load database
+var Database = require('./database').Database;
+var db = new Database(config.mysql);
+
 var express = require('express');
 var app = express();
 

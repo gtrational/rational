@@ -128,4 +128,9 @@ public class WebAPI {
         return new RegisterResult(success, success ? null : "Username taken");
     }
 
+    public static boolean addSighting(long timestamp, String locationType, String zip, String address, String city, String borough, String latitude, String longitude) {
+        // TODO
+        return false;
+    }
+
 }

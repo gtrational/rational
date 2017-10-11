@@ -3,6 +3,7 @@ package edu.gatech.cs2340.gtrational.rational.web;
 import android.os.StrictMode;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.model.User;
 
@@ -54,8 +57,32 @@ public class WebAPI {
         }
     }
 
+    /**
+     * A class to hold information about a rat sighting
+     */
     public static class RatData {
 
+        public int uniqueKey;
+        public long createdTime;
+        public String locationType;
+        public int incidentZip;
+        public String incidentAddress;
+        public String city;
+        public String borough;
+        public double latitude;
+        public double longitude;
+
+        public RatData (JSONObject obj) throws JSONException {
+            uniqueKey = obj.getInt("unique_key");
+            createdTime = obj.getLong("created_date");
+            locationType = obj.getString("location_type");
+            incidentZip = obj.getInt("incident_zip");
+            incidentAddress = obj.getString("incident_address");
+            city = obj.getString("city");
+            borough = obj.getString("borough");
+            latitude = obj.getDouble("latitude");
+            longitude = obj.getDouble("longitude");
+        }
     }
 
     /**
@@ -183,12 +210,22 @@ public class WebAPI {
         }
     }
 
-    public static void fetchPrelimRatData() {
+    public static List<RatData> fetchPrelimRatData() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         JSONObject param = new JSONObject();
         JSONObject ratData = webRequest("/api/fetchPrelimRatData", param);
-        System.out.println(ratData);
+        try {
+            JSONArray arr = ratData.getJSONArray("ratData");
+            List<RatData> list = new ArrayList<>();
+            for (int i = 0; i < arr.length(); i++) {
+                list.add(new RatData(arr.getJSONObject(i)));
+            }
+            return list;
+        } catch (JSONException e) {
+            Log.w("WebAPI", e);
+            return null;
+        }
     }
 
 }

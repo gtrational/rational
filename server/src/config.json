@@ -1,3 +1,10 @@
 {
-  "port": 80
+  "port": 80,
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "ratdb",
+    "reconnectdelay": 3000
+  }
 }

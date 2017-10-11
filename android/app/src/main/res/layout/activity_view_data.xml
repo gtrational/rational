@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="edu.gatech.cs2340.gtrational.rational.controller.ViewDataActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/created_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Created Date" />
+
+            <TextView
+                android:id="@+id/location_type"
+                android:layout_below="@+id/created_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location Type" />
+
+            <TextView
+                android:id="@+id/zip"
+                android:layout_below="@+id/location_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Incident ZIP" />
+
+            <TextView
+                android:id="@+id/address"
+                android:layout_below="@+id/zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Incident Address" />
+
+            <TextView
+                android:id="@+id/city"
+                android:layout_below="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="City" />
+
+            <TextView
+                android:id="@+id/borough"
+                android:layout_below="@+id/city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Borough" />
+
+            <TextView
+                android:id="@+id/latitude"
+                android:layout_below="@+id/borough"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Latitude" />
+
+            <TextView
+                android:id="@+id/longitude"
+                android:layout_below="@+id/latitude"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Longitude" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+
+</android.support.v4.widget.DrawerLayout>

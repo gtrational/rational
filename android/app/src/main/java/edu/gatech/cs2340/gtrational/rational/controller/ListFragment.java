@@ -1,13 +1,17 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,10 +36,10 @@ public class ListFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_list, container, false);
 
         String[][] testData = {
-                {"LLKSDKJLJLKSDF", "!@KE@!#!@$!@", "()*SUDJLFKLKJSDF"},
-                {"LLKSDKJLJLKSDF", "!@KE@!#!@$!@", "()*SUDJLFKLKJSDF"},
-                {"LLKSDKJLJLKSDF", "!@KE@!#!@$!@", "()*SUDJLFKLKJSDF"},
-                {"LLKSDKJLJLKSDF", "!@KE@!#!@$!@", "()*SUDJLFKLKJSDF"}
+                {"426313", "2017-10-10T13:24:25", "Flushing, Queens, New York"},
+                {"102932", "2017-10-10T13:14:25", "Upper East Side, Manhattan, New York"},
+                {"719238", "2017-10-10T12:57:15", "Hell's Kitchen, Manhattan, New York"},
+                {"192859", "2017-10-10T12:21:28", "Laguardia, Queens, New York"}
         };
 
         ArrayList<HashMap<String, String>> newList = new ArrayList<>();
@@ -51,6 +55,18 @@ public class ListFragment extends Fragment {
         ListView theList = (ListView) view.findViewById(R.id.listview);
         SimpleAdapter sa = new SimpleAdapter(this.getActivity(), newList, R.layout.row_layout, new String[] {"line1", "line2", "line3"}, new int[] {R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
+
+        theList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), ViewDataActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("text", (String) ((TextView) view.findViewById(R.id.line1)).getText());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 

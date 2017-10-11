@@ -25,7 +25,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = "http://10.0.2.2:8081/";
+    private static final String serverUrl = "http://10.0.2.2:8081";
 
     /**
      * A class to hold information about the login attempt
@@ -165,7 +165,7 @@ public class WebAPI {
             JSONObject loginRequest = new JSONObject()
                     .put("username", username)
                     .put("password", password);
-            JSONObject response = webRequest("api/login", loginRequest);
+            JSONObject response = webRequest("/api/login", loginRequest);
 
             if (response == null) {
                 return new LoginResult(false, "No server response", null, 0);
@@ -194,7 +194,7 @@ public class WebAPI {
                     .put("username", username)
                     .put("password", password)
                     .put("permLevel", permissionLevel.ordinal());
-            JSONObject response = webRequest("api/register", loginRequest);
+            JSONObject response = webRequest("/api/register", loginRequest);
 
             if (response == null) {
                 return new RegisterResult(false, "No server response");

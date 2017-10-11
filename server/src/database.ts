@@ -57,7 +57,9 @@ function Database(conninfo) {
         return new Promise(function (resolve, reject) {
             _this.conn.query('SELECT * FROM rat_sightings LIMIT 20', [], function (error, results, fields) {
                 if (_this.checkErrorCallback(error, reject)) return;
-                resolve({ratData: results});
+                var resp = {ratData: results};
+                console.log('sending',resp);
+                resolve(resp);
             });
         });
     };

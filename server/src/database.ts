@@ -42,13 +42,9 @@ function Database(conninfo) {
 
     _this.addRatSighting = function (values) {
         return new Promise(function (resolve, reject) {
-            _this.conn.query('INSERT INTO ratsightings (unique_key, created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values, function (error, results, fields) {
+            _this.conn.query('INSERT INTO rat_sightings (unique_key, created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values, function (error, results, fields) {
                 if (_this.checkErrorCallback(error,  reject)) return;
-                if (results.length == 0) {
-                    reject({error: 'User not found'});
-                } else {
-                    resolve({user: results[0]});
-                }
+                resolve({success: true});
             });
         });
     };

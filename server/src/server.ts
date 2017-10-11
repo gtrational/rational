@@ -1,4 +1,4 @@
-console.log('----- Starting Rational Backend');
+console.log('----- Starting Rational Backend -----');
 
 //Load config
 var config = require('./config.json');

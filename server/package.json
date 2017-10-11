@@ -8,12 +8,14 @@
     "@types/express": "^4.0.37",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "copyfiles": "^1.2.0"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "copy": "copyfiles -u 1 src/**/*.json build"
   },
   "repository": {
     "type": "git",

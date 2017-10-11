@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 
 //Load database
 var Database = require('./database').Database;
-//var db = new Database(config.mysql);
+var db = new Database(config.mysql);
 
 var express = require('express');
 var app = express();
@@ -104,8 +104,6 @@ var token;
         }
     };
 })();
-
-
 
 http.listen(config.port, function () {
     console.log('Listening on *:' + config.port);

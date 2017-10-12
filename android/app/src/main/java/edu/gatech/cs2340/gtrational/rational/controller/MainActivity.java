@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final boolean WE_ARE_LAZY = false;
 
+    /**
+     * On create method
+     * @param savedInstanceState Saved state object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Switches to Login View
+     * @param view
+     */
     public void openLogin(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.User;
-import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class RegisterActivity extends AppCompatActivity {
 

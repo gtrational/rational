@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.gtrational.rational.web;
+package edu.gatech.cs2340.gtrational.rational.model.web;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +10,9 @@ import java.util.Map;
 
 public class DataCache {
 
+    /**
+     * A mapping of uniqueKey to RatData to store RatData in memory
+     */
     private static Map<Integer, WebAPI.RatData> cache = new HashMap<>();
 
     public static List<WebAPI.RatData> fetchRatData() {
@@ -20,8 +23,12 @@ public class DataCache {
         return data;
     }
 
+    /**
+     * A method to return the cached RatData by uniqueKey
+     * @param uniqueKey The uniqueKey
+     * @return The RatData corresponding to uniqueKey
+     */
     public static WebAPI.RatData getRatDataByKey(int uniqueKey) {
         return cache.get(uniqueKey);
     }
-
 }

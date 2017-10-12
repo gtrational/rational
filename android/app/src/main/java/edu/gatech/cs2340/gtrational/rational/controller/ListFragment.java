@@ -4,7 +4,6 @@ package edu.gatech.cs2340.gtrational.rational.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.web.DataCache;
-import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
+import edu.gatech.cs2340.gtrational.rational.model.web.DataCache;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
  * A fragment for the "all rat sightings" screen.
@@ -34,6 +33,13 @@ public class ListFragment extends Fragment {
     }
 
 
+    /**
+     * Creates the List Fragment View
+     * @param inflater Layout Inflator object
+     * @param container Container object
+     * @param savedInstanceState State object
+     * @return returns View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

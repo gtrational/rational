@@ -1,4 +1,4 @@
-package edu.gatech.cs2340.gtrational.rational.web;
+package edu.gatech.cs2340.gtrational.rational.model.web;
 
 import android.os.StrictMode;
 import android.util.Log;
@@ -215,6 +215,11 @@ public class WebAPI {
         }
     }
 
+    /**
+     * A method to fetch RatData from the backend
+     *
+     * @return a List of RatData
+     */
     public static List<RatData> fetchPrelimRatData() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -232,5 +237,4 @@ public class WebAPI {
             return null;
         }
     }
-
 }

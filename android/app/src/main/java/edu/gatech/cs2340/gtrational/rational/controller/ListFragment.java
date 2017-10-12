@@ -33,6 +33,13 @@ public class ListFragment extends Fragment {
     }
 
 
+    /**
+     * Creates the List Fragment View
+     * @param inflater Layout Inflator object
+     * @param container Container object
+     * @param savedInstanceState State object
+     * @return returns View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

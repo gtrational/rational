@@ -18,12 +18,21 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
+    /**
+     * On Create method
+     * @param savedInstanceState Saved state object
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
 
+    /**
+     * For dealing with menu.
+     * @param item MenuItem
+     * @return Not sure what this returns
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

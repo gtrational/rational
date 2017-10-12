@@ -217,6 +217,7 @@ public class WebAPI {
 
     /**
      * A method to fetch RatData from the backend
+     *
      * @return a List of RatData
      */
     public static List<RatData> fetchPrelimRatData() {

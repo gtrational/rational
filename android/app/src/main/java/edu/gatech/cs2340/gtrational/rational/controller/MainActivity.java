@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 public class MainActivity extends AppCompatActivity {
 

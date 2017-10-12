@@ -8,12 +8,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.web.DataCache;
-import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
+import edu.gatech.cs2340.gtrational.rational.model.web.DataCache;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class ViewDataActivity extends AppCompatActivity {
 

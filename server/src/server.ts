@@ -5,32 +5,49 @@ var config = require('./config.json');
 
 //Load modules
 var lib = require('./lib').lib;
-var bodyParser = require('body-parser');
 
 //Load database
-var Database = require('./database').Database;
-var db = new Database(config.mysql);
+var db;
+(function () {
+    var Database = require('./database').Database;
+    db = new Database(config.mysql);
+})();
 
-var express = require('express');
-var app = express();
+//Init web server
+var web;
+(function () {
+    var app = require('express')();
 
-//Setup middleware
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+    //Setup middleware
+    var bodyParser = require('body-parser');
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
 
-var http = require('http').Server(app);
+    //Create http server
+    var http = require('http').Server(app);
 
-app.get('/', function(req, res) {
-    res.send("Hello World");
-});
-
-app.post('/api/fetchPrelimRatData', function(req, res) {
-    db.getPrelimRatData().then(function (data) {
-        res.send(JSON.stringify(data));
-    }, function (err) {
-        res.send(JSON.stringify({err: err}));
+    //Create routes
+    app.get('/', function(req, res) {
+        res.send("Hello World");
     });
-});
+
+    app.post('/api/fetchPrelimRatData', function(req, res) {
+        db.getPrelimRatData().then(function (data) {
+            res.send(JSON.stringify(data));
+        }, function (err) {
+            res.send(JSON.stringify({err: err}));
+        });
+    });
+
+    web = {
+        start: function () {
+            http.listen(config.port, function () {
+                console.log('Listening on *:' + config.port);
+            });
+        },
+        app: app
+    }
+})();
 
 //Handle login & register
 var token;
@@ -71,7 +88,7 @@ var token;
         }
     };
 
-    app.post('/api/login', function (req, res) {
+    web.app.post('/api/login', function (req, res) {
         var resolve = function (obj) {
             res.send(JSON.stringify(obj));
         };
@@ -90,7 +107,7 @@ var token;
         resolve({sessionID: user.newToken()});
     });
 
-    app.post('/api/register', function (req, res) {
+    web.app.post('/api/register', function (req, res) {
         var resolve = function (obj) {
             res.send(JSON.stringify(obj));
         };
@@ -113,6 +130,5 @@ var token;
     };
 })();
 
-http.listen(config.port, function () {
-    console.log('Listening on *:' + config.port);
-});
+//Start web
+web.start();

@@ -8,7 +8,7 @@ function checkError(err) {
     return false;
 }
 
-function Database(conninfo) {
+function db_Database(conninfo) {
     var _this = this;
 
     _this.connect = function () {
@@ -60,5 +60,5 @@ function Database(conninfo) {
 }
 
 module.exports = {
-    Database: Database
+    Database: db_Database
 };

@@ -1,8 +1,14 @@
 <resources>
     <string name="app_name">Rational</string>
-    <string name="title_activity_login">Login</string>
+
+    <!-- Strings related to welcome screen -->
+    <string name="title_welcome">WELCOME TO</string>
+    <string name="info_welcome">Welcome to rational. rational is the world\'s premiere rat-tracking
+        app. Just tap and go! Your rat data will be logged and analyzed for any potential public
+        health hazards. Just login or register to make the world a safer place.</string>
 
     <!-- Strings related to login -->
+    <string name="title_activity_login">Login</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -15,4 +21,17 @@
         completions."
     </string>
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_main_dashboard">Dashboard</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_logout">Logout</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello Dashboard Fragment</string>
+    <string name="hello_blank_fragment2">Hello Dashboard Fragmentfdsfsdfds</string>
+    <string name="title_activity_settings">Settings</string>
+
+
 </resources>

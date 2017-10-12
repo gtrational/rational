@@ -21,10 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Login");
         setContentView(R.layout.activity_login);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -37,6 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Verifies if the login information the user inputs is valid.
+     * @param view The View object.
+     */
     public void verifyLogin(View view) {
         EditText usernameField = (EditText) findViewById((R.id.editTextUsername));
         EditText passwordField = (EditText) findViewById((R.id.editTextPassword));
@@ -71,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
         User user = new User(username, password);
         if (user.login()) {
-            Intent intent = new Intent(this, DashboardActivity.class);
+            Intent intent = new Intent(this, MainDashboardActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
@@ -82,6 +83,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If user cancels login, login is terminated and activity finishes.
+     * @param view The View object
+     */
     public void cancelLogin(View view) {
         finish();
     }

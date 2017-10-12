@@ -14,17 +14,14 @@ import android.widget.Toast;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.User;
-import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class RegisterActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Register");
         setContentView(R.layout.activity_register);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -37,6 +34,10 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Verifies that inputs user entered in make valid registration.
+     * @param view The View object
+     */
     public void verifyRegister(View view) {
         EditText usernamefield = (EditText) findViewById(R.id.editTextUsername_R);
         EditText passwordfield = (EditText) findViewById(R.id.editTextPassword_R);
@@ -100,6 +101,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * If user presses "cancel", registration is cancelled and activity finishes.
+     * @param view The View object
+     */
     public void cancelRegister(View view) {
         finish();
     }

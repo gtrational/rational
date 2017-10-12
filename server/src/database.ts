@@ -45,13 +45,6 @@ function Database(conninfo) {
             _this.conn.query('INSERT INTO rat_sightings (unique_key, created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values, function (error, results, fields) {
                 if (_this.checkErrorCallback(error,  reject)) return;
                 resolve({success: true});
-            _this.conn.query('SELECT * FROM users WHERE name=? AND age=?', [name, age], function (error, results, fields) {
-                if (_this.checkErrorCallback(error, reject)) return;
-                if (results.length == 0) {
-                    reject({error: 'User not found'});
-                } else {
-                    resolve({user: results[0]});
-                }
             });
         });
     };

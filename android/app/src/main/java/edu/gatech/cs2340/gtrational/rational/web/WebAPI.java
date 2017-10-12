@@ -26,6 +26,10 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 public class WebAPI {
 
 //    private static final String serverUrl = "http://10.0.2.2:8081";
+    /**
+     *  This URL gets changed to your local IP address if you're running it locally.
+     *  On config.json, change the properties to match your local DB. Change host to be 0.0.0.0
+     */
     private static final String serverUrl = "http://rational.tk:80";
 
     /**

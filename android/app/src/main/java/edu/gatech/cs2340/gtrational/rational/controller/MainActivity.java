@@ -10,10 +10,16 @@ import edu.gatech.cs2340.gtrational.rational.web.WebAPI;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final boolean WE_ARE_LAZY = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!WE_ARE_LAZY) {
+            findViewById(R.id.buttonLazy).setVisibility(View.GONE);
+        }
     }
 
     public void openLogin(View view) {

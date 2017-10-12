@@ -54,6 +54,10 @@ public class WebAPI {
         }
     }
 
+    public static class RatData {
+
+    }
+
     /**
      * Reads all lines of an InputStream into a string and returns it.
      *
@@ -177,6 +181,14 @@ public class WebAPI {
             Log.w("WebAPI", e);
             return new RegisterResult(true, "Invalid data entered");
         }
+    }
+
+    public static void fetchPrelimRatData() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        JSONObject param = new JSONObject();
+        JSONObject ratData = webRequest("/api/fetchPrelimRatData", param);
+        System.out.println(ratData);
     }
 
 }

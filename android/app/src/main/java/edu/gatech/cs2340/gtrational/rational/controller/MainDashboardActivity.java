@@ -21,6 +21,8 @@ import edu.gatech.cs2340.gtrational.rational.R;
 public class MainDashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private int currentFragment = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +51,13 @@ public class MainDashboardActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Sets Dashboard as default fragment when launched.
-        setTitle("Dashboard");
-        DashboardFragment dashboardFragment = new DashboardFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment, dashboardFragment).commit();
+        if (savedInstanceState == null) {
+            setTitle("Dashboard");
+            DashboardFragment dashboardFragment = new DashboardFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, dashboardFragment).commit();
+        }
+
     }
 
     @Override

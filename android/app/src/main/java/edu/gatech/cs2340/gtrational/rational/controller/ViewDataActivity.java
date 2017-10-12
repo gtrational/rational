@@ -37,7 +37,7 @@ public class ViewDataActivity extends AppCompatActivity {
         TextView locationType = (TextView) findViewById(R.id.location_type);
         locationType.setText(data.locationType);
         TextView zip = (TextView) findViewById(R.id.zip);
-        zip.setText(data.incidentZip);
+        zip.setText(data.incidentZip + "");
         TextView address = (TextView) findViewById(R.id.address);
         address.setText(data.incidentAddress);
         TextView city = (TextView) findViewById(R.id.city);

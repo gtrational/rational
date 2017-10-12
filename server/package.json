@@ -24,7 +24,7 @@
     "copy": "copyfiles -u 1 src/**/*.json build",
     "build": "npm-run-all tsc copy",
     "watch:build": "tsc --watch",
-    "watch:server": "nodemon './build/server.js' --watch './build'",
+    "watch:server": "nodemon \"build/server.js\" --watch \"./build\"",
     "start": "npm-run-all clean build --parallel watch:build watch:server --print-label"
   },
   "repository": {

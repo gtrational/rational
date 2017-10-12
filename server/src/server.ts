@@ -1,3 +1,4 @@
+import bodyParser = require("body-parser");
 console.log('----- Starting Rational Backend -----');
 
 //Load config
@@ -5,11 +6,11 @@ var config = require('./config.json');
 
 //Load modules
 var lib = require('./lib').lib;
+import { Database } from "./database"
 
 //Load database
 var db;
 (function () {
-    var Database = require('./database').Database;
     db = new Database(config.mysql);
 })();
 
@@ -52,28 +53,33 @@ var web;
 //Handle login & register
 var token;
 (function () {
-    var User = function (username, password, permLevel) {
-        var _this = this;
+    class User {
+        username: string;
+        password: string;
+        permLevel: string;
+        sessions: Array<string>;
 
-        _this.username = username;
-        _this.password = password;
-        _this.permLevel = permLevel;
-        _this.sessions = [];
+        constructor(username: string, password: string, permLevel: string) {
+            this.username = username;
+            this.password = password;
+            this.permLevel = permLevel;
+            this.sessions = [];
+        }
 
-        _this.newToken = function () {
-            var code;
+        newToken(): string {
+            let code: string;
             do {
                 code = lib.randomStr(20);
             } while (getByToken(code));
-            _this.sessions.push(code);
+            this.sessions.push(code);
             return code;
-        };
-    };
+        }
+    }
 
-    var users = [];
+    var users: Array<User> = [];
 
     var getByUsername = function (username) {
-        for (var i = 0; i < users.length; i++) {
+        for (let i = 0; i < users.length; i++) {
             if (users[i].username == username) {
                 return users[i];
             }
@@ -81,7 +87,7 @@ var token;
     };
 
     var getByToken = function (token) {
-        for (var i = 0; i < users.length; i++) {
+        for (let i = 0; i < users.length; i++) {
             if (users[i].sessions.indexOf(token) >= 0) {
                 return users[i];
             }

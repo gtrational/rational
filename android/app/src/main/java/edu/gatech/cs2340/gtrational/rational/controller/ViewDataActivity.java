@@ -33,7 +33,7 @@ public class ViewDataActivity extends AppCompatActivity {
         WebAPI.RatData data = DataCache.getRatDataByKey(Integer.parseInt(bundle.getString("text")));
 
         TextView createdDate = (TextView) findViewById(R.id.created_date);
-        createdDate.setText(new SimpleDateFormat("yyyy/mm/dd KK:mm:ss aa").format(data.createdTime));
+        createdDate.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa").format(data.createdTime));
         TextView locationType = (TextView) findViewById(R.id.location_type);
         locationType.setText(data.locationType);
         TextView zip = (TextView) findViewById(R.id.zip);

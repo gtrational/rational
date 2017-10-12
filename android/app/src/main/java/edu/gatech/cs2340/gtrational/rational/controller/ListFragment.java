@@ -53,7 +53,7 @@ public class ListFragment extends Fragment {
         for (int i = 0; i < data.size(); i++) {
             HashMap<String, String> item = new HashMap<>();
             item.put("line1", data.get(i).uniqueKey + "");
-            item.put("line2", new SimpleDateFormat("yyyy/mm/dd KK:mm:ss aa").format(new Date(data.get(i).createdTime)) + "");
+            item.put("line2", new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa").format(new Date(data.get(i).createdTime)) + "");
             item.put("line3", data.get(i).borough + ", " + data.get(i).city) ;
             newList.add(item);
         }

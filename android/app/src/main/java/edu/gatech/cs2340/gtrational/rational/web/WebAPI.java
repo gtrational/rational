@@ -25,7 +25,8 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = "http://10.0.2.2:8081";
+//    private static final String serverUrl = "http://10.0.2.2:8081";
+    private static final String serverUrl = "http://rational.tk:80";
 
     /**
      * A class to hold information about the login attempt

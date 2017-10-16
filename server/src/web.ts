@@ -72,8 +72,8 @@ export class Web {
             }, sendObject(res));
         }));
 
-        app.post('/api/fetchPrelimRatData', this.routeAuthWithArgs([], function (req, res, user) {
-            db.getPrelimRatData().then(sendObject(res), sendObject(res));
+        app.post('/api/getRatSightings', this.routeAuthWithArgs(['startid', 'limit'], function (req, res, user) {
+            db.getRatSightings(parseInt(req.body.startid), parseInt(req.body.limit)).then(sendObject(res), sendObject(res));
         }));
     }
 

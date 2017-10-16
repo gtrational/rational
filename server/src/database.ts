@@ -142,14 +142,24 @@ export class Database {
         });
     }
 
-    getPrelimRatData() {
-        var _this = this;
+    /**
+     * Returns The *limit* entries before startId, exclusive. If startId = 0, returns the last *limit* entries
+     * @param startId The exclusive upper bound on the rat sightings to return
+     * @param limit The number of rat sightings before startId to return
+     * @returns {Promise<T>}
+     */
+    getRatSightings(startId: number, limit: number) {
+        let query: string = 'SELECT * FROM rat_sightings';
+        let values: Array<number> = [];
+        if (startId > 0) {
+            query += ' WHERE unique_key < ?';
+            values.push(startId);
+        }
+        query += ' ORDER BY unique_key DESC LIMIT ?';
+        values.push(limit);
 
-        return new Promise(function (resolve, reject) {
-            _this.conn.query('SELECT * FROM rat_sightings LIMIT 20', [], function (error, results, fields) {
-                if (checkErrorCallback(error, reject)) return;
-                resolve({ratData: results});
-            });
+        return this.dbCall(query, values, function (results, resolve, reject) {
+            resolve({ratData: results});
         });
     }
 }

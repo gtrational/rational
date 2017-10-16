@@ -1,5 +1,6 @@
 {
   "port": 8081,
+  "sessionlength": 3600000,
   "mysql": {
     "host": "localhost",
     "user": "root",

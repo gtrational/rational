@@ -1,4 +1,5 @@
-var mysql = require('mysql');
+import * as mysql from "mysql";
+import {IConnection} from "mysql";
 
 function checkError(err) {
     if (err) {
@@ -18,11 +19,19 @@ function checkErrorCallback(error, callback) {
     return false;
 }
 
-export class Database {
-    conn : any;
-    conninfo: any;
+interface ConnInfo {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+    reconnectdelay: number;
+}
 
-    constructor(conninfo: any) {
+export class Database {
+    conn : IConnection;
+    conninfo: ConnInfo;
+
+    constructor(conninfo: ConnInfo) {
         this.conninfo = conninfo;
         this.connect();
     }

@@ -12,7 +12,7 @@ function checkError(err) {
 function checkErrorCallback(error, callback) {
     if (checkError(error)) {
         callback({
-            error: 'Internal DB error'
+            err: 'Internal DB error'
         });
         return true;
     }
@@ -27,8 +27,14 @@ interface ConnInfo {
     reconnectdelay: number;
 }
 
+interface UserInfo {
+    email: string;
+    password: string;
+    permLevel: number;
+}
+
 export class Database {
-    conn : IConnection;
+    conn: IConnection;
     conninfo: ConnInfo;
 
     constructor(conninfo: ConnInfo) {
@@ -56,25 +62,104 @@ export class Database {
         });
     }
 
-    addRatSighting(values: Array<any>) {
+    private dbCall(query, values, callback) {
         var _this = this;
 
         return new Promise(function (resolve, reject) {
-            _this.conn.query('INSERT INTO rat_sightings (unique_key, created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values, function (error, results, fields) {
-                if (checkErrorCallback(error,  reject)) return;
-                resolve({success: true});
+            _this.conn.query(query, values, function (error, results) {
+                if (checkErrorCallback(error, reject)) return;
+
+                callback(results, resolve, reject);
             });
         });
     }
 
-    getPrelimRatData() {
+    getUserByEmail(email: string) {
+        return this.dbCall('SELECT * FROM users WHERE email=?', [email], function (results, resolve, reject) {
+            if (results.length == 0) {
+                return reject({err: 'User not found'});
+            }
+
+            resolve({user: results[0]});
+        });
+    }
+
+    getUserById(id: number) {
+        return this.dbCall('SELECT * FROM users WHERE id=?', [id], function (results, resolve, reject) {
+            if (results.length == 0) {
+                return reject({err: 'User not found'});
+            }
+
+            resolve({user: results[0]});
+        });
+    }
+
+    addUser(info: UserInfo) {
         var _this = this;
 
         return new Promise(function (resolve, reject) {
-            _this.conn.query('SELECT * FROM rat_sightings LIMIT 20', [], function (error, results, fields) {
-                if (checkErrorCallback(error, reject)) return;
-                resolve({ratData: results});
+            _this.getUserByEmail(info.email).then(function () {
+                reject({err: 'User already registered with this email'});
+            }, function () {
+                _this.dbCall('INSERT INTO users(email, password, permLevel) VALUES(?, ?, ?)', [info.email, info.password, info.permLevel], function (results, resolve, reject) {
+                    resolve({userId: results.insertId});
+                }).then(resolve, reject);
             });
+        });
+    }
+
+    getUserIdBySession(sessionid: string) {
+        return this.dbCall('SELECT * FROM usersessions WHERE sessionid=?', [sessionid], function (results, resolve, reject) {
+            if (results.length == 0) {
+                return reject({err: 'User not found'});
+            }
+
+            resolve({userid: results[0].userid});
+        });
+    }
+
+    addUserSession(userid: number, sessionid: string, expires: number) {
+        return this.dbCall('INSERT INTO usersessions(userid, sessionid, expires) VALUES(?, ?, ?)', [userid, sessionid, expires], function (results, resolve, reject) {
+            resolve({success: true});
+        });
+    }
+
+    getExpiredSessions(curtime: number) {
+        return this.dbCall('SELECT * FROM usersessions WHERE expires < ?', [curtime], function (results, resolve, reject) {
+            resolve({sessions: results});
+        });
+    }
+
+    destroySession(id: number) {
+        return this.dbCall('DELETE FROM usersessions WHERE id=?', [id], function (results, resolve, reject) {
+            resolve({success: true});
+        });
+    }
+
+    addRatSighting(values: Array<any>) {
+        return this.dbCall('INSERT INTO rat_sightings (unique_key, created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values, function (results, resolve, reject) {
+            resolve({success: true});
+        });
+    }
+
+    /**
+     * Returns The *limit* entries before startId, exclusive. If startId = 0, returns the last *limit* entries
+     * @param startId The exclusive upper bound on the rat sightings to return
+     * @param limit The number of rat sightings before startId to return
+     * @returns {Promise<T>}
+     */
+    getRatSightings(startId: number, limit: number) {
+        let query: string = 'SELECT * FROM rat_sightings';
+        let values: Array<number> = [];
+        if (startId > 0) {
+            query += ' WHERE unique_key < ?';
+            values.push(startId);
+        }
+        query += ' ORDER BY unique_key DESC LIMIT ?';
+        values.push(limit);
+
+        return this.dbCall(query, values, function (results, resolve, reject) {
+            resolve({ratData: results});
         });
     }
 }

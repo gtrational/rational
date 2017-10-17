@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.RationalApp;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final boolean WE_ARE_LAZY = true;
+    private static final boolean WE_ARE_LAZY = RationalApp.getInstance().getSetting(RationalApp.AREWELAZY).equals("yes");
 
     /**
      * On create method

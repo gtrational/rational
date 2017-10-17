@@ -5,11 +5,14 @@ package edu.gatech.cs2340.gtrational.rational.model;
  */
 
 public class Model {
+
     private static Model instance = new Model();
+
     private User user;
 
 
     private Model() {
+
     }
 
     public static Model getInstance(){

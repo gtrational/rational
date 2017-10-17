@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.model.web.DataCache;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
@@ -45,7 +44,7 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_list, container, false);
 
-        List<WebAPI.RatData> data = DataCache.fetchRatData();
+        /*List<WebAPI.RatData> data = DataCache.fetchRatData();
 
 //        String[][] testData = {
 //                {"426313", "2017-10-10T13:24:25", "Flushing, Queens, New York"},
@@ -77,7 +76,7 @@ public class ListFragment extends Fragment {
             intent.putExtras(bundle);
             startActivity(intent);
             }
-        });
+        });*/
 
         return view;
     }

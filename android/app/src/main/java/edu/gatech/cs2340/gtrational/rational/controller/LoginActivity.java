@@ -14,7 +14,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.User;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -70,17 +72,20 @@ public class LoginActivity extends AppCompatActivity {
 
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
-        User user = new User(username, password);
-        if (user.login()) {
-            Intent intent = new Intent(this, MainDashboardActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
-        } else {
-            Log.d("Tag", "YOU DUN MESSED UP AY AY RON");
-            Snackbar snackbar = Snackbar.make(view, "Login Failed", Snackbar.LENGTH_LONG);
-            snackbar.show();
-        }
+
+        WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
+            if (result.success) {
+                Model.getInstance().setUser(new User(username, result.sessionID, User.PermissionLevel.USER));
+                Intent intent = new Intent(this, MainDashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                Log.d("Tag", "YOU DUN MESSED UP AY AY RON");
+                Snackbar snackbar = Snackbar.make(view, "Login Failed", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
     }
 
     /**

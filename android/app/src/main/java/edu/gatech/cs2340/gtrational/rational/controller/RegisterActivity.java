@@ -72,30 +72,26 @@ public class RegisterActivity extends AppCompatActivity {
             inputManager.hideSoftInputFromWindow(focused.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
-
-
         String username = usernamefield.getText().toString();
         String password = passwordfield.getText().toString();
         String confirmPassword = confirmPasswordField.getText().toString();
 
-
         if (password.equals(confirmPassword)) {
-            WebAPI.RegisterResult res = WebAPI.register(
+            WebAPI.register(
                     username,
                     password,
-                    admin_button.isChecked() ? User.PermissionLevel.ADMIN : User.PermissionLevel.USER
+                    admin_button.isChecked() ? User.PermissionLevel.ADMIN : User.PermissionLevel.USER,
+                    (WebAPI.RegisterResult res) -> {
+                        if (res.success) {
+                            finish();
+                            return;
+                        }
+
+                        Snackbar snackbar = Snackbar.make(view, res.errMsg, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }
             );
-
-            if (res.success) {
-                finish();
-                return;
-            }
-
-            Snackbar snackbar = Snackbar.make(view, res.errMsg, Snackbar.LENGTH_LONG);
-            snackbar.show();
-
         } else {
-
             Snackbar snackbar = Snackbar.make(view, "Passwords don't match", Snackbar.LENGTH_LONG);
             snackbar.show();
         }

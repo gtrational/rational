@@ -16,7 +16,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 
+import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.model.User;
 
 /**
@@ -25,12 +27,16 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-//    private static final String serverUrl = "http://10.0.2.2:8081";
+    private static final String serverUrl = "http://10.0.2.2:8081";
     /**
      *  This URL gets changed to your local IP address if you're running it locally.
      *  On config.json, change the properties to match your local DB. Change host to be 0.0.0.0
      */
-    private static final String serverUrl = "http://rational.tk:80";
+    //private static final String serverUrl = "http://rational.tk:80";
+
+    private static void runAsync(Runnable runnable) {
+        new Thread(runnable).start();
+    }
 
     /**
      * A class to hold information about the login attempt
@@ -120,121 +126,113 @@ public class WebAPI {
      *
      * @return the server's response as a JSONObject.
      */
-    private static JSONObject webRequest(String endpoint, JSONObject data) {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+    private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
+        runAsync(new Runnable() {
+            @Override
+            public void run() {
+                String content = data.toString();
+                try {
+                    URL url = new URL(serverUrl + endpoint);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        String content = data.toString();
-        try {
-            URL url = new URL(serverUrl + endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    // Set flags on request
+                    conn.setDoOutput(true);
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setRequestProperty("Content-Length", content.length() + "");
 
-            // Set flags on request
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Content-Length", content.length() + "");
+                    OutputStream outputStream = conn.getOutputStream();
+                    outputStream.write(content.getBytes());
 
-            OutputStream outputStream = conn.getOutputStream();
-            outputStream.write(content.getBytes());
+                    String resp = readStream(conn.getInputStream());
 
-            String resp = readStream(conn.getInputStream());
+                    if (resp == null) {
+                        String err = readStream(conn.getErrorStream());
+                        Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
+                        try {
+                            callback.callback(null);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        return;
+                    }
 
-            if (resp == null) {
-                String err = readStream(conn.getErrorStream());
-                Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
-                return null;
+                    try {
+                        callback.callback(new JSONObject(resp));
+                        return;
+                    } catch (JSONException e) {
+                        try {
+                            callback.callback(null);
+                        } catch (JSONException e1) {
+                            e1.printStackTrace();
+                        }
+                        return;
+                    }
+                } catch (IOException e) {
+                    Log.w("WebAPI", e);
+                    try {
+                        callback.callback(null);
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                    return;
+                }
             }
-
-            try {
-                return new JSONObject(resp);
-            } catch (JSONException e) {
-                Log.w("WebAPI", e);
-                return null;
-            }
-        } catch (IOException e) {
-            Log.w("WebAPI", e);
-            return null;
-        }
+        });
     }
 
     /**
      * Will attempt to login the user using our backend
      *
-     * @param username The username
+     * @param email The username
      * @param password The password
      * @return Information about the login attempt
      */
-    public static LoginResult login(String username, String password) {
+    public static void login(String email, String password, Callbacks.AnyCallback<LoginResult> callback) {
         try {
             JSONObject loginRequest = new JSONObject()
-                    .put("username", username)
+                    .put("email", email)
                     .put("password", password);
-            JSONObject response = webRequest("/api/login", loginRequest);
-
-            if (response == null) {
-                return new LoginResult(false, "No server response", null, 0);
-            } else if (response.has("err")) {
-                return new LoginResult(false, response.getString("err"), null, 0);
-            } else {
-                return new LoginResult(true, null, response.getString("sessionID"), 0);
-            }
-
+            webRequest("/api/login", loginRequest, (JSONObject response) -> {
+                if (response == null) {
+                    callback.callback(new LoginResult(false, "No server response", null, 0));
+                } else if (response.has("err")) {
+                    callback.callback(new LoginResult(false, response.getString("err"), null, 0));
+                } else {
+                    callback.callback(new LoginResult(true, null, response.getString("sessionid"), 0));
+                }
+            });
         } catch (JSONException e) {
             Log.w("WebAPI", e);
-            return new LoginResult(false, "Invalid username or password", null, 0);
+            callback.callback(new LoginResult(false, "Invalid data entered", null, 0));
         }
     }
 
     /**
      * Will attempt to register the user using our backend
      *
-     * @param username The username
+     * @param email The username
      * @param password The password
      * @return Information about the registration attempt
      */
-    public static RegisterResult register(String username, String password, User.PermissionLevel permissionLevel) {
+    public static void register(String email, String password, User.PermissionLevel permissionLevel, Callbacks.AnyCallback<RegisterResult> callback) {
         try {
             JSONObject loginRequest = new JSONObject()
-                    .put("username", username)
+                    .put("email", email)
                     .put("password", password)
                     .put("permLevel", permissionLevel.ordinal());
-            JSONObject response = webRequest("/api/register", loginRequest);
-
-            if (response == null) {
-                return new RegisterResult(false, "No server response");
-            } else if (response.has("err")) {
-                return new RegisterResult(false, response.getString("err"));
-            } else {
-                return new RegisterResult(true, null);
-            }
-
+            webRequest("/api/register", loginRequest, (JSONObject response) -> {
+                if (response == null) {
+                    callback.callback(new RegisterResult(false, "No server response"));
+                } else if (response.has("err")) {
+                    callback.callback(new RegisterResult(false, response.getString("err")));
+                } else {
+                    callback.callback(new RegisterResult(true, null));
+                }
+            });
         } catch (JSONException e) {
             Log.w("WebAPI", e);
-            return new RegisterResult(true, "Invalid data entered");
-        }
-    }
-
-    /**
-     * A method to fetch RatData from the backend
-     *
-     * @return a List of RatData
-     */
-    public static List<RatData> fetchPrelimRatData() {
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        JSONObject param = new JSONObject();
-        JSONObject ratData = webRequest("/api/fetchPrelimRatData", param);
-        try {
-            JSONArray arr = ratData.getJSONArray("ratData");
-            List<RatData> list = new ArrayList<>();
-            for (int i = 0; i < arr.length(); i++) {
-                list.add(new RatData(arr.getJSONObject(i)));
-            }
-            return list;
-        } catch (JSONException e) {
-            Log.w("WebAPI", e);
-            return null;
+            callback.callback(new RegisterResult(true, "Invalid data entered"));
         }
     }
 }

@@ -1,0 +1,22 @@
+{
+  "port": 8081,
+  "sessionlength": 3600000,
+  
+  "mysql": {
+    "host": "localhost",
+    "user": "ratuser",
+    "password": "ratuserpwd",
+    "database": "ratdb",
+    "reconnectdelay": 3000
+  },
+
+  "mysql_root": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "reconnectdelay": 3000
+  },
+
+  "config_overrides_defaults": {
+  }
+}

@@ -1,7 +1,6 @@
 import * as mysql from "mysql";
-import {IConnection} from "mysql";
 
-function checkError(err) {
+function checkError(err): boolean {
     if (err) {
         console.trace(err);
         return true;
@@ -9,7 +8,7 @@ function checkError(err) {
     return false;
 }
 
-function checkErrorCallback(error, callback) {
+function checkErrorCallback(error, callback): boolean {
     if (checkError(error)) {
         callback({
             err: 'Internal DB error'
@@ -46,7 +45,7 @@ interface RatData {
 }
 
 export class Database {
-    conn: IConnection;
+    conn: mysql.IConnection;
     conninfo: ConnInfo;
 
     constructor(conninfo: ConnInfo) {

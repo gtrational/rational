@@ -1,10 +1,11 @@
-import bodyParser = require("body-parser");
-import express = require("express");
-import socketio = require("socket.io");
-import {Database} from "./database";
-import {Lib} from "./lib";
-import http = require('http');
-let config = require('./config.json');
+import * as bodyParser from 'body-parser';
+import express = require('express');
+import socketio = require('socket.io');
+import {Database} from './database';
+import {Lib} from './lib';
+import * as http from 'http';
+
+let config = require('./config/config.json');
 
 function sendObject(response) {
     return function (obj) {
@@ -128,7 +129,7 @@ export class Web {
             let args = req.body;
             for (let i: number = 0; i < requiredArgs.length; i++) {
                 if (!(requiredArgs[i] in args)) {
-                    return sendObject(res)({err: "Required argument\"" + requiredArgs[i] + "\" not provided"});
+                    return sendObject(res)({err: 'Required argument"' + requiredArgs[i] + '" not provided'});
                 }
             }
 

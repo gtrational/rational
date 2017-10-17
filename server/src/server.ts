@@ -1,7 +1,7 @@
 console.log('----- Starting Rational Backend -----');
 
 //Load config
-let config = require('./config.json');
+let config = require("./config/config.json");
 
 //Load modules
 import {Database} from "./database"

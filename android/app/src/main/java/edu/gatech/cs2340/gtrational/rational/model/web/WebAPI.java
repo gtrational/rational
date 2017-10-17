@@ -278,7 +278,7 @@ public class WebAPI {
             return new RatDataResult(false, "JSON object not created.");
         }
 
-        
+        JSONObject res = webRequest("", rData_json);
 
         return new RatDataResult(true, null);
     }

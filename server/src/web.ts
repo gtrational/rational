@@ -63,7 +63,7 @@ export class Web {
                 if (user.password == password) {
                     getUniqueSession(function (newSession) {
                         db.addUserSession(user.id, newSession, Lib.now() + config.sessionlength);
-                        sendObject(res)({sessionid: newSession});
+                        sendObject(res)({sessionid: newSession, permLevel: user.permLevel});
                     });
                 } else {
                     sendObject(res)({err: 'Invalid credentials'});
@@ -86,6 +86,32 @@ export class Web {
 
         app.post('/api/getRatSightings', this.routeAuthWithArgs(['startid', 'limit'], function (req, res, user) {
             db.getRatSightings(parseInt(req.body.startid), parseInt(req.body.limit)).then(sendObject(res), sendObject(res));
+        }));
+
+        app.post('/api/postRatSightings', this.routeWithArgs(['unique_key', 'created_date', 'locationType', 'incident_zip', 'incidentAddress', 'city', 'borough', 'latitude', 'longitude'], function(req, res) {
+            let unique_key = req.body.unique_key;
+            let created_date = req.body.created_date;
+            let locationType = req.body.locationType;
+            let incident_zip = req.body.incident_zip;
+            let incidentAddress = req.body.incidentAddress;
+            let city = req.body.city;
+            let borough = req.body.borough;
+            let latitude = req.body.latitude;
+            let longitude = req.body.longitude;
+
+            db.addRatSighting({
+                unique_key: unique_key,
+                created_date: created_date,
+                locationType: locationType,
+                incident_zip: incident_zip,
+                incidentAddress: incidentAddress,
+                city: city,
+                borough: borough,
+                latitude: latitude,
+                longitude: longitude
+            }).then(function() {
+                sendObject(res)({success: true});
+            }, sendObject(res));
         }));
     }
 

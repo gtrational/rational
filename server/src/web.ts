@@ -1,5 +1,6 @@
 import bodyParser = require("body-parser");
 import express = require("express");
+import socketio = require("socket.io");
 import {Database} from "./database";
 import {Lib} from "./lib";
 import http = require('http');
@@ -20,6 +21,17 @@ export class Web {
         this.db = db;
         let app = express();
         this.app = app;
+        let io = socketio(http);
+
+        io.on('connection', function (socket) {
+            socket.on('ping', function (data) {
+                var keys = Object.keys(data);
+                for (let i = 0; i < keys.length; i++) {
+                    data[keys[i]] = data[keys[i]].toUpperCase();
+                }
+                socket.emit('pong', data);
+            });
+        });
 
         //Setup middleware
         app.use(bodyParser.urlencoded({extended: true}));

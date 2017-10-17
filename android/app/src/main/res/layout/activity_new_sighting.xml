@@ -7,11 +7,138 @@
     android:fitsSystemWindows="true"
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.SettingsActivity">
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/location_icon"
+                android:layout_width="32dp"
+                android:layout_marginRight="24dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_location_type"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                android:id="@+id/location_type"
+                android:spinnerMode="dialog"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_width="0dp"
+                android:layout_alignParentRight="true"
+                android:layout_height="32dp"
+                android:layout_marginBottom="@dimen/in_between"
+                android:layout_toRightOf="@+id/location_icon">
+            </Spinner>
+
+            <View
+                android:id="@+id/horizontal_line_1"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_below="@+id/location_type"
+                android:layout_marginBottom="@dimen/in_between"
+                android:background="#CCCCCC" />
+
+            <ImageView
+                android:id="@+id/address_icon"
+                android:layout_width="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="24dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_location"
+                android:layout_below="@id/horizontal_line_1"
+                android:layout_alignParentLeft="true"
+                android:layout_centerHorizontal="true"
+                android:layout_alignBottom="@+id/address_line1" />
+
+            <EditText
+                android:id="@+id/address_line1"
+                android:layout_below="@+id/horizontal_line_1"
+                android:layout_width="0dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/in_between"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/address_icon"
+                android:hint="Address (Line 1)"/>
+
+            <EditText
+                android:id="@+id/address_line2"
+                android:layout_below="@id/address_line1"
+                android:layout_width="0dp"
+                android:layout_marginRight="16dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/in_between"
+                android:layout_toRightOf="@+id/address_icon"
+                android:hint="Address (Line 2)"/>
+
+            <RelativeLayout
+                android:id="@+id/city_zip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/address_line2"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@+id/address_icon"
+                android:layout_marginBottom="@dimen/in_between"
+                >
+
+                <EditText
+                    android:id="@+id/city"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/ZIP"
+                    android:layout_alignParentLeft="true"
+                    android:hint="City"/>
+
+                <EditText
+                    android:id="@+id/ZIP"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:hint="ZIP Code"/>
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/horizontal_line_2"
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_below="@+id/city_zip"
+                android:layout_marginBottom="@dimen/in_between"
+                android:background="#CCCCCC" />
+
+            <ImageView
+                android:id="@+id/borough_icon"
+                android:layout_width="32dp"
+                android:layout_marginRight="24dp"
+                android:layout_height="32dp"
+                android:layout_below="@id/horizontal_line_2"
+                android:src="@drawable/ic_borough"
+                android:layout_marginLeft="16dp"
+                android:layout_alignParentLeft="true"/>
+
+            <Spinner
+                android:id="@+id/borough_spinner"
+                android:spinnerMode="dialog"
+                android:layout_below="@+id/horizontal_line_2"
+                android:layout_marginRight="16dp"
+                android:layout_width="0dp"
+                android:layout_alignParentRight="true"
+                android:layout_height="32dp"
+                android:layout_marginBottom="@dimen/in_between"
+                android:layout_toRightOf="@+id/borough_icon"
+                >
+            </Spinner>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </android.support.v4.widget.DrawerLayout>

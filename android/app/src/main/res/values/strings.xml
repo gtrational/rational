@@ -33,5 +33,36 @@
     <string name="hello_blank_fragment2">Hello Dashboard Fragmentfdsfsdfds</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string-array name="location_type">
+        <item>1-2 Family Dwelling</item>
+        <item>1-2 Family Mixed Use Building</item>
+        <item>3+ Family Apt. Building</item>
+        <item>3+ Family Mixed Use Building</item>
+        <item>Catch Basin/Sewer</item>
+        <item>Commerical Building</item>
+        <item>Construction Lot</item>
+        <item>Day Care/Nursery</item>
+        <item>Government Building</item>
+        <item>Hospital</item>
+        <item>Office Building</item>
+        <item>Parking Lot/Garage</item>
+        <item>Public Garden</item>
+        <item>Public Stairs</item>
+        <item>School/Pre-School</item>
+        <item>Single Room Occupancy (SRO)</item>
+        <item>Summer Camp</item>
+        <item>Vacant Building</item>
+        <item>Vacant Lot</item>
+        <item>Other (Explain Below)</item>
+    </string-array>
+
+    <string-array name="boroughs">
+        <item>Manhattan</item>
+        <item>Queens</item>
+        <item>Brooklyn</item>
+        <item>Bronx</item>
+        <item>Statan Island</item>
+    </string-array>
+
 
 </resources>

@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -46,7 +45,6 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         fragments.put(R.id.nav_nearby, new FragInfo(NearbyFragment.class, "Nearby"));
         fragments.put(R.id.nav_map, new FragInfo(MapFragment.class, "Map"));
         fragments.put(R.id.nav_sightings, new FragInfo(ListFragment.class, "All Sightings"));
-        //fragments.put(R.id.nav_settings, new FragInfo(Sett.class, "Dashboard"));
     }
 
     private void setFragment(int id) {
@@ -88,12 +86,9 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
         // Generate floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainDashboardActivity.this, NewSightingActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener((View view) -> {
+            Intent intent = new Intent(MainDashboardActivity.this, NewSightingActivity.class);
+            startActivity(intent);
         });
 
         // Generate navigation drawer.

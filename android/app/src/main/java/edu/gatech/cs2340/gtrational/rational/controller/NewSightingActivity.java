@@ -8,7 +8,11 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.Model;
 
 public class NewSightingActivity extends AppCompatActivity {
 
@@ -48,6 +52,11 @@ public class NewSightingActivity extends AppCompatActivity {
                 return true;
             case R.id.action_save:
                 // TODO: Add save functionality
+                try {
+                    Model.getInstance().updateRatSighting(new JSONObject().put("name", "BobbyRat"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 finish();
                 return true;
         }

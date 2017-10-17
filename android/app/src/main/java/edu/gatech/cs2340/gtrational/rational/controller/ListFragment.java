@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -45,7 +46,11 @@ public class ListFragment extends Fragment {
     }
 
     public void onRatUpdate(JSONObject updateInfo) {
-
+        try {
+            new ExecuteTask(updateInfo.getString("name")).execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

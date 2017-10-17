@@ -63,7 +63,7 @@ export class Web {
                 if (user.password == password) {
                     getUniqueSession(function (newSession) {
                         db.addUserSession(user.id, newSession, Lib.now() + config.sessionlength);
-                        sendObject(res)({sessionid: newSession});
+                        sendObject(res)({sessionid: newSession, permLevel: user.permLevel});
                     });
                 } else {
                     sendObject(res)({err: 'Invalid credentials'});

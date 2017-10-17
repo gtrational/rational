@@ -221,7 +221,7 @@ public class WebAPI {
                 } else if (response.has("err")) {
                     callback.callback(new LoginResult(false, response.getString("err"), null, 0));
                 } else {
-                    callback.callback(new LoginResult(true, null, response.getString("sessionid"), 0));
+                    callback.callback(new LoginResult(true, null, response.getString("sessionid"), response.getInt("permLevel")));
                 }
             });
         } catch (JSONException e) {

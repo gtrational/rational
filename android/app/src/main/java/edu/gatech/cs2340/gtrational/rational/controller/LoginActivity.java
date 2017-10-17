@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
         WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
             if (result.success) {
-                Model.getInstance().setUser(new User(username, result.sessionID, User.PermissionLevel.USER));
+                Model.getInstance().setUser(new User(username, result.sessionID, result.permissionLevel));
                 Intent intent = new Intent(this, MainDashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

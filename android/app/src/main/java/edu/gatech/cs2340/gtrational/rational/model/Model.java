@@ -71,7 +71,7 @@ public class Model {
         }
 
         for (ModelUpdateListener listener : updateListeners.get(topic)) {
-            listener.callback(updateInfo);
+            listener.callback(topic, updateInfo);
         }
     }
 

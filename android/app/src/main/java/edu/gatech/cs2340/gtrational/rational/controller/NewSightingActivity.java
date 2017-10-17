@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class NewSightingActivity extends AppCompatActivity {
 
@@ -51,13 +53,39 @@ public class NewSightingActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
-                // TODO: Add save functionality
+                Spinner locationType = (Spinner) findViewById(R.id.location_type);
+                EditText address1 = (EditText) findViewById((R.id.address_line1));
+                EditText address2 = (EditText) findViewById((R.id.address_line2));
+                EditText city = (EditText) findViewById((R.id.city));
+                EditText zip = (EditText) findViewById((R.id.ZIP));
+                Spinner borough = (Spinner) findViewById(R.id.borough_spinner);
+
+                int zipCode;
                 try {
-                    Model.getInstance().updateRatSighting(new JSONObject().put("name", "BobbyRat"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    zipCode = Integer.parseInt(zip.getText().toString());
+                } catch (Exception e) {
+                    //TODO Popup saying invalid zip code
+                    return true;
                 }
-                finish();
+
+                String address = address1.getText().toString();
+                String addr = address2.getText().toString();
+                if (addr.length() > 0) {
+                    address += addr;
+                }
+
+                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(),
+                        locationType.getSelectedItem().toString(), zipCode, address,
+                        city.getText().toString(), borough.getSelectedItem().toString(),
+                        0, 0);
+                WebAPI.addRatSighting(newRatData, (WebAPI.RatDataResult result) -> {
+                    if (result.success) {
+                        finish();
+                    } else {
+                        //TODO display error message
+                    }
+                });
+
                 return true;
         }
         return super.onOptionsItemSelected(item);

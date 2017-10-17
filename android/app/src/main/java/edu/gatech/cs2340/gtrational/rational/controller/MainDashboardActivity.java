@@ -1,11 +1,11 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 import android.app.FragmentManager;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,12 +16,49 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.gatech.cs2340.gtrational.rational.R;
 
-public class MainDashboardActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private int currentFragment = 0;
+    private static class FragInfo {
+        public Class<? extends Fragment> fragmentClass;
+        public String title;
+        public FragInfo(Class<? extends Fragment> fragmentClass, String title) {
+            this.fragmentClass = fragmentClass;
+            this.title = title;
+        }
+    }
+
+    private Map<Integer, FragInfo> fragments;
+
+    public MainDashboardActivity() {
+        //Init Fragments
+        fragments = new HashMap<>();
+        fragments.put(R.id.nav_dashboard, new FragInfo(DashboardFragment.class, "Dashboard"));
+        fragments.put(R.id.nav_nearby, new FragInfo(NearbyFragment.class, "Nearby"));
+        fragments.put(R.id.nav_map, new FragInfo(MapFragment.class, "Map"));
+        fragments.put(R.id.nav_sightings, new FragInfo(ListFragment.class, "All Sightings"));
+        //fragments.put(R.id.nav_settings, new FragInfo(Sett.class, "Dashboard"));
+    }
+
+    private void setFragment(int id) {
+        if (!fragments.containsKey(id)) {
+            return;
+        }
+
+        try {
+            FragInfo info = fragments.get(id);
+            setTitle(info.title);
+            Fragment fragment = info.fragmentClass.newInstance();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +89,8 @@ public class MainDashboardActivity extends AppCompatActivity
 
         // Sets Dashboard as default fragment when launched.
         if (savedInstanceState == null) {
-            setTitle("Dashboard");
-            DashboardFragment dashboardFragment = new DashboardFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment, dashboardFragment).commit();
+            setFragment(R.id.nav_dashboard);
         }
-
     }
 
     @Override
@@ -93,32 +126,11 @@ public class MainDashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks.
         int id = item.getItemId();
 
-        // Choose
-        if (id == R.id.nav_dashboard) {
-            setTitle("Dashboard");
-            DashboardFragment dashboardFragment = new DashboardFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment, dashboardFragment).commit();
-        } else if (id == R.id.nav_nearby) {
-            setTitle("Nearby");
-            NearbyFragment nearbyFragment = new NearbyFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment, nearbyFragment).commit();
-        } else if (id == R.id.nav_map) {
-            setTitle("Map");
-            MapFragment mapFragment = new MapFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment, mapFragment).commit();
-        } else if (id == R.id.nav_sightings) {
-            setTitle("All Sightings");
-            ListFragment listFragment = new ListFragment();
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment, listFragment).commit();
-        } else if (id == R.id.nav_settings) {
+        if (id == R.id.nav_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_help) {
-
+        } else {
+            setFragment(id);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

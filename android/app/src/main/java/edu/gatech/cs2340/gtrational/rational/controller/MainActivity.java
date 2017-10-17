@@ -9,7 +9,7 @@ import edu.gatech.cs2340.gtrational.rational.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final boolean WE_ARE_LAZY = false;
+    private static final boolean WE_ARE_LAZY = true;
 
     /**
      * On create method

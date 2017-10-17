@@ -16,12 +16,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.Model;
+import edu.gatech.cs2340.gtrational.rational.model.ModelUpdateListener;
 
-public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModelUpdateListener {
 
     private static class FragInfo {
         public Class<? extends Fragment> fragmentClass;
@@ -33,6 +37,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     }
 
     private Map<Integer, FragInfo> fragments;
+    private Fragment activeFragment;
 
     public MainDashboardActivity() {
         //Init Fragments
@@ -55,14 +60,28 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             Fragment fragment = info.fragmentClass.newInstance();
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
+            activeFragment = fragment;
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
     @Override
+    public void callback(String topic, JSONObject updateInfo) {
+        if (topic.equals(Model.RAT_SIGHTING_UPDATE)) {
+            if (activeFragment instanceof ListFragment) {
+                ((ListFragment)activeFragment).onRatUpdate(updateInfo);
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Subscribe to update
+        Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, this);
+
         setContentView(R.layout.activity_main_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +110,12 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         if (savedInstanceState == null) {
             setFragment(R.id.nav_dashboard);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //TODO Unregister from model
     }
 
     @Override

@@ -1,4 +1,5 @@
-var mysql = require('mysql');
+import * as mysql from "mysql";
+import {IConnection} from "mysql";
 
 function checkError(err) {
     if (err) {
@@ -8,57 +9,72 @@ function checkError(err) {
     return false;
 }
 
-function db_Database(conninfo) {
-    var _this = this;
+function checkErrorCallback(error, callback) {
+    if (checkError(error)) {
+        callback({
+            error: 'Internal DB error'
+        });
+        return true;
+    }
+    return false;
+}
 
-    _this.connect = function () {
-        _this.conn = mysql.createConnection(conninfo);
+interface ConnInfo {
+    host: string;
+    user: string;
+    password: string;
+    database: string;
+    reconnectdelay: number;
+}
+
+export class Database {
+    conn : IConnection;
+    conninfo: ConnInfo;
+
+    constructor(conninfo: ConnInfo) {
+        this.conninfo = conninfo;
+        this.connect();
+    }
+
+    connect() {
+        var _this = this;
+
+        _this.conn = mysql.createConnection(_this.conninfo);
 
         _this.conn.on('error', function (err) {
             console.trace(err);
-            setTimeout(_this.connect, conninfo.reconnectdelay);
+            setTimeout(_this.connect, _this.conninfo.reconnectdelay);
         });
 
         _this.conn.connect(function (err) {
             if (err) {
                 console.trace(err);
-                setTimeout(_this.connect, conninfo.reconnectdelay);
+                setTimeout(_this.connect, _this.conninfo.reconnectdelay);
             } else {
                 console.log('Connected to database');
             }
         });
-    };
-    _this.connect();
+    }
 
-    _this.checkErrorCallback = function (error, callback) {
-        if (checkError(error)) {
-            callback({
-                error: 'Internal DB error'
-            });
-            return true;
-        }
-        return false;
-    };
+    addRatSighting(values: Array<any>) {
+        var _this = this;
 
-    _this.addRatSighting = function (values) {
         return new Promise(function (resolve, reject) {
             _this.conn.query('INSERT INTO rat_sightings (unique_key, created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', values, function (error, results, fields) {
-                if (_this.checkErrorCallback(error,  reject)) return;
+                if (checkErrorCallback(error,  reject)) return;
                 resolve({success: true});
             });
         });
-    };
+    }
 
-    _this.getPrelimRatData = function () {
+    getPrelimRatData() {
+        var _this = this;
+
         return new Promise(function (resolve, reject) {
             _this.conn.query('SELECT * FROM rat_sightings LIMIT 20', [], function (error, results, fields) {
-                if (_this.checkErrorCallback(error, reject)) return;
+                if (checkErrorCallback(error, reject)) return;
                 resolve({ratData: results});
             });
         });
-    };
+    }
 }
-
-module.exports = {
-    Database: db_Database
-};

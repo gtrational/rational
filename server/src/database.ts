@@ -151,8 +151,8 @@ export class Database {
     addRatSighting(ratData: RatData) {
         let query = 'INSERT INTO rat_sightings (created_date, location_type, incident_zip, incident_address, city, borough, latitude, longitude';
         let valueStr = 'VALUES (?, ?, ?, ?, ?, ?, ?, ?';
-        let values = [ratData.created_date, ratData.locationType, ratData.incident_zip, ratData.incidentAddress, ratData.city, ratData.borough, ratData.latitude, ratData.longitude];
-        if ('unique_key' in ratData) {
+        let values: Array<string | number> = [ratData.created_date, ratData.locationType, ratData.incident_zip, ratData.incidentAddress, ratData.city, ratData.borough, ratData.latitude, ratData.longitude];
+        if (ratData.unique_key) {
             query += ', unique_key';
             valueStr += ', ?';
             values.push(ratData.unique_key);

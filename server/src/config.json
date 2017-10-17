@@ -1,0 +1,11 @@
+{
+  "port": 8081,
+  "sessionlength": 3600000,
+  "mysql": {
+    "host": "localhost",
+    "user": "root",
+    "password": "",
+    "database": "ratdb",
+    "reconnectdelay": 3000
+  }
+}

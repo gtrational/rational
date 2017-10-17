@@ -9,6 +9,6 @@ import org.json.JSONObject;
 @FunctionalInterface
 public interface ModelUpdateListener {
 
-    void callback(JSONObject updateInfo);
+    void callback(String topic, JSONObject updateInfo);
 
 }

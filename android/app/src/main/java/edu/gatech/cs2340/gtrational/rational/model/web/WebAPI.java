@@ -88,6 +88,28 @@ public class WebAPI {
             latitude = obj.getDouble("latitude");
             longitude = obj.getDouble("longitude");
         }
+
+        public RatData (int uniqueKey, long createdTime, String locationType, int incidentZip, String incidentAddress, String city, String borough, double latitude, double longitude) {
+            this.uniqueKey = uniqueKey;
+            this.createdTime = createdTime;
+            this.locationType = locationType;
+            this.incidentZip = incidentZip;
+            this.incidentAddress = incidentAddress;
+            this.city = city;
+            this.borough = borough;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+    }
+
+    public static class RatDataResult {
+            public boolean success;
+            public String error_message;
+
+            public RatDataResult(boolean succ, String err) {
+                success = succ;
+                error_message = err;
+            }
     }
 
     /**
@@ -211,7 +233,7 @@ public class WebAPI {
 
         } catch (JSONException e) {
             Log.w("WebAPI", e);
-            return new RegisterResult(true, "Invalid data entered");
+            return new RegisterResult(false, "Invalid data entered");
         }
     }
 
@@ -236,5 +258,28 @@ public class WebAPI {
             Log.w("WebAPI", e);
             return null;
         }
+    }
+
+    public static RatDataResult addRatSighting(RatData rData) {
+        JSONObject rData_json = new JSONObject();
+
+        try {
+            rData_json.put("unique_key", rData.uniqueKey);
+            rData_json.put("created_date", rData.createdTime);
+            rData_json.put("locationType", rData.locationType);
+            rData_json.put("incident_zip", rData.incidentZip);
+            rData_json.put("incidentAddress", rData.incidentAddress);
+            rData_json.put("city", rData.city);
+            rData_json.put("borough", rData.borough);
+            rData_json.put("latitude", rData.latitude);
+            rData_json.put("longitude", rData.longitude);
+        } catch (JSONException exc) {
+            Log.w("WebAPI", exc);
+            return new RatDataResult(false, "JSON object not created.");
+        }
+
+        
+
+        return new RatDataResult(true, null);
     }
 }

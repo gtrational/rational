@@ -1,9 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
-import android.os.StrictMode;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,9 +12,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadPoolExecutor;
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.User;
@@ -100,6 +95,25 @@ public class WebAPI {
             this.borough = borough;
             this.latitude = latitude;
             this.longitude = longitude;
+        }
+
+        public JSONObject toJson() {
+            RatData rData = this;
+            JSONObject rData_json = new JSONObject();
+            try {
+                rData_json.put("unique_key", rData.uniqueKey);
+                rData_json.put("created_date", rData.createdTime);
+                rData_json.put("locationType", rData.locationType);
+                rData_json.put("incident_zip", rData.incidentZip);
+                rData_json.put("incidentAddress", rData.incidentAddress);
+                rData_json.put("city", rData.city);
+                rData_json.put("borough", rData.borough);
+                rData_json.put("latitude", rData.latitude);
+                rData_json.put("longitude", rData.longitude);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return rData_json;
         }
     }
 
@@ -254,25 +268,7 @@ public class WebAPI {
     }
 
     public static void addRatSighting(RatData rData, Callbacks.AnyCallback<RatDataResult> callback) {
-        JSONObject rData_json = new JSONObject();
-
-        try {
-            rData_json.put("unique_key", rData.uniqueKey);
-            rData_json.put("created_date", rData.createdTime);
-            rData_json.put("locationType", rData.locationType);
-            rData_json.put("incident_zip", rData.incidentZip);
-            rData_json.put("incidentAddress", rData.incidentAddress);
-            rData_json.put("city", rData.city);
-            rData_json.put("borough", rData.borough);
-            rData_json.put("latitude", rData.latitude);
-            rData_json.put("longitude", rData.longitude);
-        } catch (JSONException exc) {
-            Log.w("WebAPI", exc);
-            callback.callback(new RatDataResult(false, "JSON object not created."));
-            return;
-        }
-
-        webRequest("postRatSightings", rData_json, (JSONObject object) -> {
+        webRequest("postRatSightings", rData.toJson(), (JSONObject object) -> {
             callback.callback(new RatDataResult(true, null));
         });
     }

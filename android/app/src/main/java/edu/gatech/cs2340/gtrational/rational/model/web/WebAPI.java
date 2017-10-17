@@ -275,7 +275,7 @@ public class WebAPI {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        webRequest("postRatSightings", json, (JSONObject object) -> {
+        webRequest("/api/postRatSightings", json, (JSONObject object) -> {
             callback.callback(new RatDataResult(true, null));
         });
     }

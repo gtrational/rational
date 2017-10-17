@@ -13,6 +13,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.User;
@@ -75,7 +78,11 @@ public class LoginActivity extends AppCompatActivity {
 
         WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
             if (result.success) {
-                //Model.getInstance().setUser(new User(username, result.sessionID, result.permissionLevel));
+                try {
+                    Model.getInstance().updateUser(new JSONObject().put("email", username).put("sessionID", result.sessionID).put("permLevel", result.permissionLevel.ordinal()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(this, MainDashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

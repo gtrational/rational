@@ -14,6 +14,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.RationalApp;
+import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.User;
 
 /**
@@ -268,7 +269,13 @@ public class WebAPI {
     }
 
     public static void addRatSighting(RatData rData, Callbacks.AnyCallback<RatDataResult> callback) {
-        webRequest("postRatSightings", rData.toJson(), (JSONObject object) -> {
+        JSONObject json = rData.toJson();
+        try {
+            json.put("sessionid", Model.getInstance().getUser().getSessionId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        webRequest("postRatSightings", json, (JSONObject object) -> {
             callback.callback(new RatDataResult(true, null));
         });
     }

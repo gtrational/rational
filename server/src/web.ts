@@ -88,8 +88,7 @@ export class Web {
             db.getRatSightings(parseInt(req.body.startid), parseInt(req.body.limit)).then(sendObject(res), sendObject(res));
         }));
 
-        app.post('/api/postRatSightings', this.routeWithArgs(['unique_key', 'created_date', 'locationType', 'incident_zip', 'incidentAddress', 'city', 'borough', 'latitude', 'longitude'], function(req, res) {
-            let unique_key = req.body.unique_key;
+        app.post('/api/postRatSightings', this.routeWithArgs(['created_date', 'locationType', 'incident_zip', 'incidentAddress', 'city', 'borough', 'latitude', 'longitude'], function(req, res) {
             let created_date = req.body.created_date;
             let locationType = req.body.locationType;
             let incident_zip = req.body.incident_zip;
@@ -100,7 +99,6 @@ export class Web {
             let longitude = req.body.longitude;
 
             db.addRatSighting({
-                unique_key: unique_key,
                 created_date: created_date,
                 locationType: locationType,
                 incident_zip: incident_zip,

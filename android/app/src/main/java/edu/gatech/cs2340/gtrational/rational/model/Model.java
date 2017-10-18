@@ -1,11 +1,14 @@
 package edu.gatech.cs2340.gtrational.rational.model;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import edu.gatech.cs2340.gtrational.rational.Callbacks;
 
 /**
  * Created by shyamal on 10/2/17.
@@ -23,6 +26,10 @@ public class Model {
 
     private User user;
     private List<RatSighting> ratSightings;
+
+    public User getUser() {
+        return user;
+    }
 
     /**
      * Map of listeners from topics to callbacks
@@ -48,7 +55,7 @@ public class Model {
      * @param topic a string representing the topic of information being subscribed to
      * @param listener a callback to be passed information about the update which occurred
      */
-    public void registerListener(String topic, ModelUpdateListener listener) {
+    public Callbacks.VoidCallback registerListener(String topic, ModelUpdateListener listener) {
         if (updateListeners.containsKey(topic)) {
             updateListeners.get(topic).add(listener);
         } else {
@@ -57,6 +64,10 @@ public class Model {
 
             updateListeners.put(topic, newListener);
         }
+
+        return () -> {
+            updateListeners.get(topic).remove(listener);
+        };
     }
 
     /**
@@ -71,14 +82,20 @@ public class Model {
         }
 
         for (ModelUpdateListener listener : updateListeners.get(topic)) {
-            listener.callback(topic, updateInfo);
+            listener.callback(updateInfo);
         }
     }
 
+    /**
+     * Format: {email, sessionID, permLevel}
+     * @param userInfo
+     */
     public void updateUser(JSONObject userInfo) {
-        // TODO: Actually update user, after JSON format is agreed upon.
-        // user = new User(...);
-
+        try {
+            user = new User(userInfo.getString("email"), userInfo.getString("sessionID"), User.PermissionLevel.values()[userInfo.getInt("permLevel")]);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         publish(USER_UPDATE, userInfo);
     }
 

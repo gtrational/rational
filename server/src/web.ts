@@ -88,6 +88,10 @@ export class Web {
             db.getRatSightings(parseInt(req.body.startid), parseInt(req.body.limit)).then(sendObject(res), sendObject(res));
         }));
 
+        app.post('/api/getRatSightingsAfter', this.routeAuthWithArgs(['startid'], function (req, res, user) {
+            db.getRatSightingsAfter(parseInt(req.body.startid)).then(sendObject(res), sendObject(res));
+        }));
+
         app.post('/api/postRatSightings', this.routeWithArgs(['created_date', 'locationType', 'incident_zip', 'incidentAddress', 'city', 'borough', 'latitude', 'longitude'], function(req, res) {
             let created_date = req.body.created_date;
             let locationType = req.body.locationType;

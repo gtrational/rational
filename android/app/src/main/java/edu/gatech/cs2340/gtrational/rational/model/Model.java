@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.gatech.cs2340.gtrational.rational.Callbacks;
+
 /**
  * Created by shyamal on 10/2/17.
  */
@@ -53,7 +55,7 @@ public class Model {
      * @param topic a string representing the topic of information being subscribed to
      * @param listener a callback to be passed information about the update which occurred
      */
-    public void registerListener(String topic, ModelUpdateListener listener) {
+    public Callbacks.VoidCallback registerListener(String topic, ModelUpdateListener listener) {
         if (updateListeners.containsKey(topic)) {
             updateListeners.get(topic).add(listener);
         } else {
@@ -62,6 +64,10 @@ public class Model {
 
             updateListeners.put(topic, newListener);
         }
+
+        return () -> {
+            updateListeners.get(topic).remove(listener);
+        };
     }
 
     /**
@@ -76,7 +82,7 @@ public class Model {
         }
 
         for (ModelUpdateListener listener : updateListeners.get(topic)) {
-            listener.callback(topic, updateInfo);
+            listener.callback(updateInfo);
         }
     }
 

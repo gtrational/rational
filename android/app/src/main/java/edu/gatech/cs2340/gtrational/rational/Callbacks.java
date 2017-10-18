@@ -9,6 +9,10 @@ import org.json.JSONObject;
 
 public class Callbacks {
 
+    public interface VoidCallback {
+        void callback();
+    }
+
     public interface AnyCallback<T> {
         void callback(T object);
     }

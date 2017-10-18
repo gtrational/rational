@@ -20,11 +20,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.ModelUpdateListener;
 
-public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ModelUpdateListener {
+public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static class FragInfo {
         public Class<? extends Fragment> fragmentClass;
@@ -37,6 +38,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
     private Map<Integer, FragInfo> fragments;
     private Fragment activeFragment;
+    private Callbacks.VoidCallback onDestroy;
 
     public MainDashboardActivity() {
         //Init Fragments
@@ -65,20 +67,15 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     }
 
     @Override
-    public void callback(String topic, JSONObject updateInfo) {
-        if (topic.equals(Model.RAT_SIGHTING_UPDATE)) {
-            if (activeFragment instanceof ListFragment) {
-                ((ListFragment)activeFragment).onRatUpdate(updateInfo);
-            }
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Subscribe to update
-        Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, this);
+        onDestroy = Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, (JSONObject updateInfo) -> {
+            if (activeFragment instanceof ListFragment) {
+                ((ListFragment)activeFragment).onRatUpdate(updateInfo);
+            }
+        });
 
         setContentView(R.layout.activity_main_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -110,7 +107,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //TODO Unregister from model
+        onDestroy.callback();
     }
 
     @Override

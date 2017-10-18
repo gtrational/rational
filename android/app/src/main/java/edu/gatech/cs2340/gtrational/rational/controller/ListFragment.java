@@ -2,15 +2,20 @@ package edu.gatech.cs2340.gtrational.rational.controller;
 
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.model.web.DataCache;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
@@ -27,59 +31,91 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  */
 public class ListFragment extends Fragment {
 
+    private List<HashMap<String, String>> listItems;
 
     public ListFragment() {
         // Required empty public constructor
     }
 
+    private HashMap<String, String> buildRatData(WebAPI.RatData data) {
+        HashMap<String, String> item = new HashMap<>();
+        item.put("line1", data.uniqueKey + "");
+        item.put("line2", new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa").format(new Date(data.createdTime)) + "");
+        item.put("line3", data.borough + ", " + data.city);
+        return item;
+    }
+
+    public void onRatUpdate(JSONObject updateInfo) {
+        try {
+            new ExecuteTask(updateInfo.getString("name")).execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Creates the List Fragment View
-     * @param inflater Layout Inflator object
-     * @param container Container object
+     *
+     * @param inflater           Layout Inflator object
+     * @param container          Container object
      * @param savedInstanceState State object
      * @return returns View
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_list, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        List<WebAPI.RatData> data = DataCache.fetchRatData();
+        listItems = new ArrayList<>();
 
-//        String[][] testData = {
-//                {"426313", "2017-10-10T13:24:25", "Flushing, Queens, New York"},
-//                {"102932", "2017-10-10T13:14:25", "Upper East Side, Manhattan, New York"},
-//                {"719238", "2017-10-10T12:57:15", "Hell's Kitchen, Manhattan, New York"},
-//                {"192859", "2017-10-10T12:21:28", "Laguardia, Queens, New York"}
-//        };
-
-        ArrayList<HashMap<String, String>> newList = new ArrayList<>();
-
-        for (int i = 0; i < data.size(); i++) {
-            HashMap<String, String> item = new HashMap<>();
-            item.put("line1", data.get(i).uniqueKey + "");
-            item.put("line2", new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa").format(new Date(data.get(i).createdTime)) + "");
-            item.put("line3", data.get(i).borough + ", " + data.get(i).city) ;
-            newList.add(item);
-        }
-
-        ListView theList = (ListView) view.findViewById(R.id.listview);
-        SimpleAdapter sa = new SimpleAdapter(this.getActivity(), newList, R.layout.row_layout, new String[] {"line1", "line2", "line3"}, new int[] {R.id.line1, R.id.line2, R.id.line3});
+        ListView theList = view.findViewById(R.id.listview);
+        SimpleAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout, new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
 
-        theList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        theList.setOnItemClickListener((AdapterView<?> adapterView, View view1, int i, long l) -> {
             Intent intent = new Intent(getActivity(), ViewDataActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("text", (String) ((TextView) view.findViewById(R.id.line1)).getText());
+            bundle.putString("text", (String) ((TextView) view1.findViewById(R.id.line1)).getText());
             intent.putExtras(bundle);
             startActivity(intent);
-            }
         });
+
+        new Thread(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            new ExecuteTask("boiu").execute();
+        }).start();
 
         return view;
     }
 
+    private class ExecuteTask extends AsyncTask<Void, Void, Void> {
+
+        private String newData;
+
+        public ExecuteTask(String newData) {
+            this.newData = newData;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void voidd) {
+            HashMap<String, String> item = new HashMap<>();
+            item.put("line1", newData);
+            item.put("line2", newData);
+            item.put("line3", newData);
+            listItems.add(item);
+
+            ListView theList = getView().findViewById(R.id.listview);
+            BaseAdapter adapter = (BaseAdapter)theList.getAdapter();
+            adapter.notifyDataSetChanged();
+        }
+    }
 }

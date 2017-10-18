@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Collections;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
+import edu.gatech.cs2340.gtrational.rational.model.models.RatSighting;
+import edu.gatech.cs2340.gtrational.rational.model.models.User;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
@@ -29,12 +31,12 @@ public class Model {
     private static Model instance = new Model();
 
     private User user;
-    private List<WebAPI.RatData> ratSightings;
-    private Map<Integer, WebAPI.RatData> ratDataMap;
+    private List<RatSighting> ratSightings;
+    private Map<Integer, RatSighting> ratDataMap;
 
-    private void mapRatList(List<WebAPI.RatData> data) {
-        for (WebAPI.RatData dat : data) {
-            ratDataMap.put(dat.uniqueKey, dat);
+    private void mapRatList(List<RatSighting> data) {
+        for (RatSighting dat : data) {
+            ratDataMap.put(dat.getUniqueKey(), dat);
         }
     }
 
@@ -115,11 +117,11 @@ public class Model {
      * Updates the list with the newest rat sightings
      * @param callback The callback to be executed once data is updated
      */
-    public void getNewestRatData(Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+    public void getNewestRatData(Callbacks.AnyCallback<List<RatSighting>> callback) {
         if (ratSightings.isEmpty()) {
             return;
         }
-        WebAPI.getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
+        WebAPI.getRatSightingsAfter(ratSightings.get(0).getUniqueKey(), (List<RatSighting> ratList) -> {
             ratSightings.addAll(0, ratList);
             mapRatList(ratList);
             callback.callback(ratList);
@@ -133,17 +135,17 @@ public class Model {
      * @param callback The function to be executed
      * @return The queried block
      */
-    public void getRatData(int start, int size, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+    public void getRatData(int start, int size, Callbacks.AnyCallback<List<RatSighting>> callback) {
         if (start + size > ratSightings.size()) {
             int lastKey = 0;
             if (!ratSightings.isEmpty()) {
-                lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
+                lastKey = (ratSightings.get(ratSightings.size() - 1)).getUniqueKey();
             }
-            WebAPI.getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
+            WebAPI.getRatSightings(lastKey, size, (List<RatSighting> list ) -> {
                 Log.w("tag", "Model resp: " + list);
                 ratSightings.addAll(list);
                 mapRatList(list);
-                ArrayList<WebAPI.RatData> query = new ArrayList<>();
+                ArrayList<RatSighting> query = new ArrayList<>();
                 synchronized(ratSightings) {
                     for (int i = start; i < start + size; i++) {
                         query.add(ratSightings.get(i));
@@ -152,7 +154,7 @@ public class Model {
                 callback.callback(query);
             });
         } else {
-            ArrayList<WebAPI.RatData> query = new ArrayList<>();
+            ArrayList<RatSighting> query = new ArrayList<>();
             synchronized(ratSightings) {
                 for (int i = start; i < start + size; i++) {
                     query.add(ratSightings.get(i));
@@ -166,20 +168,20 @@ public class Model {
      * Finds and updates the rat in the model ratSightings if it exists in the list
      * @param updatedRat The rat that was updated
      */
-    public void updateRatSighting(WebAPI.RatData updatedRat) {
+    public void updateRatSighting(RatSighting updatedRat) {
         //TODO: update getters and setters once ratSighting class is complete
-        int key = updatedRat.uniqueKey;
+        int key = updatedRat.getUniqueKey();
         synchronized(ratSightings) {
             int a = 0;
             int b = ratSightings.size();
             while(a < b) {
                 int avg = (a + b)/2;
-                if (ratSightings.get(avg).uniqueKey== key) {
+                if (ratSightings.get(avg).getUniqueKey() == key) {
                     ratSightings.set(avg, updatedRat);
                     publish(RAT_SIGHTING_UPDATE, updatedRat.toJson());
                     return;
                 }
-                if (ratSightings.get(avg).uniqueKey < key) {
+                if (ratSightings.get(avg).getUniqueKey() < key) {
                     a = avg + 1;
                 } else {
                     b = avg;
@@ -188,7 +190,7 @@ public class Model {
         }
     }
 
-    public WebAPI.RatData getRatDataByKey(int uniqueKey) {
+    public RatSighting getRatDataByKey(int uniqueKey) {
         return ratDataMap.get(uniqueKey);
     }
 }

@@ -1,9 +1,10 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
-import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONArray;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,7 +22,8 @@ import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
-import edu.gatech.cs2340.gtrational.rational.model.User;
+import edu.gatech.cs2340.gtrational.rational.model.models.RatSighting;
+import edu.gatech.cs2340.gtrational.rational.model.models.User;
 
 /**
  * Created by Robert on 10/1/2017.
@@ -29,110 +31,13 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
     private static final boolean printWebRequests = true;
+    private static final String SERVER_URL = RationalApp.getInstance().getSetting(RationalConfig.HOSTURL);
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     private static void runAsync(Runnable runnable) {
         new Thread(runnable).start();
-    }
-
-    /**
-     * A class to hold information about the login attempt
-     */
-    public static class LoginResult {
-        public boolean success;
-        public String errMsg;
-        public String sessionID;
-        public User.PermissionLevel permissionLevel;
-
-        public LoginResult(boolean success, String err, String sess, int permissionLevelOrdinal) {
-            this.success = success;
-            this.errMsg = err;
-            this.sessionID = sess;
-            permissionLevel = User.PermissionLevel.values()[permissionLevelOrdinal];
-        }
-    }
-
-    /**
-     * A class to hold information about the registration attempt
-     */
-    public static class RegisterResult {
-        public boolean success;
-        public String errMsg;
-
-        public RegisterResult(boolean success, String err) {
-            this.success = success;
-            this.errMsg = err;
-        }
-    }
-
-    /**
-     * A class to hold information about a rat sighting
-     */
-    public static class RatData {
-
-        public int uniqueKey;
-        public long createdTime;
-        public String locationType;
-        public int incidentZip;
-        public String incidentAddress;
-        public String city;
-        public String borough;
-        public double latitude;
-        public double longitude;
-
-        public RatData (JSONObject obj) throws JSONException {
-            uniqueKey = obj.getInt("unique_key");
-            createdTime = obj.getLong("created_date");
-            locationType = obj.getString("location_type");
-            incidentZip = obj.getInt("incident_zip");
-            incidentAddress = obj.getString("incident_address");
-            city = obj.getString("city");
-            borough = obj.getString("borough");
-            latitude = obj.getDouble("latitude");
-            longitude = obj.getDouble("longitude");
-        }
-
-        public RatData (int uniqueKey, long createdTime, String locationType, int incidentZip, String incidentAddress, String city, String borough, double latitude, double longitude) {
-            this.uniqueKey = uniqueKey;
-            this.createdTime = createdTime;
-            this.locationType = locationType;
-            this.incidentZip = incidentZip;
-            this.incidentAddress = incidentAddress;
-            this.city = city;
-            this.borough = borough;
-            this.latitude = latitude;
-            this.longitude = longitude;
-        }
-
-        public JSONObject toJson() {
-            RatData rData = this;
-            JSONObject rData_json = new JSONObject();
-            try {
-                rData_json.put("unique_key", rData.uniqueKey);
-                rData_json.put("created_date", rData.createdTime);
-                rData_json.put("locationType", rData.locationType);
-                rData_json.put("incident_zip", rData.incidentZip);
-                rData_json.put("incidentAddress", rData.incidentAddress);
-                rData_json.put("city", rData.city);
-                rData_json.put("borough", rData.borough);
-                rData_json.put("latitude", rData.latitude);
-                rData_json.put("longitude", rData.longitude);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return rData_json;
-        }
-    }
-
-    public static class RatDataResult {
-        public boolean success;
-        public String error_message;
-
-        public RatDataResult(boolean succ, String err) {
-            success = succ;
-            error_message = err;
-        }
     }
 
     /**
@@ -161,72 +66,47 @@ public class WebAPI {
      * returns with the server's response.
      *
      * @param endpoint the route to which to make the request on the server.
-     * @param data a JSONObject containing the data to send to the server as part of the request.
-     *
-     * @return the server's response as a JSONObject.
+     * @param content a JSON string containing the data to send to the server as part of the request.
+     * @param callback a callback to handle some String
      */
-    private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
+    private static void webRequest(String endpoint, String content, Callbacks.IOExceptionCallback<String> callback) {
         if (printWebRequests) {
-            try {
-                Log.w("tag", "Making web request to " + endpoint + " with " + data.toString(2));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            Log.d("tag", "Making web request to " + endpoint + " with " + content);
         }
-        runAsync(new Runnable() {
-            @Override
-            public void run() {
-                String content = data.toString();
-                try {
-                    URL url = new URL(serverUrl + endpoint);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        runAsync(() -> {
+            try {
+                URL url = new URL(SERVER_URL + endpoint);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                    // Set flags on request
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json");
-                    conn.setRequestProperty("Content-Length", content.length() + "");
+                // Set flags on request
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Content-Length", content.length() + "");
 
-                    OutputStream outputStream = conn.getOutputStream();
-                    outputStream.write(content.getBytes());
+                OutputStream outputStream = conn.getOutputStream();
+                outputStream.write(content.getBytes());
 
-                    String resp = readStream(conn.getInputStream());
+                String resp = readStream(conn.getInputStream());
 
-                    if (resp == null) {
-                        String err = readStream(conn.getErrorStream());
-                        Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
-                        try {
-                            callback.callback(null);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        return;
-                    }
-
-                    try {
-                        JSONObject respJson = new JSONObject(resp);
-                        if (printWebRequests) {
-                            Log.w("tag", "Got from " + endpoint + ": " + respJson.toString(2));
-                        }
-                        callback.callback(respJson);
-                        return;
-                    } catch (JSONException e) {
-                        Log.w("tag", "Also got jexception " + e.toString());
-                        try {
-                            callback.callback(null);
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                        return;
-                    }
-                } catch (IOException e) {
-                    Log.w("WebAPI", e);
-                    try {
-                        callback.callback(null);
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
+                if (resp == null) {
+                    String err = readStream(conn.getErrorStream());
+                    Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
+                    callback.callback(null);
                     return;
+                }
+                if (printWebRequests) {
+                    Log.w("tag", "Got from " + endpoint + ": " + resp);
+                }
+
+                callback.callback(resp);
+
+            } catch (IOException e) {
+                Log.w("WebAPI", e);
+                try {
+                    callback.callback(null);
+                } catch (IOException f) {
+                    throw new RuntimeException("This should never happen...", f);
                 }
             }
         });
@@ -237,25 +117,26 @@ public class WebAPI {
      *
      * @param email The username
      * @param password The password
-     * @return Information about the login attempt
+     * @param callback A callback to be invoked asynchronously with the result
      */
     public static void login(String email, String password, Callbacks.AnyCallback<LoginResult> callback) {
         try {
             JSONObject loginRequest = new JSONObject()
                     .put("email", email)
                     .put("password", password);
-            webRequest("/api/login", loginRequest, (JSONObject response) -> {
+
+            webRequest("/api/login", loginRequest, (String response) -> {
                 if (response == null) {
-                    callback.callback(new LoginResult(false, "No server response", null, 0));
-                } else if (response.has("err")) {
-                    callback.callback(new LoginResult(false, response.getString("err"), null, 0));
+                    callback.callback(new LoginResult(false, "No server response", null, User.PermissionLevel.USER));
+
                 } else {
-                    callback.callback(new LoginResult(true, null, response.getString("sessionid"), response.getInt("permLevel")));
+                    callback.callback(objectMapper.readValue(response, LoginResult.class));
+
                 }
             });
         } catch (JSONException e) {
             Log.w("WebAPI", e);
-            callback.callback(new LoginResult(false, "Invalid data entered", null, 0));
+            callback.callback(new LoginResult(false, "Invalid data entered", null, User.PermissionLevel.USER));
         }
     }
 
@@ -266,40 +147,48 @@ public class WebAPI {
      * @param password The password
      * @return Information about the registration attempt
      */
-    public static void register(String email, String password, User.PermissionLevel permissionLevel, Callbacks.AnyCallback<RegisterResult> callback) {
+    public static void register(String email, String password, User.PermissionLevel permissionLevel, Callbacks.AnyCallback<GenericResult> callback) {
         try {
             JSONObject loginRequest = new JSONObject()
                     .put("email", email)
                     .put("password", password)
                     .put("permLevel", permissionLevel.ordinal());
-            webRequest("/api/register", loginRequest, (JSONObject response) -> {
+
+            webRequest("/api/register", loginRequest, (String response) -> {
                 if (response == null) {
-                    callback.callback(new RegisterResult(false, "No server response"));
-                } else if (response.has("err")) {
-                    callback.callback(new RegisterResult(false, response.getString("err")));
+                    callback.callback(new GenericResult(false, "No server response"));
+
                 } else {
-                    callback.callback(new RegisterResult(true, null));
+                    callback.callback(objectMapper.readValue(response, GenericResult.class));
+
                 }
             });
         } catch (JSONException e) {
             Log.w("WebAPI", e);
-            callback.callback(new RegisterResult(true, "Invalid data entered"));
+            callback.callback(new GenericResult(true, "Invalid data entered"));
         }
     }
 
-    public static void addRatSighting(RatData rData, Callbacks.AnyCallback<RatDataResult> callback) {
+    public static void addRatSighting(RatSighting rData, Callbacks.AnyCallback<GenericResult> callback) {
+        JSONObject json = new JSONObject()
+
         JSONObject json = rData.toJson();
+
         try {
             json.put("sessionid", Model.getInstance().getUser().getSessionId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        webRequest("/api/postRatSightings", json, (JSONObject object) -> {
-            callback.callback(new RatDataResult(true, null));
+        webRequest("/api/postRatSightings", json, (String response) -> {
+            if (response == null) {
+                callback.callback(new GenericResult(false, "No server response"));
+            } else {
+                callback.callback(objectMapper.readValue(response, GenericResult.class));
+            }
         });
     }
 
-    public static void getRatSightingsAfter(int startid, Callbacks.AnyCallback<List<RatData>> callback) {
+    public static void getRatSightingsAfter(int startid, Callbacks.AnyCallback<List<RatSighting>> callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("sessionid", Model.getInstance().getUser().getSessionId());
@@ -308,10 +197,10 @@ public class WebAPI {
             e.printStackTrace();
         }
         webRequest("/api/getRatSightingsAfter", json, (JSONObject results) -> {
-            List<RatData> ratData = new ArrayList<RatData>();
+            List<RatSighting> ratData = new ArrayList<RatSighting>();
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < array_results.length(); i++) {
-                ratData.add(new RatData(array_results.getJSONObject(i)));
+                ratData.add(new RatSighting(array_results.getJSONObject(i)));
             }
 
             callback.callback(ratData);
@@ -322,8 +211,8 @@ public class WebAPI {
      *
      * @return a List of RatData
      */
-    public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<List<RatData>> callback) {
-        List<RatData> ratData = new ArrayList<RatData>();
+    public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<List<RatSighting>> callback) {
+        List<RatSighting> ratData = new ArrayList<RatSighting>();
         JSONObject request = new JSONObject();
 
         System.out.println("Sessionid: " + Model.getInstance().getUser().getSessionId());
@@ -336,12 +225,12 @@ public class WebAPI {
             Log.w("WebAPI", ex);
         }
 
-        webRequest("/api/getRatSightings", request, (JSONObject results) -> {
+        webRequest("/api/getRatSightings", request, (String results) -> {
             //TODO this is a temporary fix, we need to figure out why it returns null sometimes
             if (results == null) {
                 return;
             }
-            Log.w("tag", "Results: " + results.toString(2));
+            Log.w("tag", "Results: " + results);
             // extract result, put the into callback
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < limit; i++) {

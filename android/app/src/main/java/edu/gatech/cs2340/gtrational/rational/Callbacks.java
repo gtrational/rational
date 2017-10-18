@@ -3,6 +3,8 @@ package edu.gatech.cs2340.gtrational.rational;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 /**
  * Created by Robert on 10/16/2017.
  */
@@ -22,5 +24,10 @@ public class Callbacks {
     @FunctionalInterface
     public interface JSONExceptionCallback<T> {
         void callback(T object) throws JSONException;
+    }
+
+    @FunctionalInterface
+    public interface IOExceptionCallback<T> {
+        void callback(T object) throws IOException;
     }
 }

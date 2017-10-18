@@ -1,4 +1,6 @@
 {
+  "configDir": "src/config/",
+
   "port": 8081,
   "sessionlength": 3600000,
   
@@ -10,13 +12,11 @@
     "reconnectdelay": 3000
   },
 
-  "mysql_root": {
+  "mysqlRoot": {
     "host": "localhost",
     "user": "root",
     "password": "",
     "reconnectdelay": 3000
-  },
-
-  "config_overrides_defaults": {
   }
+
 }

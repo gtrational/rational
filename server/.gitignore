@@ -1,3 +1,6 @@
+### Miscilaneous ignored files ###
+config-overrides.json
+
 
 # Created by https://www.gitignore.io/api/node,webstorm,visualstudiocode
 

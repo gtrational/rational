@@ -279,4 +279,18 @@ public class WebAPI {
             callback.callback(new RatDataResult(true, null));
         });
     }
+
+    public static void getRatSightingsAfter(int startid, Callbacks.AnyCallback<RatDataResult> callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("sessionid", Model.getInstance().getUser().getSessionId());
+            json.put("startid", startid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        webRequest("/api/getRatSightingsAfter", json, (JSONObject object) -> {
+            //callback.callback(new RatDataResult(true, null));
+            //TODO call callback with same data that sherry_c0dingm4st3r creates
+        });
+    }
 }

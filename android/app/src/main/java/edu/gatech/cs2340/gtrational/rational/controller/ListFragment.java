@@ -1,6 +1,5 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,16 +15,16 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.Model;
+import edu.gatech.cs2340.gtrational.rational.model.User;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
@@ -34,6 +33,8 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 public class ListFragment extends Fragment {
 
     private List<HashMap<String, String>> listItems;
+    private Map<Integer, HashMap<String, String>> listMap;
+    private int oldestId;
 
     public ListFragment() {
         // Required empty public constructor
@@ -47,14 +48,22 @@ public class ListFragment extends Fragment {
         return item;
     }
 
-    public void onRatUpdate(JSONObject updateInfo) {
-        try {
-            new ExecuteTask(updateInfo.getString("name")).execute();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public void onRatUpdate(WebAPI.RatData ratInfo) {
+        new ExecuteTask(ratInfo).execute();
     }
 
+    private void fetchOldData() {
+        Model.getInstance().getRatData(oldestId, 20, (List<WebAPI.RatData> newData) -> {
+            oldestId = newData.get(newData.size() - 1).uniqueKey;
+            new ExecuteTask(newData, false).execute();
+        });
+    }
+
+    private void fetchNewData() {
+        Model.getInstance().getNewestRatData((List<WebAPI.RatData> newData) -> {
+            new ExecuteTask(newData, true).execute();
+        });
+    }
 
     /**
      * Creates the List Fragment View
@@ -68,6 +77,9 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
+        listItems = new ArrayList<>();
+        listMap = new HashMap<>();
+
         ListView theList = view.findViewById(R.id.listview);
         SimpleAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout, new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
@@ -80,20 +92,11 @@ public class ListFragment extends Fragment {
             startActivity(intent);
         });
 
-        new Thread(() -> {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            new ExecuteTask("boiu").execute();
-        }).start();
-
         SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //TODO: ACTUALLY MAKE REFRESH DO SOMETHING
+                fetchNewData();
             }
         });
 
@@ -105,20 +108,29 @@ public class ListFragment extends Fragment {
 
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                //TODO: Do some call to WebAPI
+                fetchOldData();
                 return true;
             }
         });
+
+        fetchOldData();
 
         return view;
     }
 
     private class ExecuteTask extends AsyncTask<Void, Void, Void> {
 
-        private String newData;
+        private WebAPI.RatData dataToUpdate;
+        private List<WebAPI.RatData> newData;
+        private boolean isNew;
 
-        public ExecuteTask(String newData) {
+        public ExecuteTask(WebAPI.RatData dataToUpdate) {
+            this.dataToUpdate = dataToUpdate;
+        }
+
+        public ExecuteTask(List<WebAPI.RatData> newData, boolean isNew) {
             this.newData = newData;
+            this.isNew = isNew;
         }
 
         @Override
@@ -128,11 +140,27 @@ public class ListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(Void voidd) {
-            HashMap<String, String> item = new HashMap<>();
-            item.put("line1", newData);
-            item.put("line2", newData);
-            item.put("line3", newData);
-            listItems.add(item);
+            if (dataToUpdate != null) {
+                if (listMap.containsKey(dataToUpdate.uniqueKey)) {
+                    HashMap<String, String> newObj = buildRatData(dataToUpdate);
+                    HashMap<String, String> oldData = listMap.get(dataToUpdate.uniqueKey);
+                    for (String key : newObj.keySet()) {
+                        oldData.put(key, newObj.get(key));
+                    }
+                }
+            }
+
+            if (newData != null) {
+                if (isNew) {
+                    for (int i = newData.size() - 1; i >= 0; i--) {
+                        listItems.add(0, buildRatData(newData.get(i)));
+                    }
+                } else {
+                    for (int i = newData.size() - 1; i >= 0; i--) {
+                        listItems.add(buildRatData(newData.get(i)));
+                    }
+                }
+            }
 
             ListView theList = getView().findViewById(R.id.listview);
             BaseAdapter adapter = (BaseAdapter)theList.getAdapter();

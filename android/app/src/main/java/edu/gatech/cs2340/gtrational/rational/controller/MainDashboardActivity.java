@@ -15,15 +15,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.ModelUpdateListener;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,7 +42,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
     private Map<Integer, FragInfo> fragments;
     private Fragment activeFragment;
-    private Callbacks.VoidCallback onDestroy;
+    private List<Callbacks.VoidCallback> onDestroy;
 
     public MainDashboardActivity() {
         //Init Fragments
@@ -47,6 +51,8 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         fragments.put(R.id.nav_nearby, new FragInfo(NearbyFragment.class, "Nearby"));
         fragments.put(R.id.nav_map, new FragInfo(MapFragment.class, "Map"));
         fragments.put(R.id.nav_sightings, new FragInfo(ListFragment.class, "All Sightings"));
+
+        onDestroy = new ArrayList<>();
     }
 
     private void setFragment(int id) {
@@ -71,11 +77,15 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
 
         //Subscribe to update
-        onDestroy = Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, (JSONObject updateInfo) -> {
+        onDestroy.add(Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, (JSONObject updateInfo) -> {
             if (activeFragment instanceof ListFragment) {
-                ((ListFragment)activeFragment).onRatUpdate(updateInfo);
+                try {
+                    ((ListFragment)activeFragment).onRatUpdate(new WebAPI.RatData(updateInfo));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        }));
 
         setContentView(R.layout.activity_main_dashboard);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,7 +117,9 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     @Override
     public void onDestroy() {
         super.onDestroy();
-        onDestroy.callback();
+        for (Callbacks.VoidCallback cb : onDestroy) {
+            cb.callback();
+        }
     }
 
     @Override

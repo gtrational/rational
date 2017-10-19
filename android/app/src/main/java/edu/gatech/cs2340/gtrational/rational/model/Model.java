@@ -3,12 +3,15 @@ package edu.gatech.cs2340.gtrational.rational.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
  * Created by shyamal on 10/2/17.
@@ -20,7 +23,6 @@ public class Model {
      */
     public static final String USER_UPDATE = "user.update";
     public static final String RAT_SIGHTING_UPDATE = "rat_sighting.update";
-
 
     private static Model instance = new Model();
 
@@ -37,7 +39,7 @@ public class Model {
     private Map<String, List<ModelUpdateListener>> updateListeners;
 
     private Model() {
-        ratSightings = new ArrayList<>();
+        ratSightings = Collections.synchronizedList(new ArrayList<>());
         updateListeners = new HashMap<>();
     }
 
@@ -99,10 +101,44 @@ public class Model {
         publish(USER_UPDATE, userInfo);
     }
 
-    public void updateRatSighting(JSONObject ratInfo) {
-        // TODO: Actually update a rat sighting
-        // ratSightings.get(...).setasdfasdf()
-
-        publish(RAT_SIGHTING_UPDATE, ratInfo);
+    /**
+     *
+     * @param start The starting index of the desired block
+     * @param size The size of the desired block
+     * @return The queried block
+     */
+    public List<RatSighting> getRatData(int start, int size) {
+        if (start + size > ratSightings.size()) {
+            //int lastKey (ratSightings.get(ratSightings.size() - 1)).getKey()
+            //getRatSightings(lastKey, start + size - ratSightings.size());
+        }
+        ArrayList<RatSighting> query = new ArrayList<>();
+        synchronized(ratSightings) {
+            for (int i = start; i < start + size; i++) {
+                query.add(ratSightings.get(i));
+            }
+        }
+        return query;
+    }
+    public void updateRatSighting(RatSighting updatedRat) {
+        //TODO: update getters and setters once ratSighting class is complete
+        //long createdTime = updatedRat.getDate(); get the date
+        synchronized(ratSightings) {
+            int a = 0;
+            int b = ratSightings.size();
+            while(a < b) {
+                int avg = (a + b)/2;
+                if (ratSightings.get(avg).getDate() == createdTime) {
+                    ratSightings.set(avg, updatedRat);
+                    publish(RAT_SIGHTING_UPDATE, updatedRat);
+                    return;
+                }
+                if (ratSightings.get(avg).getDate() < createdTime) {
+                    a = avg + 1;
+                } else {
+                    b = avg;
+                }
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ public class User {
 
     public User(String email, String sessionId, PermissionLevel permissionlvl) {
         this.email = email;
+        this.sessionId = sessionId;
         this.permissionLvl = permissionlvl;
     }
 

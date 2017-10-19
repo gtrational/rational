@@ -184,4 +184,10 @@ export class Database {
             resolve({ratData: results});
         });
     }
+
+    getRatSightingsAfter(startId: number) {
+        return this.dbCall('SELECT * FROM rat_sightings WHERE unique_key > ?', [startId], function (results, resolve, reject) {
+            resolve({ratData: results});
+        });
+    }
 }

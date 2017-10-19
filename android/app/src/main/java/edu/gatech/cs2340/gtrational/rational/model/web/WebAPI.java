@@ -1,7 +1,9 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
+import android.os.StrictMode;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,9 +14,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
+import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.User;
 
 /**
@@ -23,7 +29,8 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = RationalApp.getInstance().getSetting(RationalApp.HOSTURL);
+    private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
+    private static final boolean printWebRequests = true;
 
     private static void runAsync(Runnable runnable) {
         new Thread(runnable).start();
@@ -119,13 +126,13 @@ public class WebAPI {
     }
 
     public static class RatDataResult {
-            public boolean success;
-            public String error_message;
+        public boolean success;
+        public String error_message;
 
-            public RatDataResult(boolean succ, String err) {
-                success = succ;
-                error_message = err;
-            }
+        public RatDataResult(boolean succ, String err) {
+            success = succ;
+            error_message = err;
+        }
     }
 
     /**
@@ -159,6 +166,13 @@ public class WebAPI {
      * @return the server's response as a JSONObject.
      */
     private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
+        if (printWebRequests) {
+            try {
+                Log.w("tag", "Making web request to " + endpoint + " with " + data.toString(2));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         runAsync(new Runnable() {
             @Override
             public void run() {
@@ -190,9 +204,14 @@ public class WebAPI {
                     }
 
                     try {
-                        callback.callback(new JSONObject(resp));
+                        JSONObject respJson = new JSONObject(resp);
+                        if (printWebRequests) {
+                            Log.w("tag", "Got from " + endpoint + ": " + respJson.toString(2));
+                        }
+                        callback.callback(respJson);
                         return;
                     } catch (JSONException e) {
+                        Log.w("tag", "Also got jexception " + e.toString());
                         try {
                             callback.callback(null);
                         } catch (JSONException e1) {
@@ -277,6 +296,60 @@ public class WebAPI {
         }
         webRequest("/api/postRatSightings", json, (JSONObject object) -> {
             callback.callback(new RatDataResult(true, null));
+        });
+    }
+
+    public static void getRatSightingsAfter(int startid, Callbacks.AnyCallback<List<RatData>> callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("sessionid", Model.getInstance().getUser().getSessionId());
+            json.put("startid", startid);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        webRequest("/api/getRatSightingsAfter", json, (JSONObject results) -> {
+            List<RatData> ratData = new ArrayList<RatData>();
+            JSONArray array_results = results.getJSONArray("ratData");
+            for (int i = 0; i < array_results.length(); i++) {
+                ratData.add(new RatData(array_results.getJSONObject(i)));
+            }
+
+            callback.callback(ratData);
+        });
+    }
+    /**
+     * A method to fetch RatData from the backend
+     *
+     * @return a List of RatData
+     */
+    public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<List<RatData>> callback) {
+        List<RatData> ratData = new ArrayList<RatData>();
+        JSONObject request = new JSONObject();
+
+        System.out.println("Sessionid: " + Model.getInstance().getUser().getSessionId());
+
+        try {
+            request.put("sessionid", Model.getInstance().getUser().getSessionId());
+            request.put("startid", startId);
+            request.put("limit", limit);
+        } catch (JSONException ex) {
+            Log.w("WebAPI", ex);
+        }
+
+        webRequest("/api/getRatSightings", request, (JSONObject results) -> {
+            //TODO this is a temporary fix, we need to figure out why it returns null sometimes
+            if (results == null) {
+                return;
+            }
+            Log.w("tag", "Results: " + results.toString(2));
+            // extract result, put the into callback
+            JSONArray array_results = results.getJSONArray("ratData");
+            for (int i = 0; i < limit; i++) {
+                ratData.add(new RatData(array_results.getJSONObject(i)));
+            }
+
+            Log.w("tag", "Calling callback");
+            callback.callback(ratData);
         });
     }
 }

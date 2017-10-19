@@ -30,6 +30,13 @@ public class Model {
 
     private User user;
     private List<WebAPI.RatData> ratSightings;
+    private Map<Integer, WebAPI.RatData> ratDataMap;
+
+    private void mapRatList(List<WebAPI.RatData> data) {
+        for (WebAPI.RatData dat : data) {
+            ratDataMap.put(dat.uniqueKey, dat);
+        }
+    }
 
     public User getUser() {
         return user;
@@ -42,6 +49,7 @@ public class Model {
 
     private Model() {
         ratSightings = Collections.synchronizedList(new ArrayList<>());
+        ratDataMap = new HashMap<>();
         updateListeners = new HashMap<>();
     }
 
@@ -113,6 +121,7 @@ public class Model {
         }
         WebAPI.getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
             ratSightings.addAll(0, ratList);
+            mapRatList(ratList);
             callback.callback(ratList);
         });
     }
@@ -133,6 +142,7 @@ public class Model {
             WebAPI.getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
                 Log.w("tag", "Model resp: " + list);
                 ratSightings.addAll(list);
+                mapRatList(list);
                 ArrayList<WebAPI.RatData> query = new ArrayList<>();
                 synchronized(ratSightings) {
                     for (int i = start; i < start + size; i++) {
@@ -176,5 +186,9 @@ public class Model {
                 }
             }
         }
+    }
+
+    public WebAPI.RatData getRatDataByKey(int uniqueKey) {
+        return ratDataMap.get(uniqueKey);
     }
 }

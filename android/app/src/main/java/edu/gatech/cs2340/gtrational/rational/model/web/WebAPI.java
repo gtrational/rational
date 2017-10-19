@@ -320,7 +320,7 @@ public class WebAPI {
             Log.w("WebAPI", ex);
         }
 
-        webRequest("", request, (JSONObject results) -> {
+        webRequest("/api/getRatSightings", request, (JSONObject results) -> {
             // extract result, put the into callback
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < limit; i++) {

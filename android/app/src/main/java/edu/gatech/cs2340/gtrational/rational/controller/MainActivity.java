@@ -13,11 +13,12 @@ import org.json.JSONObject;
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
+import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final boolean WE_ARE_LAZY = RationalApp.getInstance().getSetting(RationalApp.AREWELAZY).equals("yes");
+    private static final boolean WE_ARE_LAZY = RationalConfig.getSetting(RationalConfig.AREWELAZY).equals("yes");
 
     /**
      * On create method

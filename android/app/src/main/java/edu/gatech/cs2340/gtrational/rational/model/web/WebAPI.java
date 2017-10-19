@@ -20,6 +20,7 @@ import java.util.List;
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
+import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.User;
 
 /**
@@ -28,7 +29,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public class WebAPI {
 
-    private static final String serverUrl = RationalApp.getInstance().getSetting(RationalApp.HOSTURL);
+    private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
 
     private static void runAsync(Runnable runnable) {
         new Thread(runnable).start();
@@ -312,6 +313,8 @@ public class WebAPI {
         List<RatData> ratData = new ArrayList<RatData>();
         JSONObject request = new JSONObject();
 
+        System.out.println("Sessionid: " + Model.getInstance().getUser().getSessionId());
+
         try {
             request.put("sessionid", Model.getInstance().getUser().getSessionId());
             request.put("startid", startId);
@@ -320,7 +323,14 @@ public class WebAPI {
             Log.w("WebAPI", ex);
         }
 
+        try {
+            System.out.println("Making request " + request.toString(2));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         webRequest("/api/getRatSightings", request, (JSONObject results) -> {
+            System.out.println(results);
             // extract result, put the into callback
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < limit; i++) {

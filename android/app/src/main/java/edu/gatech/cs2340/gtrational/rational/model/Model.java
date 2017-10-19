@@ -13,6 +13,9 @@ import java.util.Collections;
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+import static edu.gatech.cs2340.gtrational.rational.model.web.WebAPI.getRatSightings;
+import static edu.gatech.cs2340.gtrational.rational.model.web.WebAPI.getRatSightingsAfter;
+
 /**
  * Created by shyamal on 10/2/17.
  */
@@ -27,7 +30,7 @@ public class Model {
     private static Model instance = new Model();
 
     private User user;
-    private List<RatSighting> ratSightings;
+    private List<WebAPI.RatData> ratSightings;
 
     public User getUser() {
         return user;
@@ -102,38 +105,63 @@ public class Model {
     }
 
     /**
+     * Updates the list with the newest rat sightings
+     * @param callback The callback to be executed once data is updated
+     */
+    public void getNewestRatData(Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+        if (ratSightings.isEmpty()) {
+            return;
+        }
+        getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
+            ratSightings.addAll(0, ratList);
+        });
+        callback.callback(ratSightings);
+    }
+
+    /**
      *
      * @param start The starting index of the desired block
      * @param size The size of the desired block
+     * @param callback The function to be executed
      * @return The queried block
      */
-    public List<RatSighting> getRatData(int start, int size) {
+    public void getRatData(int start, int size, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
         if (start + size > ratSightings.size()) {
-            //int lastKey (ratSightings.get(ratSightings.size() - 1)).getKey()
-            //getRatSightings(lastKey, start + size - ratSightings.size());
+            int lastKey = 0;
+            if (!ratSightings.isEmpty()) {
+                lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
+            }
+            getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
+                ratSightings.addAll(list);
+            });
         }
-        ArrayList<RatSighting> query = new ArrayList<>();
+        ArrayList<WebAPI.RatData> query = new ArrayList<>();
         synchronized(ratSightings) {
             for (int i = start; i < start + size; i++) {
                 query.add(ratSightings.get(i));
             }
         }
-        return query;
+        callback.callback(query);
     }
-    public void updateRatSighting(RatSighting updatedRat) {
+
+    /**
+     * Finds and updates the rat in the model ratSightings if it exists in the list
+     * @param updatedRat The rat that was updated
+     */
+    public void updateRatSighting(WebAPI.RatData updatedRat) {
         //TODO: update getters and setters once ratSighting class is complete
-        //long createdTime = updatedRat.getDate(); get the date
+        int key = updatedRat.uniqueKey;
         synchronized(ratSightings) {
             int a = 0;
             int b = ratSightings.size();
             while(a < b) {
                 int avg = (a + b)/2;
-                if (ratSightings.get(avg).getDate() == createdTime) {
+                if (ratSightings.get(avg).uniqueKey== key) {
                     ratSightings.set(avg, updatedRat);
-                    publish(RAT_SIGHTING_UPDATE, updatedRat);
+                    publish(RAT_SIGHTING_UPDATE, updatedRat.toJson());
                     return;
                 }
-                if (ratSightings.get(avg).getDate() < createdTime) {
+                if (ratSightings.get(avg).uniqueKey < key) {
                     a = avg + 1;
                 } else {
                     b = avg;

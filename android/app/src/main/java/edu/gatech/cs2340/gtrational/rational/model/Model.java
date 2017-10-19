@@ -114,8 +114,8 @@ public class Model {
         }
         getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
             ratSightings.addAll(0, ratList);
+            callback.callback(ratList);
         });
-        callback.callback(ratSightings);
     }
 
     /**
@@ -133,15 +133,23 @@ public class Model {
             }
             getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
                 ratSightings.addAll(list);
+                ArrayList<WebAPI.RatData> query = new ArrayList<>();
+                synchronized(ratSightings) {
+                    for (int i = start; i < start + size; i++) {
+                        query.add(ratSightings.get(i));
+                    }
+                }
+                callback.callback(query);
             });
-        }
-        ArrayList<WebAPI.RatData> query = new ArrayList<>();
-        synchronized(ratSightings) {
-            for (int i = start; i < start + size; i++) {
-                query.add(ratSightings.get(i));
+        } else {
+            ArrayList<WebAPI.RatData> query = new ArrayList<>();
+            synchronized(ratSightings) {
+                for (int i = start; i < start + size; i++) {
+                    query.add(ratSightings.get(i));
+                }
             }
+            callback.callback(query);
         }
-        callback.callback(query);
     }
 
     /**

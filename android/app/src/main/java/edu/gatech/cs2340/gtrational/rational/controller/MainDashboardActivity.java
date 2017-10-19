@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -34,6 +35,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private static class FragInfo {
         public Class<? extends Fragment> fragmentClass;
         public String title;
+
         public FragInfo(Class<? extends Fragment> fragmentClass, String title) {
             this.fragmentClass = fragmentClass;
             this.title = title;
@@ -80,7 +82,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         onDestroy.add(Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, (JSONObject updateInfo) -> {
             if (activeFragment instanceof ListFragment) {
                 try {
-                    ((ListFragment)activeFragment).onRatUpdate(new WebAPI.RatData(updateInfo));
+                    ((ListFragment) activeFragment).onRatUpdate(new WebAPI.RatData(updateInfo));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -95,7 +97,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener((View view) -> {
             Intent intent = new Intent(MainDashboardActivity.this, NewSightingActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 999);
         });
 
         // Generate navigation drawer.
@@ -165,5 +167,13 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (activeFragment instanceof ListFragment) {
+            ((ListFragment)activeFragment).fetchNewData();
+        }
     }
 }

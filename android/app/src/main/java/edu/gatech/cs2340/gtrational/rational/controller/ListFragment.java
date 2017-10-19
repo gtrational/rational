@@ -24,7 +24,6 @@ import java.util.Map;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
-import edu.gatech.cs2340.gtrational.rational.model.User;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
@@ -34,7 +33,6 @@ public class ListFragment extends Fragment {
 
     private List<HashMap<String, String>> listItems;
     private Map<Integer, HashMap<String, String>> listMap;
-    private int oldestId;
 
     public ListFragment() {
         // Required empty public constructor
@@ -53,8 +51,7 @@ public class ListFragment extends Fragment {
     }
 
     private void fetchOldData() {
-        Model.getInstance().getRatData(oldestId, 20, (List<WebAPI.RatData> newData) -> {
-            oldestId = newData.get(newData.size() - 1).uniqueKey;
+        Model.getInstance().getRatData(listItems.size(), 20, (List<WebAPI.RatData> newData) -> {
             new ExecuteTask(newData, false).execute();
         });
     }
@@ -92,13 +89,8 @@ public class ListFragment extends Fragment {
             startActivity(intent);
         });
 
-        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchNewData();
-            }
-        });
+        SwipeRefreshLayout swipeLayout = view.findViewById(R.id.swipe_layout);
+        swipeLayout.setOnRefreshListener(this::fetchNewData);
 
         theList.setOnScrollListener(new GoGoScrollListener() {
             @Override

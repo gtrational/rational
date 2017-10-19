@@ -2,16 +2,6 @@ package edu.gatech.cs2340.gtrational.rational;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.XmlResourceParser;
-import android.util.Log;
-
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
 
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 

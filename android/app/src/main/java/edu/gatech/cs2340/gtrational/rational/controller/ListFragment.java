@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,14 +52,20 @@ public class ListFragment extends Fragment {
     }
 
     private void fetchOldData() {
+        Log.w("tag", "fetchOldData");
         Model.getInstance().getRatData(listItems.size(), 20, (List<WebAPI.RatData> newData) -> {
+            Log.w("tag", "olddat: " + newData);
             new ExecuteTask(newData, false).execute();
         });
     }
 
-    private void fetchNewData() {
+    public void fetchNewData() {
+        Log.w("tag", "fetchNewData");
         Model.getInstance().getNewestRatData((List<WebAPI.RatData> newData) -> {
+            Log.w("tag", "newdat: " + newData);
             new ExecuteTask(newData, true).execute();
+            SwipeRefreshLayout swipeLayout = getView().findViewById(R.id.swipe_layout);
+            swipeLayout.setRefreshing(false);
         });
     }
 
@@ -148,7 +155,7 @@ public class ListFragment extends Fragment {
                         listItems.add(0, buildRatData(newData.get(i)));
                     }
                 } else {
-                    for (int i = newData.size() - 1; i >= 0; i--) {
+                    for (int i = 0; i < newData.size(); i++) {
                         listItems.add(buildRatData(newData.get(i)));
                     }
                 }

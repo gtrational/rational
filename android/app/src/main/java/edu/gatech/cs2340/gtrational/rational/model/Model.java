@@ -1,5 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.model;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,9 +14,6 @@ import java.util.Collections;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
-
-import static edu.gatech.cs2340.gtrational.rational.model.web.WebAPI.getRatSightings;
-import static edu.gatech.cs2340.gtrational.rational.model.web.WebAPI.getRatSightingsAfter;
 
 /**
  * Created by shyamal on 10/2/17.
@@ -112,7 +111,7 @@ public class Model {
         if (ratSightings.isEmpty()) {
             return;
         }
-        getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
+        WebAPI.getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
             ratSightings.addAll(0, ratList);
             callback.callback(ratList);
         });
@@ -131,7 +130,8 @@ public class Model {
             if (!ratSightings.isEmpty()) {
                 lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
             }
-            getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
+            WebAPI.getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
+                Log.w("tag", "Model resp: " + list);
                 ratSightings.addAll(list);
                 ArrayList<WebAPI.RatData> query = new ArrayList<>();
                 synchronized(ratSightings) {

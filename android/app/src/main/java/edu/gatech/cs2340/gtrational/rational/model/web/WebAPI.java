@@ -30,6 +30,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 public class WebAPI {
 
     private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
+    private static final boolean printWebRequests = true;
 
     private static void runAsync(Runnable runnable) {
         new Thread(runnable).start();
@@ -165,6 +166,13 @@ public class WebAPI {
      * @return the server's response as a JSONObject.
      */
     private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
+        if (printWebRequests) {
+            try {
+                Log.w("tag", "Making web request to " + endpoint + " with " + data.toString(2));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         runAsync(new Runnable() {
             @Override
             public void run() {
@@ -196,9 +204,14 @@ public class WebAPI {
                     }
 
                     try {
-                        callback.callback(new JSONObject(resp));
+                        JSONObject respJson = new JSONObject(resp);
+                        if (printWebRequests) {
+                            Log.w("tag", "Got from " + endpoint + ": " + respJson.toString(2));
+                        }
+                        callback.callback(respJson);
                         return;
                     } catch (JSONException e) {
+                        Log.w("tag", "Also got jexception " + e.toString());
                         try {
                             callback.callback(null);
                         } catch (JSONException e1) {
@@ -323,20 +336,19 @@ public class WebAPI {
             Log.w("WebAPI", ex);
         }
 
-        try {
-            System.out.println("Making request " + request.toString(2));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         webRequest("/api/getRatSightings", request, (JSONObject results) -> {
-            System.out.println(results);
+            //TODO this is a temporary fix, we need to figure out why it returns null sometimes
+            if (results == null) {
+                return;
+            }
+            Log.w("tag", "Results: " + results.toString(2));
             // extract result, put the into callback
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < limit; i++) {
                 ratData.add(new RatData(array_results.getJSONObject(i)));
             }
 
+            Log.w("tag", "Calling callback");
             callback.callback(ratData);
         });
     }

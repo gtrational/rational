@@ -1,7 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/swipe_layout"
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.ListFragment">
 
     <ListView
@@ -11,4 +13,4 @@
 
     </ListView>
 
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

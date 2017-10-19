@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
@@ -86,6 +88,27 @@ public class ListFragment extends Fragment {
             }
             new ExecuteTask("boiu").execute();
         }).start();
+
+        SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_layout);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //TODO: ACTUALLY MAKE REFRESH DO SOMETHING
+            }
+        });
+
+        theList.setOnScrollListener(new GoGoScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                //TODO: Do some call to WebAPI
+                return true;
+            }
+        });
 
         return view;
     }

@@ -4,10 +4,8 @@
     android:layout_height="match_parent"
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
+        android:id="@+id/map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

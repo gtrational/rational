@@ -26,7 +26,7 @@ public class GenSettings {
         if (!directory.exists()) {
             directory.mkdirs();
         }
-        File out = new File(directory.getAbsolutePath() + "\\" + "settings.xml");
+        File out = new File(directory.getAbsolutePath() + File.separator + "settings.xml");
         BufferedWriter writer = new BufferedWriter(new FileWriter(out));
         writer.write(defaultSettings);
         writer.close();

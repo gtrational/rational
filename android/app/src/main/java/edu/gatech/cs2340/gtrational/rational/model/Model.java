@@ -1,14 +1,19 @@
 package edu.gatech.cs2340.gtrational.rational.model;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Collections;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
  * Created by shyamal on 10/2/17.
@@ -21,11 +26,17 @@ public class Model {
     public static final String USER_UPDATE = "user.update";
     public static final String RAT_SIGHTING_UPDATE = "rat_sighting.update";
 
-
     private static Model instance = new Model();
 
     private User user;
-    private List<RatSighting> ratSightings;
+    private List<WebAPI.RatData> ratSightings;
+    private Map<Integer, WebAPI.RatData> ratDataMap;
+
+    private void mapRatList(List<WebAPI.RatData> data) {
+        for (WebAPI.RatData dat : data) {
+            ratDataMap.put(dat.uniqueKey, dat);
+        }
+    }
 
     public User getUser() {
         return user;
@@ -37,7 +48,8 @@ public class Model {
     private Map<String, List<ModelUpdateListener>> updateListeners;
 
     private Model() {
-        ratSightings = new ArrayList<>();
+        ratSightings = Collections.synchronizedList(new ArrayList<>());
+        ratDataMap = new HashMap<>();
         updateListeners = new HashMap<>();
     }
 
@@ -99,10 +111,84 @@ public class Model {
         publish(USER_UPDATE, userInfo);
     }
 
-    public void updateRatSighting(JSONObject ratInfo) {
-        // TODO: Actually update a rat sighting
-        // ratSightings.get(...).setasdfasdf()
+    /**
+     * Updates the list with the newest rat sightings
+     * @param callback The callback to be executed once data is updated
+     */
+    public void getNewestRatData(Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+        if (ratSightings.isEmpty()) {
+            return;
+        }
+        WebAPI.getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
+            ratSightings.addAll(0, ratList);
+            mapRatList(ratList);
+            callback.callback(ratList);
+        });
+    }
 
-        publish(RAT_SIGHTING_UPDATE, ratInfo);
+    /**
+     *
+     * @param start The starting index of the desired block
+     * @param size The size of the desired block
+     * @param callback The function to be executed
+     * @return The queried block
+     */
+    public void getRatData(int start, int size, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+        if (start + size > ratSightings.size()) {
+            int lastKey = 0;
+            if (!ratSightings.isEmpty()) {
+                lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
+            }
+            WebAPI.getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
+                Log.w("tag", "Model resp: " + list);
+                ratSightings.addAll(list);
+                mapRatList(list);
+                ArrayList<WebAPI.RatData> query = new ArrayList<>();
+                synchronized(ratSightings) {
+                    for (int i = start; i < start + size; i++) {
+                        query.add(ratSightings.get(i));
+                    }
+                }
+                callback.callback(query);
+            });
+        } else {
+            ArrayList<WebAPI.RatData> query = new ArrayList<>();
+            synchronized(ratSightings) {
+                for (int i = start; i < start + size; i++) {
+                    query.add(ratSightings.get(i));
+                }
+            }
+            callback.callback(query);
+        }
+    }
+
+    /**
+     * Finds and updates the rat in the model ratSightings if it exists in the list
+     * @param updatedRat The rat that was updated
+     */
+    public void updateRatSighting(WebAPI.RatData updatedRat) {
+        //TODO: update getters and setters once ratSighting class is complete
+        int key = updatedRat.uniqueKey;
+        synchronized(ratSightings) {
+            int a = 0;
+            int b = ratSightings.size();
+            while(a < b) {
+                int avg = (a + b)/2;
+                if (ratSightings.get(avg).uniqueKey== key) {
+                    ratSightings.set(avg, updatedRat);
+                    publish(RAT_SIGHTING_UPDATE, updatedRat.toJson());
+                    return;
+                }
+                if (ratSightings.get(avg).uniqueKey < key) {
+                    a = avg + 1;
+                } else {
+                    b = avg;
+                }
+            }
+        }
+    }
+
+    public WebAPI.RatData getRatDataByKey(int uniqueKey) {
+        return ratDataMap.get(uniqueKey);
     }
 }

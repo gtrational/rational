@@ -2,6 +2,8 @@ package edu.gatech.cs2340.gtrational.rational;
 
 import org.junit.Test;
 
+import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
+
 import static org.junit.Assert.*;
 
 /**

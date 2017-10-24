@@ -8,8 +8,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
+import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class ViewDataActivity extends AppCompatActivity {
@@ -23,11 +25,9 @@ public class ViewDataActivity extends AppCompatActivity {
         Bundle bundle = prev.getExtras();
         Log.d("tag", bundle.getString("text"));
 
-
-
         setTitle("Rat Sighting #" + bundle.getString("text"));
 
-        /*WebAPI.RatData data = DataCache.getRatDataByKey(Integer.parseInt(bundle.getString("text")));
+        WebAPI.RatData data = Model.getInstance().getRatDataByKey(Integer.parseInt(bundle.getString("text")));
 
         TextView createdDate = (TextView) findViewById(R.id.created_date);
         createdDate.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa").format(data.createdTime));
@@ -44,7 +44,7 @@ public class ViewDataActivity extends AppCompatActivity {
         TextView latitude = (TextView) findViewById(R.id.latitude);
         latitude.setText(data.latitude + "");
         TextView longitude = (TextView) findViewById(R.id.longitude);
-        longitude.setText(data.longitude + "");*/
+        longitude.setText(data.longitude + "");
     }
 
     @Override

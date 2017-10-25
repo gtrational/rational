@@ -57,6 +57,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        switch (id) {
+            case R.id.action_filter:
+                MapFilterDialogFragment filterDialog = new MapFilterDialogFragment();
+                filterDialog.show(getFragmentManager(), "Filter");
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

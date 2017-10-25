@@ -1,5 +1,5 @@
 //Load config
-var config = require('./config.json');
+import config from '../config/config';
 var fs = require('fs');
 
 //Load database

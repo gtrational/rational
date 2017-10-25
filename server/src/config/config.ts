@@ -1,18 +1,16 @@
 import * as fs from 'fs';
 
-let defaultConfig = require('./config.json');
+const defaultConfig = require('./config.json');
 
 let configOverrides;
 
-if (!fs.existsSync('./config-overrides.json')) {
-    
+try {
+    configOverrides = require('./config-overrides.json');
+} catch(err) {
     console.warn('There is no config-overrides file! If any configurations need to' 
     + ' be overriden, create file: ' + defaultConfig.configDir + 'config-overrides.json');
 
     configOverrides = {};
-
-} else {
-    configOverrides = require('./config-overrides.json');
 }
 
 /**
@@ -46,5 +44,6 @@ function recurseOverride(config, overrides, keyStr) {
 
 recurseOverride(defaultConfig, configOverrides, '');
 
+const config = defaultConfig
 
-module.exports.config = defaultConfig;
+export default config;

@@ -5,7 +5,7 @@ import {Database} from './database';
 import {Lib} from './lib';
 import * as http from 'http';
 
-let config = require('./config/config.json');
+import config from './config/config';
 
 function sendObject(response) {
     return function (obj) {

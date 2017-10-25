@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "This is the rational decision.",
   "main": "build/server.js",
+
   "dependencies": {
     "@types/body-parser": "^1.16.5",
     "@types/express": "^4.0.37",
@@ -18,17 +19,23 @@
     "socket.io": "^2.0.3",
     "typescript": "^2.5.3"
   },
+
   "devDependencies": {},
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf build",
     "tsc": "tsc",
-    "copy": "copyfiles -u 1 src/**/*.json build",
+    "copy": "copyfiles -u 1 src/**/*.json src/**/*.sql build",
     "build": "npm-run-all tsc copy",
     "watch:build": "tsc --watch",
     "watch:server": "nodemon \"build/server.js\" --watch \"./build\"",
-    "start": "npm-run-all clean build --parallel watch:build watch:server --print-label"
+    "start": "npm-run-all clean build --parallel watch:build watch:server --print-label",
+
+    "create-db": "node \"build/scripts/create_database.js\"",
+    "create-database": "npm-run-all clean build create-db"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gtrational/rational.git"

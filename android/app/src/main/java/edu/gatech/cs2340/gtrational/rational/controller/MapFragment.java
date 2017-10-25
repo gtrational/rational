@@ -1,6 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.Display;
@@ -56,11 +57,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public void addPins(List<WebAPI.RatData> rat_datas) {
         // first clear everything
-        map.clear();
-        for (int i = 0; i < rat_datas.size(); i++) {
-            WebAPI.RatData data = rat_datas.get(i);
-            map.addMarker(new MarkerOptions().position(new LatLng(data.latitude, data.longitude)).title(data.uniqueKey + ""));
-        }
+        new ExecuteTask(rat_datas).execute();
     }
 
     @Override
@@ -88,5 +85,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+    }
+
+    private class ExecuteTask extends AsyncTask<Void, Void, Void> {
+
+        private List<WebAPI.RatData> rat_datas;
+
+        public ExecuteTask(List<WebAPI.RatData> rat_datas) {
+            this.rat_datas = rat_datas;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void voidd) {
+            map.clear();
+            for (int i = 0; i < rat_datas.size(); i++) {
+                WebAPI.RatData data = rat_datas.get(i);
+                map.addMarker(new MarkerOptions().position(new LatLng(data.latitude, data.longitude)).title(data.uniqueKey + ""));
+            }
+        }
     }
 }

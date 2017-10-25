@@ -1,10 +1,9 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,16 +18,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
-
-import static android.R.attr.data;
-import static android.os.Build.VERSION_CODES.M;
 
 /**
  * A fragment for the "Map" screen
@@ -77,14 +71,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        // call add-pins method with list of 20 recent rat sightings.
-
         return view;
-    }
-
-    public void addPins(List<WebAPI.RatData> rat_datas) {
-        // first clear everything
-        new ExecuteTask(rat_datas).execute();
     }
 
     @Override
@@ -92,7 +79,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         map = googleMap;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.7143, -73.9376), 11));
         Model.getInstance().getRatData(0, 10, (List<WebAPI.RatData> rat_datas) -> {
-            addPins(rat_datas);
+            new PlacePinsTask(rat_datas).execute();
         });
     }
 
@@ -114,11 +101,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onDestroy();
     }
 
-    private class ExecuteTask extends AsyncTask<Void, Void, Void> {
+    /**
+     * Class to asynchronously clear the map, and then place pins based on rat data.
+     */
+    private class PlacePinsTask extends AsyncTask<Void, Void, Void> {
 
         private List<WebAPI.RatData> rat_datas;
 
-        public ExecuteTask(List<WebAPI.RatData> rat_datas) {
+        public PlacePinsTask(List<WebAPI.RatData> rat_datas) {
             this.rat_datas = rat_datas;
         }
 

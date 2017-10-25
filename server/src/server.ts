@@ -1,12 +1,12 @@
 console.log('----- Starting Rational Backend -----');
 
 //Load config
-let config = require("./config/config.json");
+import config from './config/config';
 
 //Load modules
-import {Database} from "./database"
-import {Web} from "./web";
-import {Lib} from "./lib";
+import {Database} from './database'
+import {Web} from './web';
+import {Lib} from './lib';
 
 //Init modules
 let db = new Database(config.mysql);

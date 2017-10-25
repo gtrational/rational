@@ -1,4 +1,4 @@
-import * as mysql from "mysql";
+import * as mysql from 'mysql';
 
 function checkError(err): boolean {
     if (err) {

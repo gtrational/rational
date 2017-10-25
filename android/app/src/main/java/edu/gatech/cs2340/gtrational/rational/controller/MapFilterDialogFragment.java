@@ -42,11 +42,11 @@ public class MapFilterDialogFragment extends DialogFragment {
                     try {
                         long startLong = dateToSeconds(startDate);
                         long endLong = dateToSeconds(endDate);
+                        ((MainDashboardActivity)getActivity()).setMapPins(startLong, endLong);
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }
 
-                    ((MainDashboardActivity)getActivity()).setMapPins(startLong, endLong);
                 })
                 .setNegativeButton("Cancel", (DialogInterface dialog, int id) -> {
                     // TODO Cancelled

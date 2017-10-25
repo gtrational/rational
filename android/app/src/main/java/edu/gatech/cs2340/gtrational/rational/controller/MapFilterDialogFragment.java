@@ -38,9 +38,14 @@ public class MapFilterDialogFragment extends DialogFragment {
                     EditText endDateField = getDialog().findViewById((R.id.endDate));
                     String startDate = startDateField.getText().toString();
                     String endDate = endDateField.getText().toString();
-                    //TODO call to long method
-                    long startLong = 0;
-                    long endLong = 0;
+
+                    try {
+                        long startLong = dateToSeconds(startDate);
+                        long endLong = dateToSeconds(endDate);
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
+
                     ((MainDashboardActivity)getActivity()).setMapPins(startLong, endLong);
                 })
                 .setNegativeButton("Cancel", (DialogInterface dialog, int id) -> {

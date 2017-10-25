@@ -50,9 +50,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.getMapAsync(this);
 
         // call add-pins method with list of 20 recent rat sightings.
-        Model.getInstance().getRatData(0, 10, (List<WebAPI.RatData> rat_datas) -> {
-            addPins(rat_datas);
-        });
 
         return view;
     }
@@ -70,6 +67,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.7143, -73.9376), 11));
+        Model.getInstance().getRatData(0, 10, (List<WebAPI.RatData> rat_datas) -> {
+            addPins(rat_datas);
+        });
     }
 
     @Override

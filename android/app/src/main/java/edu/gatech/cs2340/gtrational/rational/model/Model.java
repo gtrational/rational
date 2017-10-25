@@ -163,6 +163,48 @@ public class Model {
     }
 
     /**
+     *
+     * @param startDate The start date for the search
+     * @param endDate The end date of the search
+     * @param callback The function to be exectuted on the data
+     */
+    public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+        recursiveDateCallBack(startDate, (List<WebAPI.RatData> list)-> {
+            synchronized (ratSightings) {
+                List<WebAPI.RatData> valid = new ArrayList<WebAPI.RatData>();
+                for(int i = 0; i < ratSightings.size(); i++) {
+                    if (ratSightings.get(i).createdTime >= startDate && ratSightings.get(i).createdTime <= endDate) {
+                        valid.add(ratSightings.get(i));
+                    }
+                }
+                callback.callback(valid);
+            }
+        });
+
+
+    }
+
+    /**
+     *
+     * @param startDate Continually asks for more data until we have data older than startDate
+     * @param callback The function to be executed once all the data is populated
+     */
+    private void recursiveDateCallBack(long startDate, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+        if (!ratSightings.isEmpty() && ratSightings.get(ratSightings.size() - 1).createdTime < startDate) {
+            callback.callback(null);
+            return;
+        }
+        getRatData(ratSightings.size() - 1, 100, (List<WebAPI.RatData> list) -> {
+            if (list == null || list.size() == 0) {
+                callback.callback(list);
+                return;
+            } else {
+                recursiveDateCallBack(startDate, callback);
+            }
+        });
+    }
+
+    /**
      * Finds and updates the rat in the model ratSightings if it exists in the list
      * @param updatedRat The rat that was updated
      */
@@ -187,7 +229,6 @@ public class Model {
             }
         }
     }
-
     public WebAPI.RatData getRatDataByKey(int uniqueKey) {
         return ratDataMap.get(uniqueKey);
     }

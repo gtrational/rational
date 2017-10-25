@@ -169,7 +169,7 @@ public class Model {
      * @param callback The function to be exectuted on the data
      */
     public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
-        recursiveDateCallBack(startDate, (List<WebAPI.RatData> list)-> {
+        recursiveDateCallBack(startDate, ()-> {
             synchronized (ratSightings) {
                 List<WebAPI.RatData> valid = new ArrayList<WebAPI.RatData>();
                 for(int i = 0; i < ratSightings.size(); i++) {
@@ -189,14 +189,14 @@ public class Model {
      * @param startDate Continually asks for more data until we have data older than startDate
      * @param callback The function to be executed once all the data is populated
      */
-    private void recursiveDateCallBack(long startDate, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+    private void recursiveDateCallBack(long startDate, Callbacks.VoidCallback callback) {
         if (!ratSightings.isEmpty() && ratSightings.get(ratSightings.size() - 1).createdTime < startDate) {
-            callback.callback(null);
+            callback.callback();
             return;
         }
         getRatData(ratSightings.size() - 1, 100, (List<WebAPI.RatData> list) -> {
             if (list == null || list.size() == 0) {
-                callback.callback(list);
+                callback.callback();
                 return;
             } else {
                 recursiveDateCallBack(startDate, callback);

@@ -44,17 +44,11 @@ public class MapFilterDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public static long dateToSeconds(String date) {
+    public static long dateToSeconds(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("mm-dd-yyyy");
         Date actual_date = new Date();
 
-        try {
-            actual_date = format.parse(date);
-        } catch (ParseException ex) {
-            System.out.println("Bad Date");
-            ex.printStackTrace();
-        }
-
+        actual_date = format.parse(date);
         return actual_date.getTime();
     }
 }

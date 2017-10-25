@@ -67,6 +67,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
             setTitle(info.title);
             Fragment fragment = info.fragmentClass.newInstance();
             FragmentManager fragmentManager = getFragmentManager();
+            invalidateOptionsMenu();
             fragmentManager.beginTransaction().replace(R.id.fragment, fragment).commit();
             activeFragment = fragment;
         } catch (InstantiationException | IllegalAccessException e) {

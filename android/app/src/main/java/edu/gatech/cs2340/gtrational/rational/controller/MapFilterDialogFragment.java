@@ -14,6 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import edu.gatech.cs2340.gtrational.rational.R;
 
 /**
@@ -44,5 +48,13 @@ public class MapFilterDialogFragment extends DialogFragment {
                 })
                 .setView(R.layout.fragment_map_filter);
         return builder.create();
+    }
+
+    public static long dateToSeconds(String date) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("mm-dd-yyyy");
+        Date actual_date = new Date();
+
+        actual_date = format.parse(date);
+        return actual_date.getTime();
     }
 }

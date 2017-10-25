@@ -78,9 +78,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.7143, -73.9376), 11));
-        Model.getInstance().getRatData(0, 10, (List<WebAPI.RatData> rat_datas) -> {
-            new PlacePinsTask(rat_datas).execute();
-        });
+        Model.getInstance().getRatData(0, 10, this::setMapPins);
+    }
+
+    public void setMapPins(List<WebAPI.RatData> ratData) {
+        new PlacePinsTask(ratData).execute();
     }
 
     @Override

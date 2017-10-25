@@ -6,7 +6,7 @@
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.MapFilterDialogFragment">
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/startDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Start Date"
@@ -15,7 +15,7 @@
         android:inputType="date" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/endDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="End Date"

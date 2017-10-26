@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <setting name="hosturl">http://rational.tk:80</setting>
+    <setting name="arewelazy">no</setting>
+</resources>

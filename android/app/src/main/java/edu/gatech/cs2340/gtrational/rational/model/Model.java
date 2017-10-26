@@ -194,7 +194,7 @@ public class Model {
             callback.callback();
             return;
         }
-        getRatData(ratSightings.size() - 1, 100, (List<WebAPI.RatData> list) -> {
+        getRatData(ratSightings.size(), 100, (List<WebAPI.RatData> list) -> {
             if (list == null || list.size() == 0) {
                 callback.callback();
                 return;

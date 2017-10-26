@@ -17,7 +17,7 @@ public class GenSettings {
     private static final String defaultSettings = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
             "<resources>\n" +
             "    <setting name=\"hosturl\">http://rational.tk:80</setting>\n" +
-            "    <setting name=\"arewelazy\">no</setting>\n" +
+            "    <setting name=\"arewelazy\">yes</setting>\n" +
             "</resources>";
 
     @Test

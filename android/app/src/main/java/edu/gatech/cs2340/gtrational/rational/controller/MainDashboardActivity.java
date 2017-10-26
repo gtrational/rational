@@ -76,9 +76,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     }
 
     public void setMapPins(long start, long end) {
-        //TODO logic for converting start and end
         Model.getInstance().getDateRangeRatsData(start, end, (List<WebAPI.RatData> ratData) -> {
-            System.out.println("SIZE: " + ratData.size());
             if (activeFragment instanceof MapFragment) {
                 ((MapFragment)activeFragment).setMapPins(ratData);
             }

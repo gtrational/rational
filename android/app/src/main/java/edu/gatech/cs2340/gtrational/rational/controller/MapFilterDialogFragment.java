@@ -59,7 +59,6 @@ public class MapFilterDialogFragment extends DialogFragment {
         SimpleDateFormat format = new SimpleDateFormat("mm-dd-yyyy");
         Date actual_date = new Date();
         actual_date = format.parse(date);
-        System.out.println("TIME: " + actual_date.getTime());
-        return actual_date.getTime();
+        return actual_date.getTime() + 23583000000L;
     }
 }

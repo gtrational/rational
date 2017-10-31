@@ -12,10 +12,10 @@ import edu.gatech.cs2340.gtrational.rational.R;
 /**
  * A fragment for the "Nearby" screen.
  */
-public class NearbyFragment extends Fragment {
+public class GraphFragment extends Fragment {
 
 
-    public NearbyFragment() {
+    public GraphFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class NearbyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nearby, container, false);
+        return inflater.inflate(R.layout.fragment_graph, container, false);
     }
 
 }

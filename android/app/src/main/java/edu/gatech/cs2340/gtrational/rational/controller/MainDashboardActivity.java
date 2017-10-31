@@ -50,7 +50,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         //Init Fragments
         fragments = new HashMap<>();
         fragments.put(R.id.nav_dashboard, new FragInfo(DashboardFragment.class, "Dashboard"));
-        fragments.put(R.id.nav_nearby, new FragInfo(NearbyFragment.class, "Nearby"));
+        fragments.put(R.id.nav_graphs, new FragInfo(GraphFragment.class, "Graphs"));
         fragments.put(R.id.nav_map, new FragInfo(MapFragment.class, "Map"));
         fragments.put(R.id.nav_sightings, new FragInfo(ListFragment.class, "All Sightings"));
 

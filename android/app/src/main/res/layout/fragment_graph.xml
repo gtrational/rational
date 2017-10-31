@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.gatech.cs2340.gtrational.rational.controller.NearbyFragment">
+    tools:context="edu.gatech.cs2340.gtrational.rational.controller.GraphFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

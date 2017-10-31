@@ -7,9 +7,9 @@
             android:icon="@drawable/ic_dashboard"
             android:title="Dashboard" />
         <item
-            android:id="@+id/nav_nearby"
-            android:icon="@drawable/ic_near_me"
-            android:title="Nearby" />
+            android:id="@+id/nav_graphs"
+            android:icon="@drawable/ic_show_chart_black_24dp"
+            android:title="Graphs" />
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map"

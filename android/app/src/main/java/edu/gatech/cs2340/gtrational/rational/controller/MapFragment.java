@@ -37,6 +37,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         this.setHasOptionsMenu(true);
     }
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onCreateOptionsMenu(menu, inflater);

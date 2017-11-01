@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     tools:context="edu.gatech.cs2340.gtrational.rational.controller.GraphFragment">
 
-    <!--&lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@string/hello_blank_fragment2" />-->
-
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="400dip"

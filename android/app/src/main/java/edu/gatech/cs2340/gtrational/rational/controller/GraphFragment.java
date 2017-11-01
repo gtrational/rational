@@ -26,6 +26,7 @@ public class GraphFragment extends Fragment {
 
     public GraphFragment() {
         // Required empty public constructor
+        this.setHasOptionsMenu(true);
     }
 
     @Override
@@ -33,7 +34,7 @@ public class GraphFragment extends Fragment {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onCreateOptionsMenu(menu, inflater);
         menu.clear();
-        getActivity().getMenuInflater().inflate(R.menu.menu_map, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_graph, menu);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class GraphFragment extends Fragment {
 
         switch (id) {
             case R.id.action_filter:
-                MapFilterDialogFragment filterDialog = new MapFilterDialogFragment();
+                GraphFilterDialogFragment filterDialog = new GraphFilterDialogFragment();
                 filterDialog.show(getFragmentManager(), "Filter");
         }
 

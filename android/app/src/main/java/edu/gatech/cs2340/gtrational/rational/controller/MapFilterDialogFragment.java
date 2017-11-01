@@ -56,9 +56,9 @@ public class MapFilterDialogFragment extends DialogFragment {
     }
 
     public static long dateToSeconds(String date) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("mm-dd-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
         Date actual_date = new Date();
         actual_date = format.parse(date);
-        return actual_date.getTime() + 23583000000L;
+        return actual_date.getTime();
     }
 }

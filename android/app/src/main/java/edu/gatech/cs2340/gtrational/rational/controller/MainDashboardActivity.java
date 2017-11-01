@@ -83,6 +83,14 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         });
     }
 
+    public void setGraphData(long start, long end, boolean byYear) {
+        Model.getInstance().getDateRangeRatsData(start, end, (List<WebAPI.RatData> ratData) -> {
+            if (activeFragment instanceof GraphFragment) {
+                ((GraphFragment) activeFragment).setGraphData(ratData, start, end, byYear);
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

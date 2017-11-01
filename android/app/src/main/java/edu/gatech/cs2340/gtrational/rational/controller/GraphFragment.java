@@ -5,6 +5,7 @@ import android.app.IntentService;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -76,16 +78,18 @@ public class GraphFragment extends Fragment {
         graph = view.findViewById(R.id.graph);
         graph.setTitle("Rat Sighting History");
 
-        Calendar c = Calendar.getInstance();
-        c.set(1990, 0, 1);
-        Date d1 = c.getTime();
-        c.set(1991, 0, 1);
-        Date d2 = c.getTime();
+        calendar.set(2016, 0, 1);
+        Date d1 = calendar.getTime();
+//        c.set(1990, 0, 1);
+//        Date d2 = c.getTime();
+        calendar.set(2017, 0, 1);
+        Date d3 = calendar.getTime();
 
 
         series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 10),
-                new DataPoint(d2, 20)
+                new DataPoint(d1, 0),
+//                new DataPoint(d2, 0),
+                new DataPoint(d3, 6)
         });
         graph.addSeries(series);
 
@@ -101,7 +105,7 @@ public class GraphFragment extends Fragment {
 
         // set manual x bounds to have nice steps
         graph.getViewport().setMinX(d1.getTime());
-        graph.getViewport().setMaxX(d2.getTime());
+        graph.getViewport().setMaxX(d3.getTime());
         graph.getViewport().setXAxisBoundsManual(true);
 
         graph.getViewport().setMinY(0);
@@ -116,19 +120,14 @@ public class GraphFragment extends Fragment {
     }
 
     public void setGraphData(List<WebAPI.RatData> ratData, long start, long end, boolean byYear) {
+        graph.removeAllSeries();
 
-        // set manual x bounds to have nice steps
-        //graph.getViewport().setMinX(d1.getTime());
-        //graph.getViewport().setMaxX(d2.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
-
-        // set date label formatter
         if (byYear) {
             int startYear = getYearFromTime(start);
 
             int endYear = getYearFromTime(end);
 
-            int[] buckets = new int[startYear - endYear];
+            int[] buckets = new int[endYear - startYear + 1];
             for (WebAPI.RatData rat : ratData) {
                 buckets[getYearFromTime(rat.createdTime) - startYear]++;
             }
@@ -136,16 +135,41 @@ public class GraphFragment extends Fragment {
             DataPoint[] newData = new DataPoint[buckets.length];
             for (int i = 0; i < buckets.length; i++) {
                 calendar.set(startYear + i, 0, 1);
-                newData[i] = new DataPoint(calendar.getTime(), buckets[i]);
+                Log.w("Graphing", "" + (startYear + i));
+
+                Date d = calendar.getTime();
+                if (i == 0) {
+                    graph.getViewport().setMinX(d.getTime());
+                }
+                if (i == buckets.length - 1) {
+                    graph.getViewport().setMaxX(d.getTime());
+                }
+
+                newData[i] = new DataPoint(d, buckets[i]);
             }
 
+            Log.w("Graphing", Arrays.toString(newData));
             series.resetData(newData);
+            graph.addSeries(series);
 
             graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("yy", Locale.US)));
+            graph.getGridLabelRenderer().setNumHorizontalLabels(buckets.length);
+
+            Log.w("Graphing", startYear + " " + endYear);
+            // set manual x bounds to have nice steps
+//            calendar.set(startYear, 0, 1);
+//            graph.getViewport().setMinX(calendar.getTime().getTime());
+//
+//            calendar.set(endYear, 0, 1);
+//            graph.getViewport().setMaxX(calendar.getTime().getTime());
+
         } else {
             graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("MM-yy", Locale.US)));
         }
-        graph.getGridLabelRenderer().setNumHorizontalLabels(0);
+
+        Log.w("Graphing", "Got here");
+        // series.resetData(new DataPoint[] {});
+
 
     }
 

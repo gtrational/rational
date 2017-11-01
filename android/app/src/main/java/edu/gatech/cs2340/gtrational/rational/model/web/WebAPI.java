@@ -168,7 +168,7 @@ public class WebAPI {
     private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
         if (printWebRequests) {
             try {
-                Log.w("tag", "Making web request to " + endpoint + " with " + data.toString(2));
+                Log.i("tag", "Making web request to " + endpoint + " with " + data.toString(2));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -206,7 +206,7 @@ public class WebAPI {
                     try {
                         JSONObject respJson = new JSONObject(resp);
                         if (printWebRequests) {
-                            Log.w("tag", "Got from " + endpoint + ": " + respJson.toString(2));
+                            Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
                         }
                         callback.callback(respJson);
                         return;
@@ -341,14 +341,14 @@ public class WebAPI {
             if (results == null) {
                 return;
             }
-            Log.w("tag", "Results: " + results.toString(2));
+            Log.d("tag", "Results: " + results.toString(2));
             // extract result, put the into callback
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < limit; i++) {
                 ratData.add(new RatData(array_results.getJSONObject(i)));
             }
 
-            Log.w("tag", "Calling callback");
+            Log.d("tag", "Calling callback");
             callback.callback(ratData);
         });
     }

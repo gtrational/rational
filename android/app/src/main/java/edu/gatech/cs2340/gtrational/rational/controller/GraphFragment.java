@@ -78,19 +78,17 @@ public class GraphFragment extends Fragment {
         graph = view.findViewById(R.id.graph);
         graph.setTitle("Rat Sighting History");
 
-        calendar.set(2016, 0, 1);
-        Date d1 = calendar.getTime();
-//        c.set(1990, 0, 1);
-//        Date d2 = c.getTime();
-        calendar.set(2017, 0, 1);
-        Date d3 = calendar.getTime();
+//        calendar.set(2016, 0, 1);
+//        Date d1 = calendar.getTime();
+//        calendar.set(2017, 0, 1);
+//        Date d2 = calendar.getTime();
+//        calendar.set(2018, 0, 1);
+//        Date d3 = calendar.getTime();
+//        calendar.set(2019, 0, 1);
+//        Date d4 = calendar.getTime();
 
 
-        series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(d1, 0),
-//                new DataPoint(d2, 0),
-                new DataPoint(d3, 6)
-        });
+        series = new BarGraphSeries<>(new DataPoint[] {});
         graph.addSeries(series);
 
         series.setSpacing(50);
@@ -100,12 +98,12 @@ public class GraphFragment extends Fragment {
         series.setValuesOnTopColor(Color.RED);
         //series.setValuesOnTopSize(50);
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("yy", Locale.US)));
-        graph.getGridLabelRenderer().setNumHorizontalLabels(2);
+//        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("yy", Locale.US)));
+//        graph.getGridLabelRenderer().setNumHorizontalLabels(4);
 
         // set manual x bounds to have nice steps
-        graph.getViewport().setMinX(d1.getTime());
-        graph.getViewport().setMaxX(d3.getTime());
+//        graph.getViewport().setMinX(d1.getTime());
+//        graph.getViewport().setMaxX(d4.getTime());
         graph.getViewport().setXAxisBoundsManual(true);
 
         graph.getViewport().setMinY(0);
@@ -119,9 +117,15 @@ public class GraphFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Changes the data in the graph based on the provided rat sightings, and the date range.
+     *
+     * @param ratData Rat data to use
+     * @param start Start date to graph
+     * @param end End date to graph
+     * @param byYear Whether to graph by year or by month
+     */
     public void setGraphData(List<WebAPI.RatData> ratData, long start, long end, boolean byYear) {
-        graph.removeAllSeries();
-
         if (byYear) {
             int startYear = getYearFromTime(start);
 
@@ -138,43 +142,92 @@ public class GraphFragment extends Fragment {
                 Log.w("Graphing", "" + (startYear + i));
 
                 Date d = calendar.getTime();
-                if (i == 0) {
-                    graph.getViewport().setMinX(d.getTime());
-                }
-                if (i == buckets.length - 1) {
-                    graph.getViewport().setMaxX(d.getTime());
-                }
 
                 newData[i] = new DataPoint(d, buckets[i]);
             }
 
             Log.w("Graphing", Arrays.toString(newData));
             series.resetData(newData);
-            graph.addSeries(series);
 
             graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("yy", Locale.US)));
             graph.getGridLabelRenderer().setNumHorizontalLabels(buckets.length);
 
-            Log.w("Graphing", startYear + " " + endYear);
             // set manual x bounds to have nice steps
-//            calendar.set(startYear, 0, 1);
-//            graph.getViewport().setMinX(calendar.getTime().getTime());
-//
-//            calendar.set(endYear, 0, 1);
-//            graph.getViewport().setMaxX(calendar.getTime().getTime());
+            calendar.set(startYear, 0, 1);
+            graph.getViewport().setMinX(calendar.getTime().getTime());
+
+            calendar.set(endYear, 0, 1);
+            graph.getViewport().setMaxX(calendar.getTime().getTime());
+
+
+            Log.w("Graphing", startYear + " " + endYear);
 
         } else {
-            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("MM-yy", Locale.US)));
+            int startYear = getYearFromTime(start);
+            int startMonth = getMonthFrontTime(start);
+
+            int endYear = getYearFromTime(end);
+            int endMonth = getMonthFrontTime(end);
+
+            int[] buckets = new int[endMonth - startMonth + 12 * (endYear - startYear)];
+            for (WebAPI.RatData rat : ratData) {
+                int ratMonth = getMonthFrontTime(rat.createdTime);
+                int ratYear = getYearFromTime(rat.createdTime);
+                buckets[ratMonth - startMonth + 12 * (ratYear - startYear)]++;
+            }
+
+            DataPoint[] newData = new DataPoint[buckets.length];
+            for (int i = 0; i < buckets.length; i++) {
+                int month = (startMonth + i) % 12;
+                int year = (startMonth + i) / 12;
+                calendar.set(startYear + year, month, 1);
+                Log.w("Graphing", "" + (startYear + year) + "-" + month);
+
+                Date d = calendar.getTime();
+
+                newData[i] = new DataPoint(d, buckets[i]);
+            }
+
+            Log.w("Graphing", Arrays.toString(newData));
+            series.resetData(newData);
+
+
+            // set manual x bounds to have nice steps
+            calendar.set(startYear, startMonth, 1);
+            graph.getViewport().setMinX(calendar.getTime().getTime());
+
+            calendar.set(endYear, endMonth, 1);
+            graph.getViewport().setMaxX(calendar.getTime().getTime());
+
+            graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("MM/yy", Locale.US)));
+            graph.getGridLabelRenderer().setNumHorizontalLabels(buckets.length);
+
+
+            Log.w("Graphing", startYear + "-" + startMonth + " " + endYear + "-" + endMonth);
+
         }
 
         Log.w("Graphing", "Got here");
-        // series.resetData(new DataPoint[] {});
 
 
     }
 
+    /**
+     * Get the year as an integer from a millisecond time from epoch
+     * @param time from epoch
+     * @return year (e.g. 1998)
+     */
     private static int getYearFromTime(long time) {
         return Integer.parseInt(new SimpleDateFormat("yyyy", Locale.US).format(new Date(time)));
+    }
+
+    /**
+     * Get the month as an integer from a millisecond time from epoch.
+     * @param time from epoch
+     * @return month (e.g. January = 0)
+     */
+    private static int getMonthFrontTime(long time) {
+        return Integer.parseInt(new SimpleDateFormat("MM", Locale.US).format(new Date(time))) - 1;
     }
 
 }

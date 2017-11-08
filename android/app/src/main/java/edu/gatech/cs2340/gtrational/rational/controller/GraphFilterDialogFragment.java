@@ -6,7 +6,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,11 +38,13 @@ public class GraphFilterDialogFragment extends DialogFragment {
                     String startDate = startDateField.getText().toString();
                     String endDate = endDateField.getText().toString();
 
+                    RadioButton month_button = getDialog().findViewById(R.id.month);
+                    RadioButton year_button = getDialog().findViewById(R.id.year);
+
                     try {
                         long startLong = MapFilterDialogFragment.dateToSeconds(startDate);
                         long endLong = MapFilterDialogFragment.dateToSeconds(endDate);
-                        // ((MainDashboardActivity)getActivity()).setMapPins(startLong, endLong);
-                        // TODO callback method here!
+                        ((MainDashboardActivity) getActivity()).setGraphData(startLong, endLong, year_button.isChecked());
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }

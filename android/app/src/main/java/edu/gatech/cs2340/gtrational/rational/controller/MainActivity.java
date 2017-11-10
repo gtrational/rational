@@ -18,7 +18,7 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final boolean WE_ARE_LAZY = RationalConfig.getSetting(RationalConfig.AREWELAZY).equals("yes");
+    private static final boolean WE_ARE_LAZY = "yes".equals(RationalConfig.getSetting(RationalConfig.AREWELAZY));
 
     /**
      * On create method

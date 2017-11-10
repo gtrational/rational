@@ -131,7 +131,7 @@ public class GraphFragment extends Fragment {
 
             int endYear = getYearFromTime(end);
 
-            int[] buckets = new int[endYear - startYear + 1];
+            int[] buckets = new int[(endYear - startYear) + 1];
             for (WebAPI.RatData rat : ratData) {
                 buckets[getYearFromTime(rat.createdTime) - startYear]++;
             }
@@ -169,11 +169,11 @@ public class GraphFragment extends Fragment {
             int endYear = getYearFromTime(end);
             int endMonth = getMonthFrontTime(end);
 
-            int[] buckets = new int[endMonth - startMonth + 12 * (endYear - startYear)];
+            int[] buckets = new int[(endMonth - startMonth) + (12 * (endYear - startYear))];
             for (WebAPI.RatData rat : ratData) {
                 int ratMonth = getMonthFrontTime(rat.createdTime);
                 int ratYear = getYearFromTime(rat.createdTime);
-                buckets[ratMonth - startMonth + 12 * (ratYear - startYear)]++;
+                buckets[(ratMonth - startMonth) + (12 * (ratYear - startYear))]++;
             }
 
             DataPoint[] newData = new DataPoint[buckets.length];

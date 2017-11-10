@@ -74,6 +74,12 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         }
     }
 
+    /**
+     * Sets the pins of rat data for a given date range on the map
+     *
+     * @param start start date for rat data
+     * @param end end date for rat data
+     */
     public void setMapPins(long start, long end) {
         Model.getInstance().getDateRangeRatsData(start, end, (List<WebAPI.RatData> ratData) -> {
             if (activeFragment instanceof MapFragment) {
@@ -90,7 +96,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
      * @param byYear whether to display by year or by month
      */
     public void setGraphData(long start, long end, boolean byYear) {
-        Model.getInstance().getDateRangeRatsData(start, end, (List<WebAPI.RatData> ratData) -> {
+        Model.getInstance().getDateRangeRatsData(start, end, (Iterable<WebAPI.RatData> ratData) -> {
             Log.w("Dashboard", "Got Here");
             if (activeFragment instanceof GraphFragment) {
                 ((GraphFragment) activeFragment).setGraphData(ratData, start, end, byYear);
@@ -121,7 +127,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener((View view) -> {
             Intent intent = new Intent(MainDashboardActivity.this, NewSightingActivity.class);
-            startActivityForResult(intent, 999);
+            startActivityForResult(intent, 0);
         });
 
         // Generate navigation drawer.

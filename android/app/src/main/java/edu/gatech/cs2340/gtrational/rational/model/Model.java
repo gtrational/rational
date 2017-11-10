@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,7 @@ public class Model {
     private final List<WebAPI.RatData> ratSightings;
     private final Map<Integer, WebAPI.RatData> ratDataMap;
 
-    private void mapRatList(List<WebAPI.RatData> data) {
+    private void mapRatList(Iterable<WebAPI.RatData> data) {
         for (WebAPI.RatData dat : data) {
             ratDataMap.put(dat.uniqueKey, dat);
         }
@@ -70,7 +71,7 @@ public class Model {
         if (updateListeners.containsKey(topic)) {
             updateListeners.get(topic).add(listener);
         } else {
-            ArrayList<ModelUpdateListener> newListener = new ArrayList<>();
+            List<ModelUpdateListener> newListener = new ArrayList<>();
             newListener.add(listener);
 
             updateListeners.put(topic, newListener);
@@ -132,17 +133,17 @@ public class Model {
      * @param callback The function to be executed
      * @return The queried block
      */
-    public void getRatData(int start, int size, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+    public void getRatData(int start, int size, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
         if ((start + size) > ratSightings.size()) {
             int lastKey = 0;
             if (!ratSightings.isEmpty()) {
                 lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
             }
-            WebAPI.getRatSightings(lastKey, size, (List<WebAPI.RatData> list ) -> {
+            WebAPI.getRatSightings(lastKey, size, (Collection<WebAPI.RatData> list ) -> {
                 Log.w("tag", "Model resp: " + list);
                 ratSightings.addAll(list);
                 mapRatList(list);
-                ArrayList<WebAPI.RatData> query = new ArrayList<>();
+                List<WebAPI.RatData> query = new ArrayList<>();
                 synchronized(ratSightings) {
                     for (int i = start; i < (start + size); i++) {
                         query.add(ratSightings.get(i));
@@ -151,7 +152,7 @@ public class Model {
                 callback.callback(query);
             });
         } else {
-            ArrayList<WebAPI.RatData> query = new ArrayList<>();
+            List<WebAPI.RatData> query = new ArrayList<>();
             synchronized(ratSightings) {
                 for (int i = start; i < (start + size); i++) {
                     query.add(ratSightings.get(i));
@@ -167,7 +168,7 @@ public class Model {
      * @param endDate The end date of the search
      * @param callback The function to be exectuted on the data
      */
-    public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
+    public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
         recursiveDateCallBack(startDate, ()-> {
             synchronized (ratSightings) {
                 List<WebAPI.RatData> valid = new ArrayList<WebAPI.RatData>();
@@ -193,8 +194,8 @@ public class Model {
             callback.callback();
             return;
         }
-        getRatData(ratSightings.size(), 100, (List<WebAPI.RatData> list) -> {
-            if ((list == null) || list.isEmpty()) {
+        getRatData(ratSightings.size(), 100, (Collection<WebAPI.RatData> list) -> {
+            if ((list == null) || list.size() == 0) {
                 callback.callback();
                 return;
             } else {

@@ -201,54 +201,43 @@ public class WebAPI {
                 e.printStackTrace();
             }
         }
-        runAsync(new Runnable() {
-            @Override
-            public void run() {
-                String content = data.toString();
-                try {
-                    URL url = new URL(serverUrl + endpoint);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        runAsync(() -> {
+            String content = data.toString();
+            try {
+                URL url = new URL(serverUrl + endpoint);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-                    // Set flags on request
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json");
-                    conn.setRequestProperty("Content-Length", content.length() + "");
+                // Set flags on request
+                conn.setDoOutput(true);
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestProperty("Content-Length", content.length() + "");
 
-                    OutputStream outputStream = conn.getOutputStream();
-                    outputStream.write(content.getBytes());
+                OutputStream outputStream = conn.getOutputStream();
+                outputStream.write(content.getBytes());
 
-                    String resp = readStream(conn.getInputStream());
+                String resp = readStream(conn.getInputStream());
 
-                    if (resp == null) {
-                        String err = readStream(conn.getErrorStream());
-                        Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
-                        try {
-                            callback.callback(null);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        return;
-                    }
-
+                if (resp == null) {
+                    String err = readStream(conn.getErrorStream());
+                    Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
                     try {
-                        JSONObject respJson = new JSONObject(resp);
-                        if (printWebRequests) {
-                            Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
-                        }
-                        callback.callback(respJson);
-                        return;
+                        callback.callback(null);
                     } catch (JSONException e) {
-                        Log.w("tag", "Also got jexception " + e.toString());
-                        try {
-                            callback.callback(null);
-                        } catch (JSONException e1) {
-                            e1.printStackTrace();
-                        }
-                        return;
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    Log.w("WebAPI", e);
+                    return;
+                }
+
+                try {
+                    JSONObject respJson = new JSONObject(resp);
+                    if (printWebRequests) {
+                        Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
+                    }
+                    callback.callback(respJson);
+                    return;
+                } catch (JSONException e) {
+                    Log.w("tag", "Also got jexception " + e.toString());
                     try {
                         callback.callback(null);
                     } catch (JSONException e1) {
@@ -256,6 +245,14 @@ public class WebAPI {
                     }
                     return;
                 }
+            } catch (IOException e) {
+                Log.w("WebAPI", e);
+                try {
+                    callback.callback(null);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+                return;
             }
         });
     }
@@ -336,7 +333,7 @@ public class WebAPI {
             e.printStackTrace();
         }
         webRequest("/api/getRatSightingsAfter", json, (JSONObject results) -> {
-            List<RatData> ratData = new ArrayList<RatData>();
+            List<RatData> ratData = new ArrayList<>();
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < array_results.length(); i++) {
                 ratData.add(new RatData(array_results.getJSONObject(i)));
@@ -350,8 +347,8 @@ public class WebAPI {
      *
      * @return a List of RatData
      */
-    public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<List<RatData>> callback) {
-        List<RatData> ratData = new ArrayList<RatData>();
+    public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<? super List<RatData>> callback) {
+        List<RatData> ratData = new ArrayList<>();
         JSONObject request = new JSONObject();
 
         System.out.println("Sessionid: " + Model.getInstance().getUser().getSessionId());

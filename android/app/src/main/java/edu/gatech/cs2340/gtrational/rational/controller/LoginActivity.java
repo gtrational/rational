@@ -22,6 +22,8 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final int GRAVITY_MAGIC_NUMBER = 20;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(getApplicationContext(), messages[i], Toast.LENGTH_SHORT);
 
                 //Display toast on right of screen at the y value of the input field
-                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - 20);
+                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER);
                 t.show();
                 return;
             }

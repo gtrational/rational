@@ -1,9 +1,9 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;

@@ -1,7 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,11 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class NewSightingActivity extends AppCompatActivity {

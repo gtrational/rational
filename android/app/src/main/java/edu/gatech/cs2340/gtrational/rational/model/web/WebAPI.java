@@ -1,6 +1,5 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
-import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
-import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.User;

@@ -1,9 +1,9 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
@@ -11,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;

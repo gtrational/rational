@@ -195,9 +195,8 @@ public final class Model {
             return;
         }
         getRatData(ratSightings.size(), 100, (Collection<WebAPI.RatData> list) -> {
-            if ((list == null) || list.size() == 0) {
+            if ((list == null) || list.isEmpty()) {
                 callback.callback();
-                return;
             } else {
                 recursiveDateCallBack(startDate, callback);
             }

@@ -83,7 +83,8 @@ public final class WebAPI {
             public String city;
             public String borough;
             public int zipCode;
-            public double lat, lon;
+            public double lat;
+            public double lon;
 
             private AddressInfo(String address, String city, String borough, int zipCode, LatLon latLon) {
                 this.address = address;
@@ -235,7 +236,6 @@ public final class WebAPI {
                         Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
                     }
                     callback.callback(respJson);
-                    return;
                 } catch (JSONException e) {
                     Log.w("tag", "Also got jexception " + e.toString());
                     try {
@@ -243,7 +243,6 @@ public final class WebAPI {
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
-                    return;
                 }
             } catch (IOException e) {
                 Log.w("WebAPI", e);
@@ -252,7 +251,6 @@ public final class WebAPI {
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
-                return;
             }
         });
     }

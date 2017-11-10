@@ -6,18 +6,12 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import edu.gatech.cs2340.gtrational.rational.R;
-
-import static edu.gatech.cs2340.gtrational.rational.controller.MapFilterDialogFragment.dateToSeconds;
 
 /**
  * A fragment for the dashboard screen.

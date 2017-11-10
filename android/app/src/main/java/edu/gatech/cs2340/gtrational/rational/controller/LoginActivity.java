@@ -2,9 +2,9 @@ package edu.gatech.cs2340.gtrational.rational.controller;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -18,7 +18,6 @@ import org.json.JSONObject;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
-import edu.gatech.cs2340.gtrational.rational.model.User;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class LoginActivity extends AppCompatActivity {
@@ -76,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
 
+        tryLogin(view, username, password);
+    }
+
+    private void tryLogin(View view, String username, String password) {
         WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
             if (result.success) {
                 try {

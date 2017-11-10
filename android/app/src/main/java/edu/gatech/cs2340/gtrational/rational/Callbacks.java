@@ -1,7 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Robert on 10/16/2017.

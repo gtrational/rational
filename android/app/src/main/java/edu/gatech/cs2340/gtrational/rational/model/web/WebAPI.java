@@ -1,6 +1,5 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
-import android.os.StrictMode;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
-import edu.gatech.cs2340.gtrational.rational.RationalApp;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.User;
@@ -71,6 +69,36 @@ public class WebAPI {
      */
     public static class RatData {
 
+        public static class LatLon {
+            public double lat, lon;
+
+            public LatLon(double lat, double lon) {
+                this.lat = lat;
+                this.lon = lon;
+            }
+        }
+
+        public static class AddressInfo {
+            public String address;
+            public String city;
+            public String borough;
+            public int zipCode;
+            public double lat, lon;
+
+            private AddressInfo(String address, String city, String borough, int zipCode, LatLon latLon) {
+                this.address = address;
+                this.city = city;
+                this.borough = borough;
+                this.zipCode = zipCode;
+                this.lat = latLon.lat;
+                this.lon = latLon.lon;
+            }
+
+            public static AddressInfo of(String address, String city, String borough, int zipCode, LatLon latLon) {
+                return new AddressInfo(address, city, borough, zipCode, latLon);
+            }
+        }
+
         public int uniqueKey;
         public long createdTime;
         public String locationType;
@@ -93,16 +121,16 @@ public class WebAPI {
             longitude = obj.getDouble("longitude");
         }
 
-        public RatData (int uniqueKey, long createdTime, String locationType, int incidentZip, String incidentAddress, String city, String borough, double latitude, double longitude) {
+        public RatData (int uniqueKey, long createdTime, String locationType, AddressInfo addressInfo) {
             this.uniqueKey = uniqueKey;
             this.createdTime = createdTime;
             this.locationType = locationType;
-            this.incidentZip = incidentZip;
-            this.incidentAddress = incidentAddress;
-            this.city = city;
-            this.borough = borough;
-            this.latitude = latitude;
-            this.longitude = longitude;
+            this.incidentZip = addressInfo.zipCode;
+            this.incidentAddress = addressInfo.address;
+            this.city = addressInfo.city;
+            this.borough = addressInfo.borough;
+            this.latitude = addressInfo.lat;
+            this.longitude = addressInfo.lon;
         }
 
         public JSONObject toJson() {

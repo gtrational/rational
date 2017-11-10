@@ -10,8 +10,6 @@ import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
@@ -25,7 +23,7 @@ public class WebAPITest {
     public static void setup() {
         try {
             RationalConfig.init();
-        } catch (Exception e) {}
+        } catch (Exception ignored) {}
         RationalConfig.setSetting("hosturl", "http://localhost:8081");
     }
 

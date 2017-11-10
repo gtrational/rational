@@ -1,20 +1,20 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
-import android.app.FragmentManager;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,7 +27,6 @@ import java.util.Map;
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
-import edu.gatech.cs2340.gtrational.rational.model.ModelUpdateListener;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

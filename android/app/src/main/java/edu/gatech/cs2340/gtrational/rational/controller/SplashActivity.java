@@ -1,12 +1,10 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import java.util.concurrent.TimeUnit;
-
-import edu.gatech.cs2340.gtrational.rational.R;
 
 /**
  * A splash screen that determines whether a user is logged in and directs them to the correct screen.

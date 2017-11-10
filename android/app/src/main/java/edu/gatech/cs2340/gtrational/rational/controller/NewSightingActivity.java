@@ -1,7 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.controller;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -9,11 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import edu.gatech.cs2340.gtrational.rational.R;
-import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class NewSightingActivity extends AppCompatActivity {
@@ -74,10 +70,8 @@ public class NewSightingActivity extends AppCompatActivity {
                     address += addr;
                 }
 
-                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(),
-                        locationType.getSelectedItem().toString(), zipCode, address,
-                        city.getText().toString(), borough.getSelectedItem().toString(),
-                        0, 0);
+                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(), locationType.getSelectedItem().toString(),
+                        WebAPI.RatData.AddressInfo.of(address, city.getText().toString(), borough.getSelectedItem().toString(), zipCode, new WebAPI.RatData.LatLon(0, 0)));
                 WebAPI.addRatSighting(newRatData, (WebAPI.RatDataResult result) -> {
                     if (result.success) {
                         finish();

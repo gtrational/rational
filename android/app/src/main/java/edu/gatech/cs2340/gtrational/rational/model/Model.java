@@ -5,12 +5,11 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
 
 import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;

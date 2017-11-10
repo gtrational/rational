@@ -54,7 +54,7 @@ public class RationalConfig {
                 try {
                     Field field = clazz.getField("settings");
                     settingsId = (int) field.get(null);
-                } catch (NoSuchFieldException | IllegalAccessException e) {}
+                } catch (NoSuchFieldException | IllegalAccessException ignored) {}
             }
         }
 

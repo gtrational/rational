@@ -70,10 +70,8 @@ public class NewSightingActivity extends AppCompatActivity {
                     address += addr;
                 }
 
-                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(),
-                        locationType.getSelectedItem().toString(), zipCode, address,
-                        city.getText().toString(), borough.getSelectedItem().toString(),
-                        0, 0);
+                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(), locationType.getSelectedItem().toString(),
+                        WebAPI.RatData.AddressInfo.of(address, city.getText().toString(), borough.getSelectedItem().toString(), zipCode, new WebAPI.RatData.LatLon(0, 0)));
                 WebAPI.addRatSighting(newRatData, (WebAPI.RatDataResult result) -> {
                     if (result.success) {
                         finish();

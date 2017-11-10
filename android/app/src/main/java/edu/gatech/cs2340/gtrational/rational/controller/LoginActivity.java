@@ -75,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
 
+        tryLogin(view, username, password);
+    }
+
+    private void tryLogin(View view, String username, String password) {
         WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
             if (result.success) {
                 try {

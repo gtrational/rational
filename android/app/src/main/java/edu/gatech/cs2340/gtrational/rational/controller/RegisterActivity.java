@@ -42,8 +42,6 @@ public class RegisterActivity extends AppCompatActivity {
         EditText usernamefield = (EditText) findViewById(R.id.editTextUsername_R);
         EditText passwordfield = (EditText) findViewById(R.id.editTextPassword_R);
         EditText confirmPasswordField = (EditText) findViewById(R.id.editTextPasswordConfirm_R);
-        RadioButton admin_button = (RadioButton) findViewById(R.id.admin_button);
-        RadioButton user_button = (RadioButton) findViewById(R.id.user_button);
 
         EditText[] requiredFields = {usernamefield, passwordfield, confirmPasswordField};
         String[] messages = {"Please enter username", "Please enter password", "Please confirm password"};
@@ -77,24 +75,30 @@ public class RegisterActivity extends AppCompatActivity {
         String confirmPassword = confirmPasswordField.getText().toString();
 
         if (password.equals(confirmPassword)) {
-            WebAPI.register(
-                    username,
-                    password,
-                    admin_button.isChecked() ? User.PermissionLevel.ADMIN : User.PermissionLevel.USER,
-                    (WebAPI.RegisterResult res) -> {
-                        if (res.success) {
-                            finish();
-                            return;
-                        }
-
-                        Snackbar snackbar = Snackbar.make(view, res.errMsg, Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }
-            );
+            tryRegister(view, username, password);
         } else {
             Snackbar snackbar = Snackbar.make(view, "Passwords don't match", Snackbar.LENGTH_LONG);
             snackbar.show();
         }
+    }
+
+    private void tryRegister(View view, String username, String password) {
+        RadioButton admin_button = (RadioButton) findViewById(R.id.admin_button);
+
+        WebAPI.register(
+                username,
+                password,
+                admin_button.isChecked() ? User.PermissionLevel.ADMIN : User.PermissionLevel.USER,
+                (WebAPI.RegisterResult res) -> {
+                    if (res.success) {
+                        finish();
+                        return;
+                    }
+
+                    Snackbar snackbar = Snackbar.make(view, res.errMsg, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+        );
     }
 
     /**

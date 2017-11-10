@@ -107,6 +107,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     /**
      * Class to asynchronously clear the map, and then place pins based on rat data.
      */
+    @SuppressWarnings("FieldMayBeFinal")
     private class PlacePinsTask extends AsyncTask<Void, Void, Void> {
 
         private List<WebAPI.RatData> rat_datas;

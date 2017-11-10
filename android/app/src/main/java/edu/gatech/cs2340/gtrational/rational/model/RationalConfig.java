@@ -67,7 +67,7 @@ public class RationalConfig {
         try {
             int eventType;
             while ((eventType = xrp.next()) != XmlPullParser.END_DOCUMENT) {
-                if (eventType == XmlPullParser.START_TAG && xrp.getName().equalsIgnoreCase("setting")) {
+                if ((eventType == XmlPullParser.START_TAG) && "setting".equalsIgnoreCase(xrp.getName())) {
                     String setting = xrp.getAttributeValue(null, "name");
                     xrp.next();
                     settings.put(setting, xrp.getText());

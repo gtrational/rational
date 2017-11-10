@@ -40,7 +40,9 @@ public class WebAPITest {
             loginResult = res;
         });
 
-        while (loginResult == null);
+        while (loginResult == null) {
+            ;
+        }
 
         if (loginResult.success) {
             sessionID = loginResult.sessionID;
@@ -63,7 +65,9 @@ public class WebAPITest {
             getRatSightingsResult = dat;
         });
 
-        while (getRatSightingsResult == null);
+        while (getRatSightingsResult == null) {
+            ;
+        }
 
         System.out.println("Got " + getRatSightingsResult.size() + " rat sightings:");
         for (WebAPI.RatData data : getRatSightingsResult) {

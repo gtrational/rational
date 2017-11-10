@@ -6,7 +6,7 @@ package edu.gatech.cs2340.gtrational.rational.model;
 
 public class User {
     public enum PermissionLevel {
-        USER, ADMIN;
+        USER, ADMIN
     }
 
     private String email;

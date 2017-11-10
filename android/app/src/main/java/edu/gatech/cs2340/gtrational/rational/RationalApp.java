@@ -17,8 +17,6 @@ public class RationalApp extends Application {
         return instance;
     }
 
-    private Context applicationContext;
-
     public RationalApp() {
         instance = this;
     }
@@ -26,7 +24,6 @@ public class RationalApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        this.applicationContext = getApplicationContext();
         RationalConfig.init();
     }
 }

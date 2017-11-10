@@ -25,7 +25,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
  * Created by Robert on 10/1/2017.
  */
 
-public class WebAPI {
+public final class WebAPI {
 
     private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
     private static final boolean printWebRequests = true;
@@ -350,8 +350,6 @@ public class WebAPI {
     public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<? super List<RatData>> callback) {
         List<RatData> ratData = new ArrayList<>();
         JSONObject request = new JSONObject();
-
-        System.out.println("Sessionid: " + Model.getInstance().getUser().getSessionId());
 
         try {
             request.put("sessionid", Model.getInstance().getUser().getSessionId());

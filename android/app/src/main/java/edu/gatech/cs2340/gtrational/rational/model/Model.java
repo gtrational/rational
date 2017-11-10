@@ -19,7 +19,7 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  * Created by shyamal on 10/2/17.
  */
 
-public class Model {
+public final class Model {
     /**
      * List of available topics
      */

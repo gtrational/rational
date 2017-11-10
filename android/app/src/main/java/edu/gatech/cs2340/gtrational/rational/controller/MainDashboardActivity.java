@@ -83,6 +83,13 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         });
     }
 
+    /**
+     * Sets the data to be displayed on the graph in the GraphFragment
+     *
+     * @param start the start date for rat data history
+     * @param end the end date for rat data history
+     * @param byYear whether to display by year or by month
+     */
     public void setGraphData(long start, long end, boolean byYear) {
         Model.getInstance().getDateRangeRatsData(start, end, (List<WebAPI.RatData> ratData) -> {
             Log.w("Dashboard", "Got Here");

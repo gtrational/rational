@@ -1,7 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational;
 
 import android.app.Application;
-import android.content.Context;
 
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 

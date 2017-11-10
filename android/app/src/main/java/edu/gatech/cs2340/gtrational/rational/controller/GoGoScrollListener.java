@@ -6,7 +6,7 @@ import android.widget.AbsListView;
  * Created by james on 10/17/2017.
  */
 
-public abstract class GoGoScrollListener implements AbsListView.OnScrollListener {
+abstract class GoGoScrollListener implements AbsListView.OnScrollListener {
     private int visibleThreshold = 5;
     private int currentPage = 0;
     private int previousTotalItemCount = 0;

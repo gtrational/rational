@@ -8,6 +8,6 @@ package edu.gatech.cs2340.gtrational.rational.model;
 /**
  * Dummy class for RatSightings
  */
-public class RatSighting {
+class RatSighting {
 
 }

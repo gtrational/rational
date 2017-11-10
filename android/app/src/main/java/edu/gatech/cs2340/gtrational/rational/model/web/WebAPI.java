@@ -38,10 +38,10 @@ public final class WebAPI {
      * A class to hold information about the login attempt
      */
     public static class LoginResult {
-        public boolean success;
-        public String errMsg;
-        public String sessionID;
-        public User.PermissionLevel permissionLevel;
+        public final boolean success;
+        public final String errMsg;
+        public final String sessionID;
+        public final User.PermissionLevel permissionLevel;
 
         public LoginResult(boolean success, String err, String sess, int permissionLevelOrdinal) {
             this.success = success;
@@ -55,8 +55,8 @@ public final class WebAPI {
      * A class to hold information about the registration attempt
      */
     public static class RegisterResult {
-        public boolean success;
-        public String errMsg;
+        public final boolean success;
+        public final String errMsg;
 
         public RegisterResult(boolean success, String err) {
             this.success = success;
@@ -70,7 +70,8 @@ public final class WebAPI {
     public static class RatData {
 
         public static class LatLon {
-            public double lat, lon;
+            public final double lat;
+            public final double lon;
 
             public LatLon(double lat, double lon) {
                 this.lat = lat;
@@ -79,12 +80,12 @@ public final class WebAPI {
         }
 
         public static class AddressInfo {
-            public String address;
-            public String city;
-            public String borough;
-            public int zipCode;
-            public double lat;
-            public double lon;
+            public final String address;
+            public final String city;
+            public final String borough;
+            public final int zipCode;
+            public final double lat;
+            public final double lon;
 
             private AddressInfo(String address, String city, String borough, int zipCode, LatLon latLon) {
                 this.address = address;
@@ -155,8 +156,8 @@ public final class WebAPI {
     }
 
     public static class RatDataResult {
-        public boolean success;
-        public String error_message;
+        public final boolean success;
+        public final String error_message;
 
         public RatDataResult(boolean succ, String err) {
             success = succ;

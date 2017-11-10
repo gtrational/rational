@@ -88,7 +88,7 @@ public final class Model {
      * @param topic topic to publish to
      * @param updateInfo JSONObject containing info about what data in the model was updated.
      */
-    public void publish(String topic, JSONObject updateInfo) {
+    private void publish(String topic, JSONObject updateInfo) {
         if (!updateListeners.containsKey(topic)) {
             return;
         }

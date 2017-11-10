@@ -53,14 +53,14 @@ public class LoginActivity extends AppCompatActivity {
         //Display toast if one of the required fields is left blank
         for (int i = 0; i < requiredFields.length; i++) {
             EditText field = requiredFields[i];
-            if (field.getText().toString().length() == 0) {
+            if (field.getText().toString().isEmpty()) {
                 int[] loc = new int[2];
                 field.getLocationOnScreen(loc);
 
                 Toast t = Toast.makeText(getApplicationContext(), messages[i], Toast.LENGTH_SHORT);
 
                 //Display toast on right of screen at the y value of the input field
-                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - field.getHeight() / 2 - 20);
+                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - 20);
                 t.show();
                 return;
             }

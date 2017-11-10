@@ -26,11 +26,11 @@ public class Model {
     public static final String USER_UPDATE = "user.update";
     public static final String RAT_SIGHTING_UPDATE = "rat_sighting.update";
 
-    private static Model instance = new Model();
+    private static final Model instance = new Model();
 
     private User user;
-    private List<WebAPI.RatData> ratSightings;
-    private Map<Integer, WebAPI.RatData> ratDataMap;
+    private final List<WebAPI.RatData> ratSightings;
+    private final Map<Integer, WebAPI.RatData> ratDataMap;
 
     private void mapRatList(List<WebAPI.RatData> data) {
         for (WebAPI.RatData dat : data) {
@@ -45,7 +45,7 @@ public class Model {
     /**
      * Map of listeners from topics to callbacks
      */
-    private Map<String, List<ModelUpdateListener>> updateListeners;
+    private final Map<String, List<ModelUpdateListener>> updateListeners;
 
     private Model() {
         ratSightings = Collections.synchronizedList(new ArrayList<>());
@@ -134,7 +134,7 @@ public class Model {
      * @return The queried block
      */
     public void getRatData(int start, int size, Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
-        if (start + size > ratSightings.size()) {
+        if ((start + size) > ratSightings.size()) {
             int lastKey = 0;
             if (!ratSightings.isEmpty()) {
                 lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
@@ -145,7 +145,7 @@ public class Model {
                 mapRatList(list);
                 ArrayList<WebAPI.RatData> query = new ArrayList<>();
                 synchronized(ratSightings) {
-                    for (int i = start; i < start + size; i++) {
+                    for (int i = start; i < (start + size); i++) {
                         query.add(ratSightings.get(i));
                     }
                 }
@@ -154,7 +154,7 @@ public class Model {
         } else {
             ArrayList<WebAPI.RatData> query = new ArrayList<>();
             synchronized(ratSightings) {
-                for (int i = start; i < start + size; i++) {
+                for (int i = start; i < (start + size); i++) {
                     query.add(ratSightings.get(i));
                 }
             }
@@ -173,7 +173,7 @@ public class Model {
             synchronized (ratSightings) {
                 List<WebAPI.RatData> valid = new ArrayList<WebAPI.RatData>();
                 for(int i = 0; i < ratSightings.size(); i++) {
-                    if (ratSightings.get(i).createdTime >= startDate && ratSightings.get(i).createdTime <= endDate) {
+                    if ((ratSightings.get(i).createdTime >= startDate) && (ratSightings.get(i).createdTime <= endDate)) {
                         valid.add(ratSightings.get(i));
                     }
                 }
@@ -190,12 +190,12 @@ public class Model {
      * @param callback The function to be executed once all the data is populated
      */
     private void recursiveDateCallBack(long startDate, Callbacks.VoidCallback callback) {
-        if (!ratSightings.isEmpty() && ratSightings.get(ratSightings.size() - 1).createdTime < startDate) {
+        if (!ratSightings.isEmpty() && (ratSightings.get(ratSightings.size() - 1).createdTime < startDate)) {
             callback.callback();
             return;
         }
         getRatData(ratSightings.size(), 100, (List<WebAPI.RatData> list) -> {
-            if (list == null || list.size() == 0) {
+            if ((list == null) || list.isEmpty()) {
                 callback.callback();
                 return;
             } else {

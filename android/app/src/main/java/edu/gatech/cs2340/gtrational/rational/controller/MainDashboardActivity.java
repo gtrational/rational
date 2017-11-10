@@ -42,9 +42,9 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
         }
     }
 
-    private Map<Integer, FragInfo> fragments;
+    private final Map<Integer, FragInfo> fragments;
     private Fragment activeFragment;
-    private List<Callbacks.VoidCallback> onDestroy;
+    private final List<Callbacks.VoidCallback> onDestroy;
 
     public MainDashboardActivity() {
         //Init Fragments

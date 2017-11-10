@@ -70,7 +70,7 @@ public class NewSightingActivity extends AppCompatActivity {
 
                 String address = address1.getText().toString();
                 String addr = address2.getText().toString();
-                if (addr.length() > 0) {
+                if (!addr.isEmpty()) {
                     address += addr;
                 }
 

@@ -43,7 +43,7 @@ public abstract class GoGoScrollListener implements AbsListView.OnScrollListener
             currentPage++;
         }
 
-        if (!loading && (firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount) {
+        if (!loading && ((firstVisibleItem + visibleItemCount + visibleThreshold) >= totalItemCount)) {
             loading = onLoadMore(currentPage + 1, totalItemCount);
         }
     }

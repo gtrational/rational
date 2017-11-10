@@ -28,7 +28,7 @@ public class Model {
     private static Model instance = new Model();
 
     private User user;
-    private List<WebAPI.RatData> ratSightings;
+    private final List<WebAPI.RatData> ratSightings;
     private Map<Integer, WebAPI.RatData> ratDataMap;
 
     private void mapRatList(List<WebAPI.RatData> data) {

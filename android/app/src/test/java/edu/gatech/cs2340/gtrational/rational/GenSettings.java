@@ -6,8 +6,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 
-import static org.junit.Assert.assertEquals;
-
 /**
  * Created by Robert on 10/17/2017.
  */

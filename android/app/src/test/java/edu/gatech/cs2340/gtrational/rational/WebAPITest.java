@@ -24,7 +24,7 @@ public class WebAPITest {
         try {
             RationalConfig.init();
         } catch (Exception ignored) {}
-        RationalConfig.setSetting("hosturl", "http://localhost:8081");
+        RationalConfig.setSetting("host_url", "http://localhost:8081");
     }
 
 

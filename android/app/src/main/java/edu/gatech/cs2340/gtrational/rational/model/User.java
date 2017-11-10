@@ -1,7 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.model;
 
 /**
- * Created by shyamal on 10/2/17.
+ * Created by Shyamal on 10/2/17.
  */
 
 public class User {
@@ -13,10 +13,10 @@ public class User {
     private PermissionLevel permissionLvl;
     private String sessionId;
 
-    public User(String email, String sessionId, PermissionLevel permissionlvl) {
+    public User(String email, String sessionId, PermissionLevel permissionLevel) {
         this.email = email;
         this.sessionId = sessionId;
-        this.permissionLvl = permissionlvl;
+        this.permissionLvl = permissionLevel;
     }
 
     /**

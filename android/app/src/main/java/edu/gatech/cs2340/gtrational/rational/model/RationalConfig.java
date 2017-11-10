@@ -18,10 +18,10 @@ import edu.gatech.cs2340.gtrational.rational.RationalApp;
  */
 
 public class RationalConfig {
-    public static final String HOSTURL = "hosturl";
-    public static final String AREWELAZY = "arewelazy";
+    public static final String HOST_URL = "host_url";
+    public static final String ARE_WE_LAZY = "are_we_lazy";
 
-    private static final String[] requiredSettings = {HOSTURL, AREWELAZY};
+    private static final String[] requiredSettings = {HOST_URL, ARE_WE_LAZY};
 
     private static Map<String, String> settings;
 

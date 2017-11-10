@@ -65,9 +65,9 @@ public class NewSightingActivity extends AppCompatActivity {
                 }
 
                 String address = address1.getText().toString();
-                String addr = address2.getText().toString();
-                if (!addr.isEmpty()) {
-                    address += addr;
+                String secondAddress = address2.getText().toString();
+                if (!secondAddress.isEmpty()) {
+                    address += secondAddress;
                 }
 
                 WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(), locationType.getSelectedItem().toString(),

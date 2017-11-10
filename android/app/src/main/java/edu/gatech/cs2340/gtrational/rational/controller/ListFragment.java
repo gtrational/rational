@@ -141,7 +141,7 @@ public class ListFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(Void voidd) {
+        protected void onPostExecute(Void aVoid) {
             if (dataToUpdate != null) {
                 if (listMap.containsKey(dataToUpdate.uniqueKey)) {
                     Map<String, String> newObj = buildRatData(dataToUpdate);

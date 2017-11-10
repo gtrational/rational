@@ -115,10 +115,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressWarnings("FieldMayBeFinal")
     private class PlacePinsTask extends AsyncTask<Void, Void, Void> {
 
-        private List<WebAPI.RatData> rat_datas;
+        private List<WebAPI.RatData> rat_data;
 
-        public PlacePinsTask(List<WebAPI.RatData> rat_datas) {
-            this.rat_datas = rat_datas;
+        public PlacePinsTask(List<WebAPI.RatData> rat_data) {
+            this.rat_data = rat_data;
         }
 
         @Override
@@ -127,10 +127,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         @Override
-        protected void onPostExecute(Void voidd) {
+        protected void onPostExecute(Void aVoid) {
             map.clear();
-            for (int i = 0; i < rat_datas.size(); i++) {
-                WebAPI.RatData data = rat_datas.get(i);
+            for (int i = 0; i < rat_data.size(); i++) {
+                WebAPI.RatData data = rat_data.get(i);
                 map.addMarker(new MarkerOptions().position(new LatLng(data.latitude, data.longitude)).title(data.uniqueKey + ""));
             }
         }

@@ -16,7 +16,7 @@ import edu.gatech.cs2340.gtrational.rational.Callbacks;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
- * Created by shyamal on 10/2/17.
+ * Created by shovel on 10/2/17.
  */
 
 public class Model {
@@ -166,7 +166,7 @@ public class Model {
      *
      * @param startDate The start date for the search
      * @param endDate The end date of the search
-     * @param callback The function to be exectuted on the data
+     * @param callback The function to be executed on the data
      */
     public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
         recursiveDateCallBack(startDate, ()-> {

@@ -42,11 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
      * @param view The View object
      */
     public void verifyRegister(View view) {
-        EditText usernamefield = (EditText) findViewById(R.id.editTextUsername_R);
-        EditText passwordfield = (EditText) findViewById(R.id.editTextPassword_R);
+        EditText usernameField = (EditText) findViewById(R.id.editTextUsername_R);
+        EditText passwordField = (EditText) findViewById(R.id.editTextPassword_R);
         EditText confirmPasswordField = (EditText) findViewById(R.id.editTextPasswordConfirm_R);
 
-        EditText[] requiredFields = {usernamefield, passwordfield, confirmPasswordField};
+        EditText[] requiredFields = {usernameField, passwordField, confirmPasswordField};
         String[] messages = {"Please enter username", "Please enter password", "Please confirm password"};
 
 
@@ -73,8 +73,8 @@ public class RegisterActivity extends AppCompatActivity {
             inputManager.hideSoftInputFromWindow(focused.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
 
-        String username = usernamefield.getText().toString();
-        String password = passwordfield.getText().toString();
+        String username = usernameField.getText().toString();
+        String password = passwordField.getText().toString();
         String confirmPassword = confirmPasswordField.getText().toString();
 
         if (password.equals(confirmPassword)) {

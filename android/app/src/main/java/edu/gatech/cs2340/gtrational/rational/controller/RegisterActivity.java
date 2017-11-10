@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private static final int GRAVITY_MAGIC_NUMBER = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(getApplicationContext(), messages[i], Toast.LENGTH_SHORT);
 
                 //Display toast on right of screen at the y value of the input field
-                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - 20);
+                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER);
                 t.show();
                 return;
             }
@@ -83,7 +86,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void tryRegister(View view, String username, String password) {
-        RadioButton admin_button = (RadioButton) findViewById(R.id.admin_button);
+        Checkable admin_button = (RadioButton) findViewById(R.id.admin_button);
 
         WebAPI.register(
                 username,

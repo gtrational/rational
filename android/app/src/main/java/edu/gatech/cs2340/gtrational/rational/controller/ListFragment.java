@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -31,6 +32,8 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  * A fragment for the "all rat sightings" screen.
  */
 public class ListFragment extends Fragment {
+
+    private static final int DEFAULT_RAT_NUM = 20;
 
     private List<HashMap<String, String>> listItems;
     private Map<Integer, HashMap<String, String>> listMap;
@@ -53,7 +56,7 @@ public class ListFragment extends Fragment {
 
     private void fetchOldData() {
         Log.w("tag", "fetchOldData");
-        Model.getInstance().getRatData(listItems.size(), 20, (List<WebAPI.RatData> newData) -> {
+        Model.getInstance().getRatData(listItems.size(), DEFAULT_RAT_NUM, (List<WebAPI.RatData> newData) -> {
             Log.w("tag", "olddat: " + newData);
             new ExecuteTask(newData, false).execute();
         });
@@ -85,7 +88,7 @@ public class ListFragment extends Fragment {
         listMap = new HashMap<>();
 
         ListView theList = view.findViewById(R.id.listview);
-        SimpleAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout, new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
+        ListAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout, new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
 
         theList.setOnItemClickListener((AdapterView<?> adapterView, View view1, int i, long l) -> {
@@ -141,8 +144,8 @@ public class ListFragment extends Fragment {
         protected void onPostExecute(Void voidd) {
             if (dataToUpdate != null) {
                 if (listMap.containsKey(dataToUpdate.uniqueKey)) {
-                    HashMap<String, String> newObj = buildRatData(dataToUpdate);
-                    HashMap<String, String> oldData = listMap.get(dataToUpdate.uniqueKey);
+                    Map<String, String> newObj = buildRatData(dataToUpdate);
+                    Map<String, String> oldData = listMap.get(dataToUpdate.uniqueKey);
                     for (String key : newObj.keySet()) {
                         oldData.put(key, newObj.get(key));
                     }

@@ -28,6 +28,11 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  * A fragment for the "Map" screen
  */
 public class MapFragment extends Fragment implements OnMapReadyCallback {
+
+    private static final double DEFAULT_LAT = 40.7143;
+    private static final double DEFAULT_LONG = -73.9376;
+    private static final int DEFAULT_ZOOM = 11;
+
     GoogleMap map;
     MapView mapView;
 
@@ -78,7 +83,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(40.7143, -73.9376), 11));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DEFAULT_LAT, DEFAULT_LONG), DEFAULT_ZOOM));
         Model.getInstance().getRatData(0, 10, this::setMapPins);
     }
 

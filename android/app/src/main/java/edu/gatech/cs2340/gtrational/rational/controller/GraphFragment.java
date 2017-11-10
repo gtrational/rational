@@ -32,6 +32,9 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  */
 public class GraphFragment extends Fragment {
 
+    private static final int GRAPH_SPACING = 50;
+    private static final int MONTHS_PER_YEAR = 12;
+
     private static final Calendar calendar = Calendar.getInstance();
 
     GraphView graph;
@@ -88,7 +91,7 @@ public class GraphFragment extends Fragment {
         series = new BarGraphSeries<>(new DataPoint[] {});
         graph.addSeries(series);
 
-        series.setSpacing(50);
+        series.setSpacing(GRAPH_SPACING);
 
         // draw values on top
         series.setDrawValuesOnTop(true);
@@ -114,7 +117,7 @@ public class GraphFragment extends Fragment {
         return view;
     }
 
-    private void setGraphDataByYear(List<WebAPI.RatData> ratData, long start, long end) {
+    private void setGraphDataByYear(Iterable<WebAPI.RatData> ratData, long start, long end) {
         int startYear = getYearFromTime(start);
 
         int endYear = getYearFromTime(end);
@@ -151,24 +154,25 @@ public class GraphFragment extends Fragment {
         Log.w("Graphing", startYear + " " + endYear);
     }
 
-    private void setGraphDataNotByYear(List<WebAPI.RatData> ratData, long start, long end) {
+
+    private void setGraphDataNotByYear(Iterable<WebAPI.RatData> ratData, long start, long end) {
         int startYear = getYearFromTime(start);
         int startMonth = getMonthFrontTime(start);
 
         int endYear = getYearFromTime(end);
         int endMonth = getMonthFrontTime(end);
 
-        int[] buckets = new int[(endMonth - startMonth) + (12 * (endYear - startYear))];
+        int[] buckets = new int[(endMonth - startMonth) + (MONTHS_PER_YEAR * (endYear - startYear))];
         for (WebAPI.RatData rat : ratData) {
             int ratMonth = getMonthFrontTime(rat.createdTime);
             int ratYear = getYearFromTime(rat.createdTime);
-            buckets[(ratMonth - startMonth) + (12 * (ratYear - startYear))]++;
+            buckets[(ratMonth - startMonth) + (MONTHS_PER_YEAR * (ratYear - startYear))]++;
         }
 
         DataPoint[] newData = new DataPoint[buckets.length];
         for (int i = 0; i < buckets.length; i++) {
-            int month = (startMonth + i) % 12;
-            int year = (startMonth + i) / 12;
+            int month = (startMonth + i) % MONTHS_PER_YEAR;
+            int year = (startMonth + i) / MONTHS_PER_YEAR;
             calendar.set(startYear + year, month, 1);
             Log.w("Graphing", "" + (startYear + year) + "-" + month);
 
@@ -202,7 +206,7 @@ public class GraphFragment extends Fragment {
      * @param end End date to graph
      * @param byYear Whether to graph by year or by month
      */
-    public void setGraphData(List<WebAPI.RatData> ratData, long start, long end, boolean byYear) {
+    public void setGraphData(Iterable<WebAPI.RatData> ratData, long start, long end, boolean byYear) {
         if (byYear) {
             setGraphDataByYear(ratData, start, end);
         } else {

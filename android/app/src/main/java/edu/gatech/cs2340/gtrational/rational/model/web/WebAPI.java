@@ -27,7 +27,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 public final class WebAPI {
 
-    private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
+    private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOST_URL);
     private static final boolean printWebRequests = true;
 
     private static void runAsync(Runnable runnable) {
@@ -43,10 +43,10 @@ public final class WebAPI {
         public final String sessionID;
         public final User.PermissionLevel permissionLevel;
 
-        public LoginResult(boolean success, String err, String sess, int permissionLevelOrdinal) {
+        public LoginResult(boolean success, String err, String session, int permissionLevelOrdinal) {
             this.success = success;
             this.errMsg = err;
-            this.sessionID = sess;
+            this.sessionID = session;
             permissionLevel = User.PermissionLevel.values()[permissionLevelOrdinal];
         }
     }
@@ -159,9 +159,9 @@ public final class WebAPI {
         public final boolean success;
         public final String error_message;
 
-        public RatDataResult(boolean succ, String err) {
-            success = succ;
-            error_message = err;
+        public RatDataResult(boolean is_success, String error) {
+            success = is_success;
+            error_message = error;
         }
     }
 
@@ -323,11 +323,11 @@ public final class WebAPI {
         });
     }
 
-    public static void getRatSightingsAfter(int startid, Callbacks.AnyCallback<List<RatData>> callback) {
+    public static void getRatSightingsAfter(int start_id, Callbacks.AnyCallback<List<RatData>> callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("sessionid", Model.getInstance().getUser().getSessionId());
-            json.put("startid", startid);
+            json.put("startid", start_id);
         } catch (JSONException e) {
             e.printStackTrace();
         }

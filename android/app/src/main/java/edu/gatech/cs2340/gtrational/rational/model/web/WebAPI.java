@@ -391,6 +391,12 @@ public final class WebAPI {
         }
     }
 
+    /**
+     * Makes a request to the server that adds a new rat sighting to the database
+     *
+     * @param rData the rat data
+     * @param callback a callback for asynchronous processing of the response
+     */
     public static void addRatSighting(RatData rData,
                                       Callbacks.AnyCallback<RatDataResult> callback) {
         JSONObject json = rData.toJson();
@@ -408,6 +414,12 @@ public final class WebAPI {
         );
     }
 
+    /**
+     * Get all rat sightings after a certain rat ID.
+     *
+     * @param start_id the start rat ID
+     * @param callback a callback to asynchronously process returned rat data
+     */
     public static void getRatSightingsAfter(int start_id,
                                             Callbacks.AnyCallback<List<RatData>> callback) {
         JSONObject json = new JSONObject();
@@ -430,6 +442,10 @@ public final class WebAPI {
 
     /**
      * A method to fetch RatData from the backend
+     *
+     * @param startId The first rat ID to fetch
+     * @param limit the number of rats to fetch
+     * @param callback A callback to asynchronously process returned rat data.
      */
     public static void getRatSightings(int startId, int limit,
                                        Callbacks.AnyCallback<? super List<RatData>> callback) {

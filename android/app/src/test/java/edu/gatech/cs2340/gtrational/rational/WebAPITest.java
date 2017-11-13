@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,6 +22,9 @@ public class WebAPITest {
 
     private static String sessionID;
 
+    /**
+     * Set up testing
+     */
     @BeforeClass
     public static void setup() {
         try {
@@ -32,8 +36,14 @@ public class WebAPITest {
 
     private static volatile WebAPI.LoginResult loginResult;
 
+    /**
+     * Test logging in as a user
+     *
+     * @throws InterruptedException from Thread.sleep()
+     * @throws JSONException from JSON serialization
+     */
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin() throws InterruptedException, JSONException {
 
         String username = "testuser";
         String password = "testpass";
@@ -59,8 +69,14 @@ public class WebAPITest {
 
     private static volatile List<WebAPI.RatData> getRatSightingsResult;
 
+    /**
+     * Test getting rat sighting data from the server
+     *
+     * @throws InterruptedException from Thread.sleep()
+     * @throws JSONException from JSON serialization
+     */
     @Test
-    public void testGetRatSightings() throws Exception {
+    public void testGetRatSightings() throws InterruptedException, JSONException {
         if (sessionID == null) {
             testLogin();
         }

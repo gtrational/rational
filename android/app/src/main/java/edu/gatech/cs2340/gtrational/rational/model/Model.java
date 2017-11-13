@@ -75,7 +75,8 @@ public final class Model {
      */
     public Callbacks.VoidCallback registerListener(String topic, ModelUpdateListener listener) {
         if (updateListeners.containsKey(topic)) {
-            updateListeners.get(topic).add(listener);
+            List<ModelUpdateListener> listeners = updateListeners.get(topic);
+            listeners.add(listener);
         } else {
             List<ModelUpdateListener> newListener = new ArrayList<>();
             newListener.add(listener);
@@ -83,7 +84,10 @@ public final class Model {
             updateListeners.put(topic, newListener);
         }
 
-        return () -> updateListeners.get(topic).remove(listener);
+        return () -> {
+            List<ModelUpdateListener> listeners = updateListeners.get(topic);
+            listeners.remove(listener);
+        };
     }
 
     /**

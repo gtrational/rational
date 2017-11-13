@@ -69,7 +69,8 @@ public class WebAPITest {
 
         System.out.println("Got " + getRatSightingsResult.size() + " rat sightings:");
         for (WebAPI.RatData data : getRatSightingsResult) {
-            System.out.println(data.toJson().toString(2));
+            JSONObject dataJSON = data.toJson();
+            System.out.println(dataJSON.toString(2));
         }
     }
 }

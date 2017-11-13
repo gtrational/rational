@@ -1,6 +1,7 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
 import android.util.Log;
+import android.view.Display;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -359,7 +360,8 @@ public final class WebAPI {
     public static void addRatSighting(RatData rData, Callbacks.AnyCallback<RatDataResult> callback) {
         JSONObject json = rData.toJson();
         try {
-            json.put("sessionid", Model.getInstance().getUser().getSessionId());
+            User user = Model.getInstance().getUser();
+            json.put("sessionid", user.getSessionId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -369,7 +371,8 @@ public final class WebAPI {
     public static void getRatSightingsAfter(int start_id, Callbacks.AnyCallback<List<RatData>> callback) {
         JSONObject json = new JSONObject();
         try {
-            json.put("sessionid", Model.getInstance().getUser().getSessionId());
+            User user = Model.getInstance().getUser();
+            json.put("sessionid", user.getSessionId());
             json.put("startid", start_id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -392,7 +395,8 @@ public final class WebAPI {
         JSONObject request = new JSONObject();
 
         try {
-            request.put("sessionid", Model.getInstance().getUser().getSessionId());
+            User user = Model.getInstance().getUser();
+            request.put("sessionid", user.getSessionId());
             request.put("startid", startId);
             request.put("limit", limit);
         } catch (JSONException ex) {

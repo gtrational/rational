@@ -64,7 +64,8 @@ public class RationalConfig {
         int settingsId = -1;
         Class<?>[] classes = R.class.getClasses();
         for (Class<?> clazz : classes) {
-            if (clazz.getName().contains("xml")) {
+            String className = clazz.getName();
+            if (className.contains("xml")) {
                 try {
                     Field field = clazz.getField("settings");
                     settingsId = (int) field.get(null);

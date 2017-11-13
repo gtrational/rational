@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
@@ -31,8 +32,10 @@ public class ViewDataActivity extends AppCompatActivity {
 
         WebAPI.RatData data = Model.getInstance().getRatDataByKey(Integer.parseInt(bundle.getString("text")));
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
+
         TextView createdDate = (TextView) findViewById(R.id.created_date);
-        createdDate.setText(new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa").format(data.createdTime));
+        createdDate.setText(sdf.format(data.createdTime));
         TextView locationType = (TextView) findViewById(R.id.location_type);
         locationType.setText(data.locationType);
         TextView zip = (TextView) findViewById(R.id.zip);

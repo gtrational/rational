@@ -80,10 +80,12 @@ public class LoginActivity extends AppCompatActivity {
             InputMethodManager inputManager =
                     (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            inputManager.hideSoftInputFromWindow(
-                    focused.getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS
-            );
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(
+                        focused.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                );
+            }
         }
 
         String username = usernameField.getText().toString();

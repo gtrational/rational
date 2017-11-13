@@ -26,32 +26,35 @@ public class ViewDataActivity extends AppCompatActivity {
 
         Intent prev = getIntent();
         Bundle bundle = prev.getExtras();
-        Log.d("tag", bundle.getString("text"));
 
-        setTitle("Rat Sighting #" + bundle.getString("text"));
+        if (bundle != null) {
+            Log.d("tag", bundle.getString("text"));
 
-        WebAPI.RatData data = Model.getInstance().getRatDataByKey(
-                Integer.parseInt(bundle.getString("text"))
-        );
+            setTitle("Rat Sighting #" + bundle.getString("text"));
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
+            WebAPI.RatData data = Model.getInstance().getRatDataByKey(
+                    Integer.parseInt(bundle.getString("text"))
+            );
 
-        TextView createdDate = (TextView) findViewById(R.id.created_date);
-        createdDate.setText(sdf.format(data.createdTime));
-        TextView locationType = (TextView) findViewById(R.id.location_type);
-        locationType.setText(data.locationType);
-        TextView zip = (TextView) findViewById(R.id.zip);
-        zip.setText(data.incidentZip + "");
-        TextView address = (TextView) findViewById(R.id.address);
-        address.setText(data.incidentAddress);
-        TextView city = (TextView) findViewById(R.id.city);
-        city.setText(data.city);
-        TextView borough = (TextView) findViewById(R.id.borough);
-        borough.setText(data.borough);
-        TextView latitude = (TextView) findViewById(R.id.latitude);
-        latitude.setText(data.latitude + "");
-        TextView longitude = (TextView) findViewById(R.id.longitude);
-        longitude.setText(data.longitude + "");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
+
+            TextView createdDate = (TextView) findViewById(R.id.created_date);
+            createdDate.setText(sdf.format(data.createdTime));
+            TextView locationType = (TextView) findViewById(R.id.location_type);
+            locationType.setText(data.locationType);
+            TextView zip = (TextView) findViewById(R.id.zip);
+            zip.setText(data.incidentZip + "");
+            TextView address = (TextView) findViewById(R.id.address);
+            address.setText(data.incidentAddress);
+            TextView city = (TextView) findViewById(R.id.city);
+            city.setText(data.city);
+            TextView borough = (TextView) findViewById(R.id.borough);
+            borough.setText(data.borough);
+            TextView latitude = (TextView) findViewById(R.id.latitude);
+            latitude.setText(data.latitude + "");
+            TextView longitude = (TextView) findViewById(R.id.longitude);
+            longitude.setText(data.longitude + "");
+        }
     }
 
     @Override

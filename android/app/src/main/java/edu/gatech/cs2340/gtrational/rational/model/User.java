@@ -19,12 +19,12 @@ public class User {
         this.sessionId = sessionId;
         this.permissionLvl = permissionLevel;
     }
-/*
+
     /**
      * Retrieves the User's email
      *
      * @return the email of the User.
-
+     */
     public String getEmail() {
         return email;
     }
@@ -33,10 +33,10 @@ public class User {
      * Retrieves the User's permission level.
      *
      * @return the permission level of the User.
-
+     */
     public PermissionLevel getPermissionLvl() {
         return permissionLvl;
-    }*/
+    }
 
     /**
      * Retrieves the User's sessionId

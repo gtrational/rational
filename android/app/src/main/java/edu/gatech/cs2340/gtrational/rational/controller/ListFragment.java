@@ -67,7 +67,7 @@ public class ListFragment extends Fragment {
         Model.getInstance().getNewestRatData((List<WebAPI.RatData> newData) -> {
             Log.w("tag", "newdat: " + newData);
             new ExecuteTask(newData, true).execute();
-            SwipeRefreshLayout swipeLayout = getView().findViewById(R.id.swipe_layout);
+            @SuppressWarnings("ConstantConditions") SwipeRefreshLayout swipeLayout = getView().findViewById(R.id.swipe_layout);
             swipeLayout.setRefreshing(false);
         });
     }
@@ -109,9 +109,8 @@ public class ListFragment extends Fragment {
             }
 
             @Override
-            public boolean onLoadMore(int page, int totalItemsCount) {
+            public void onLoadMore() {
                 fetchOldData();
-                return true;
             }
         });
 
@@ -164,7 +163,7 @@ public class ListFragment extends Fragment {
                 }
             }
 
-            ListView theList = getView().findViewById(R.id.listview);
+            @SuppressWarnings("ConstantConditions") ListView theList = getView().findViewById(R.id.listview);
             BaseAdapter adapter = (BaseAdapter)theList.getAdapter();
             adapter.notifyDataSetChanged();
         }

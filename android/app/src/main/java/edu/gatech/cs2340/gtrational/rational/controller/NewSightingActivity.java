@@ -20,6 +20,7 @@ public class NewSightingActivity extends AppCompatActivity {
         setTitle("");
         setContentView(R.layout.activity_new_sighting);
 
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
 
@@ -75,8 +76,6 @@ public class NewSightingActivity extends AppCompatActivity {
                 WebAPI.addRatSighting(newRatData, (WebAPI.RatDataResult result) -> {
                     if (result.success) {
                         finish();
-                    } else {
-                        //TODO display error message
                     }
                 });
 

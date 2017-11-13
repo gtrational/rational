@@ -15,6 +15,7 @@ import edu.gatech.cs2340.gtrational.rational.RationalApp;
 
 /**
  * Created by Robert on 10/18/2017.
+ * Class to hold config information
  */
 
 public class RationalConfig {

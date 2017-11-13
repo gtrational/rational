@@ -106,9 +106,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     /**
      * If user presses "cancel", registration is cancelled and activity finishes.
-     * @param view The View object
      */
-    public void cancelRegister(View view) {
+    public void cancelRegister() {
         finish();
     }
 }

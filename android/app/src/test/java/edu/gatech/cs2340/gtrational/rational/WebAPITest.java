@@ -36,11 +36,10 @@ public class WebAPITest {
         String username = "testuser";
         String password = "testpass";
 
-        WebAPI.login(username, password, (WebAPI.LoginResult res) -> {
-            loginResult = res;
-        });
+        WebAPI.login(username, password, (WebAPI.LoginResult res) -> loginResult = res);
 
         while (loginResult == null) {
+            Thread.sleep(1);
         }
 
         if (loginResult.success) {
@@ -60,11 +59,10 @@ public class WebAPITest {
             testLogin();
         }
 
-        WebAPI.getRatSightings(0, 5, (List<WebAPI.RatData> dat) -> {
-            getRatSightingsResult = dat;
-        });
+        WebAPI.getRatSightings(0, 5, (List<WebAPI.RatData> dat) -> getRatSightingsResult = dat);
 
         while (getRatSightingsResult == null) {
+            Thread.sleep(1);
         }
 
         System.out.println("Got " + getRatSightingsResult.size() + " rat sightings:");

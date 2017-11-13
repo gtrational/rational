@@ -41,7 +41,6 @@ public class WebAPITest {
         });
 
         while (loginResult == null) {
-            ;
         }
 
         if (loginResult.success) {
@@ -66,7 +65,6 @@ public class WebAPITest {
         });
 
         while (getRatSightingsResult == null) {
-            ;
         }
 
         System.out.println("Got " + getRatSightingsResult.size() + " rat sightings:");

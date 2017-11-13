@@ -102,9 +102,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * If user cancels login, login is terminated and activity finishes.
-     * @param view The View object
      */
-    public void cancelLogin(View view) {
+    public void cancelLogin() {
         finish();
     }
 }

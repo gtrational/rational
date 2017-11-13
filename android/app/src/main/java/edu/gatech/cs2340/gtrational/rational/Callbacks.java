@@ -4,6 +4,7 @@ import org.json.JSONException;
 
 /**
  * Created by Robert on 10/16/2017.
+ * A class that contains a bunch of callbacks
  */
 
 public class Callbacks {

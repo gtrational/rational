@@ -17,13 +17,14 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
 /**
  * Created by shovel on 10/2/17.
+ * A class to contain all model data
  */
 
 public final class Model {
     /**
      * List of available topics
      */
-    public static final String USER_UPDATE = "user.update";
+    private static final String USER_UPDATE = "user.update";
     public static final String RAT_SIGHTING_UPDATE = "rat_sighting.update";
 
     private static final Model instance = new Model();
@@ -77,9 +78,7 @@ public final class Model {
             updateListeners.put(topic, newListener);
         }
 
-        return () -> {
-            updateListeners.get(topic).remove(listener);
-        };
+        return () -> updateListeners.get(topic).remove(listener);
     }
 
     /**
@@ -100,7 +99,7 @@ public final class Model {
 
     /**
      * Format: {email, sessionID, permLevel}
-     * @param userInfo
+     * @param userInfo Information about the user
      */
     public void updateUser(JSONObject userInfo) {
         try {
@@ -131,7 +130,6 @@ public final class Model {
      * @param start The starting index of the desired block
      * @param size The size of the desired block
      * @param callback The function to be executed
-     * @return The queried block
      */
     public void getRatData(int start, int size, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
         if ((start + size) > ratSightings.size()) {
@@ -171,7 +169,7 @@ public final class Model {
     public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
         recursiveDateCallBack(startDate, ()-> {
             synchronized (ratSightings) {
-                List<WebAPI.RatData> valid = new ArrayList<WebAPI.RatData>();
+                List<WebAPI.RatData> valid = new ArrayList<>();
                 for(int i = 0; i < ratSightings.size(); i++) {
                     if ((ratSightings.get(i).createdTime >= startDate) && (ratSightings.get(i).createdTime <= endDate)) {
                         valid.add(ratSightings.get(i));
@@ -202,11 +200,11 @@ public final class Model {
             }
         });
     }
+    /*
+        /**
+         * Finds and updates the rat in the model ratSightings if it exists in the list
+         * @param updatedRat The rat that was updated
 
-    /**
-     * Finds and updates the rat in the model ratSightings if it exists in the list
-     * @param updatedRat The rat that was updated
-     */
     public void updateRatSighting(WebAPI.RatData updatedRat) {
         //TODO: update getters and setters once ratSighting class is complete
         int key = updatedRat.uniqueKey;
@@ -227,7 +225,7 @@ public final class Model {
                 }
             }
         }
-    }
+    }*/
     public WebAPI.RatData getRatDataByKey(int uniqueKey) {
         return ratDataMap.get(uniqueKey);
     }

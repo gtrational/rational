@@ -8,6 +8,7 @@ import java.io.FileWriter;
 
 /**
  * Created by Robert on 10/17/2017.
+ * Class to generate settings file
  */
 
 public class GenSettings {
@@ -22,7 +23,9 @@ public class GenSettings {
     public void generateSettingsXml() throws Exception {
         File directory = new File("app/src/main/res/xml");
         if (!directory.exists()) {
-            directory.mkdirs();
+            if (!directory.mkdirs()) {
+                throw new RuntimeException("Could not make directory");
+            }
         }
         File out = new File(directory.getAbsolutePath() + File.separator + "settings.xml");
         BufferedWriter writer = new BufferedWriter(new FileWriter(out));

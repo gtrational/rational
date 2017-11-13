@@ -2,6 +2,7 @@ package edu.gatech.cs2340.gtrational.rational.model;
 
 /**
  * Created by Shyamal on 10/2/17.
+ * A class to hold information about the user
  */
 
 public class User {
@@ -9,9 +10,9 @@ public class User {
         USER, ADMIN
     }
 
-    private String email;
-    private PermissionLevel permissionLvl;
-    private String sessionId;
+    private final String email;
+    private final PermissionLevel permissionLvl;
+    private final String sessionId;
 
     public User(String email, String sessionId, PermissionLevel permissionLevel) {
         this.email = email;
@@ -40,7 +41,7 @@ public class User {
     /**
      * Retrieves the User's sessionId
      *
-     * @return
+     * @return The session id
      */
     public String getSessionId() {
         return sessionId;

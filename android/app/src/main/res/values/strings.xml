@@ -34,8 +34,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <string-array name="location_type">
-        <item>1-2 Family Dwelling</item>
-        <item>1-2 Family Mixed Use Building</item>
+        <item>1–2 Family Dwelling</item>
+        <item>1–2 Family Mixed Use Building</item>
         <item>3+ Family Apt. Building</item>
         <item>3+ Family Mixed Use Building</item>
         <item>Catch Basin/Sewer</item>

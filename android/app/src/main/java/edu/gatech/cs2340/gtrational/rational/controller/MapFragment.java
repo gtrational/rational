@@ -115,7 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressWarnings("FieldMayBeFinal")
     private class PlacePinsTask extends AsyncTask<Void, Void, Void> {
 
-        private List<WebAPI.RatData> rat_data;
+        private final List<WebAPI.RatData> rat_data;
 
         public PlacePinsTask(List<WebAPI.RatData> rat_data) {
             this.rat_data = rat_data;

@@ -35,21 +35,20 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Switches to Login View
-     * @param view
      */
-    public void openLogin(View view) {
+    public void openLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    public void openRegister(View view) {
+    public void openRegister() {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
     /**
      * When James is lazy, he does things to make his life easier.
-     * @param view
+     * @param view The view
      */
     public void lazyLogin(View view) {
         String username = "testuser";

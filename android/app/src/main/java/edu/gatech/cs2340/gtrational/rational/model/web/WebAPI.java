@@ -23,6 +23,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
 
 /**
  * Created by Robert on 10/1/2017.
+ * A class to handle calls to our backend api
  */
 
 public final class WebAPI {
@@ -157,9 +158,9 @@ public final class WebAPI {
 
     public static class RatDataResult {
         public final boolean success;
-        public final String error_message;
+        final String error_message;
 
-        public RatDataResult(boolean is_success, String error) {
+        RatDataResult(boolean is_success, String error) {
             success = is_success;
             error_message = error;
         }
@@ -192,8 +193,6 @@ public final class WebAPI {
      *
      * @param endpoint the route to which to make the request on the server.
      * @param data a JSONObject containing the data to send to the server as part of the request.
-     *
-     * @return the server's response as a JSONObject.
      */
     private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
         if (printWebRequests) {
@@ -261,7 +260,6 @@ public final class WebAPI {
      *
      * @param email The username
      * @param password The password
-     * @return Information about the login attempt
      */
     public static void login(String email, String password, Callbacks.AnyCallback<LoginResult> callback) {
         try {
@@ -288,7 +286,6 @@ public final class WebAPI {
      *
      * @param email The username
      * @param password The password
-     * @return Information about the registration attempt
      */
     public static void register(String email, String password, User.PermissionLevel permissionLevel, Callbacks.AnyCallback<RegisterResult> callback) {
         try {
@@ -318,9 +315,7 @@ public final class WebAPI {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        webRequest("/api/postRatSightings", json, (JSONObject object) -> {
-            callback.callback(new RatDataResult(true, null));
-        });
+        webRequest("/api/postRatSightings", json, (JSONObject object) -> callback.callback(new RatDataResult(true, null)));
     }
 
     public static void getRatSightingsAfter(int start_id, Callbacks.AnyCallback<List<RatData>> callback) {
@@ -343,8 +338,6 @@ public final class WebAPI {
     }
     /**
      * A method to fetch RatData from the backend
-     *
-     * @return a List of RatData
      */
     public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<? super List<RatData>> callback) {
         List<RatData> ratData = new ArrayList<>();

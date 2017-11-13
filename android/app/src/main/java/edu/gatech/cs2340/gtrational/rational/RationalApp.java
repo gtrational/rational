@@ -6,6 +6,7 @@ import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 
 /**
  * Created by Robert on 10/17/2017.
+ * Home base
  */
 
 public class RationalApp extends Application {

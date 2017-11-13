@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 
@@ -34,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity {
     /**
      * Logs out the user
      */
-    public void logout() {
+    public void logout(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);

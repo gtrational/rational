@@ -40,11 +40,12 @@ public final class Model {
     }
 
     /**
-     * Returns the user
-     * @return The user
+     * Get the current user's session ID
+     *
+     * @return User's session ID as a string
      */
-    public User getUser() {
-        return user;
+    public String getUserSessionId() {
+        return user.getSessionId();
     }
 
     /**

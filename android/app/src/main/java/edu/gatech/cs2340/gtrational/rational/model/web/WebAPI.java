@@ -360,8 +360,7 @@ public final class WebAPI {
     public static void addRatSighting(RatData rData, Callbacks.AnyCallback<RatDataResult> callback) {
         JSONObject json = rData.toJson();
         try {
-            User user = Model.getInstance().getUser();
-            json.put("sessionid", user.getSessionId());
+            json.put("sessionid", Model.getInstance().getUserSessionId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -371,8 +370,7 @@ public final class WebAPI {
     public static void getRatSightingsAfter(int start_id, Callbacks.AnyCallback<List<RatData>> callback) {
         JSONObject json = new JSONObject();
         try {
-            User user = Model.getInstance().getUser();
-            json.put("sessionid", user.getSessionId());
+            json.put("sessionid", Model.getInstance().getUserSessionId());
             json.put("startid", start_id);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -395,8 +393,7 @@ public final class WebAPI {
         JSONObject request = new JSONObject();
 
         try {
-            User user = Model.getInstance().getUser();
-            request.put("sessionid", user.getSessionId());
+            request.put("sessionid", Model.getInstance().getUserSessionId());
             request.put("startid", startId);
             request.put("limit", limit);
         } catch (JSONException ex) {

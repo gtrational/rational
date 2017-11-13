@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
     android:background="@color/colorPrimary"
-    tools:context="edu.gatech.cs2340.gtrational.rational.controller.RegisterActivity">
+    tools:context="edu.gatech.cs2340.gtrational.rational.controller.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

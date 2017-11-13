@@ -110,7 +110,7 @@ public class RegisterActivity extends AppCompatActivity {
     /**
      * If user presses "cancel", registration is cancelled and activity finishes.
      */
-    public void cancelRegister() {
+    public void cancelRegister(View view) {
         finish();
     }
 }

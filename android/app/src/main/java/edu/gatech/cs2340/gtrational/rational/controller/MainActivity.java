@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Switches to Login View
      */
-    public void openLogin() {
+    public void openLogin(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Switches to the register view
      */
-    public void openRegister() {
+    public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }

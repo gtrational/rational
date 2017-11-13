@@ -32,8 +32,8 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static class FragInfo {
-        public Class<? extends Fragment> fragmentClass;
-        public String title;
+        public final Class<? extends Fragment> fragmentClass;
+        public final String title;
 
         public FragInfo(Class<? extends Fragment> fragmentClass, String title) {
             this.fragmentClass = fragmentClass;

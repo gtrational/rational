@@ -33,8 +33,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final double DEFAULT_LONG = -73.9376;
     private static final int DEFAULT_ZOOM = 11;
 
-    GoogleMap map;
-    MapView mapView;
+    private GoogleMap map;
+    private MapView mapView;
 
 
     public MapFragment() {

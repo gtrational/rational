@@ -34,13 +34,15 @@ public class RationalConfig {
         loadConfig();
         for (String check : requiredSettings) {
             if (!settings.containsKey(check)) {
-                throw new RuntimeException("Setting value not found for \"" + check + "\". Make sure you run the GenSettings JUnit");
+                throw new RuntimeException("Setting value not found for \""
+                        + check + "\". Make sure you run the GenSettings JUnit");
             }
         }
     }
 
     /**
      * Returns the setting
+     *
      * @param key The key
      * @return The setting value
      */
@@ -53,7 +55,8 @@ public class RationalConfig {
 
     /**
      * Sets a setting
-     * @param key The key
+     *
+     * @param key   The key
      * @param value The new setting value
      */
     public static void setSetting(String key, String value) {
@@ -69,7 +72,8 @@ public class RationalConfig {
                 try {
                     Field field = clazz.getField("settings");
                     settingsId = (int) field.get(null);
-                } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+                } catch (NoSuchFieldException | IllegalAccessException ignored) {
+                }
             }
         }
 
@@ -77,12 +81,16 @@ public class RationalConfig {
             return;
         }
 
-        XmlResourceParser xrp = RationalApp.getInstance().getApplicationContext().getResources().getXml(settingsId);
+        XmlResourceParser xrp = RationalApp.getInstance()
+                .getApplicationContext()
+                .getResources()
+                .getXml(settingsId);
 
         try {
             int eventType = xrp.next();
             while (eventType != XmlPullParser.END_DOCUMENT) {
-                if ((eventType == XmlPullParser.START_TAG) && "setting".equalsIgnoreCase(xrp.getName())) {
+                if ((eventType == XmlPullParser.START_TAG)
+                        && "setting".equalsIgnoreCase(xrp.getName())) {
                     String setting = xrp.getAttributeValue(null, "name");
                     xrp.next();
                     settings.put(setting, xrp.getText());

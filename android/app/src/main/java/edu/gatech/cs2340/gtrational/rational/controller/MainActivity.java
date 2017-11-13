@@ -20,7 +20,8 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final boolean WE_ARE_LAZY = "yes".equals(RationalConfig.getSetting(RationalConfig.ARE_WE_LAZY));
+    private static final boolean WE_ARE_LAZY =
+            "yes".equals(RationalConfig.getSetting(RationalConfig.ARE_WE_LAZY));
 
     /**
      * On create method
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Switches to Login View
+     * @param view the view
      */
     public void openLogin(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Switches to the register view
+     * @param view the view
      */
     public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
@@ -62,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
         WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
             if (result.success) {
                 try {
-                    Model.getInstance().updateUser(new JSONObject().put("email", username).put("sessionID", result.sessionID).put("permLevel", result.permissionLevel.ordinal()));
+                    Model.getInstance().updateUser(
+                            new JSONObject().put("email", username)
+                                    .put("sessionID", result.sessionID)
+                                    .put("permLevel", result.permissionLevel.ordinal())
+                    );
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

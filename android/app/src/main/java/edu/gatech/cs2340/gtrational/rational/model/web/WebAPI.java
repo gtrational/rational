@@ -1,7 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational.model.web;
 
 import android.util.Log;
-import android.view.Display;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,12 +46,14 @@ public final class WebAPI {
 
         /**
          * Constructor for login result
-         * @param success Successful or not
-         * @param err The error
-         * @param session The session
+         *
+         * @param success                Successful or not
+         * @param err                    The error
+         * @param session                The session
          * @param permissionLevelOrdinal The ordinal of the permission level
          */
-        public LoginResult(boolean success, String err, String session, int permissionLevelOrdinal) {
+        public LoginResult(
+                boolean success, String err, String session, int permissionLevelOrdinal) {
             this.success = success;
             this.errMsg = err;
             this.sessionID = session;
@@ -69,8 +70,9 @@ public final class WebAPI {
 
         /**
          * Constructor for register result
+         *
          * @param success Is it successful
-         * @param err The error
+         * @param err     The error
          */
         public RegisterResult(boolean success, String err) {
             this.success = success;
@@ -89,6 +91,7 @@ public final class WebAPI {
 
             /**
              * Constructor for latitude and longitude
+             *
              * @param lat The latitude
              * @param lon The longitude
              */
@@ -106,7 +109,8 @@ public final class WebAPI {
             public final double lat;
             public final double lon;
 
-            private AddressInfo(String address, String city, String borough, int zipCode, LatLon latLon) {
+            private AddressInfo(String address, String city, String borough, int zipCode,
+                                LatLon latLon) {
                 this.address = address;
                 this.city = city;
                 this.borough = borough;
@@ -117,14 +121,16 @@ public final class WebAPI {
 
             /**
              * Returns a new address info
+             *
              * @param address The address
-             * @param city The city
+             * @param city    The city
              * @param borough The borough
              * @param zipCode The zip code
-             * @param latLon The latitud-longitude object
+             * @param latLon  The latitud-longitude object
              * @return The address info
              */
-            public static AddressInfo of(String address, String city, String borough, int zipCode, LatLon latLon) {
+            public static AddressInfo of(String address, String city, String borough, int zipCode,
+                                         LatLon latLon) {
                 return new AddressInfo(address, city, borough, zipCode, latLon);
             }
         }
@@ -141,10 +147,11 @@ public final class WebAPI {
 
         /**
          * Constructor for rat data
+         *
          * @param obj The json data
          * @throws JSONException The exception
          */
-        public RatData (JSONObject obj) throws JSONException {
+        public RatData(JSONObject obj) throws JSONException {
             uniqueKey = obj.getInt("unique_key");
             createdTime = obj.getLong("created_date");
             locationType = obj.getString("location_type");
@@ -158,12 +165,14 @@ public final class WebAPI {
 
         /**
          * Constructor for rat data
-         * @param uniqueKey The unique key
-         * @param createdTime The time it was created
+         *
+         * @param uniqueKey    The unique key
+         * @param createdTime  The time it was created
          * @param locationType The type of location
-         * @param addressInfo The address info
+         * @param addressInfo  The address info
          */
-        public RatData (int uniqueKey, long createdTime, String locationType, AddressInfo addressInfo) {
+        public RatData(int uniqueKey, long createdTime, String locationType,
+                       AddressInfo addressInfo) {
             this.uniqueKey = uniqueKey;
             this.createdTime = createdTime;
             this.locationType = locationType;
@@ -177,6 +186,7 @@ public final class WebAPI {
 
         /**
          * Converts to json object
+         *
          * @return The json object
          */
         public JSONObject toJson() {
@@ -236,12 +246,17 @@ public final class WebAPI {
      * returns with the server's response.
      *
      * @param endpoint the route to which to make the request on the server.
-     * @param data a JSONObject containing the data to send to the server as part of the request.
+     * @param data     a JSONObject containing the data to send to the server as
+     *                 part of the request.
      */
-    private static void webRequest(String endpoint, JSONObject data, Callbacks.JSONExceptionCallback<JSONObject> callback) {
+    private static void webRequest(String endpoint, JSONObject data,
+                                   Callbacks.JSONExceptionCallback<JSONObject> callback) {
         if (printWebRequests) {
             try {
-                Log.i("tag", "Making web request to " + endpoint + " with " + data.toString(2));
+                Log.i(
+                        "WebAPI",
+                        "Making web request to " + endpoint + " with " + data.toString(2)
+                );
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -278,7 +293,8 @@ public final class WebAPI {
         });
     }
 
-    private static JSONObject webReqParseResp(String resp, String endpoint, HttpURLConnection conn) throws IOException {
+    private static JSONObject webReqParseResp(String resp, String endpoint, HttpURLConnection conn)
+            throws IOException {
         if (resp == null) {
             String err = readStream(conn.getErrorStream());
             Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
@@ -288,11 +304,14 @@ public final class WebAPI {
         try {
             JSONObject respJson = new JSONObject(resp);
             if (printWebRequests) {
-                Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
+                Log.d(
+                        "WebAPI",
+                        "Got from " + endpoint + ": " + respJson.toString(2)
+                );
             }
             return respJson;
         } catch (JSONException e) {
-            Log.w("tag", "Also got jexception " + e.toString());
+            Log.w("WebAPI", "Also got jexception " + e.toString());
             return null;
         }
     }
@@ -300,24 +319,37 @@ public final class WebAPI {
     /**
      * Will attempt to login the user using our backend
      *
-     * @param email The username
+     * @param email    The username
      * @param password The password
      * @param callback The callback
      */
-    public static void login(String email, String password, Callbacks.AnyCallback<LoginResult> callback) {
+    public static void login(String email, String password,
+                             Callbacks.AnyCallback<LoginResult> callback) {
         try {
             JSONObject loginRequest = new JSONObject()
                     .put("email", email)
                     .put("password", password);
+
             webRequest("/api/login", loginRequest, (JSONObject response) -> {
                 LoginResult result;
+
                 if (response == null) {
+
                     result = new LoginResult(false, "No server response", null, 0);
+
                 } else if (response.has("err")) {
+
                     result = new LoginResult(false, response.getString("err"), null, 0);
+
                 } else {
-                    result = new LoginResult(true, null, response.getString("sessionid"), response.getInt("permLevel"));
+                    result = new LoginResult(
+                            true,
+                            null,
+                            response.getString("sessionid"),
+                            response.getInt("permLevel")
+                    );
                 }
+
                 callback.callback(result);
             });
         } catch (JSONException e) {
@@ -329,12 +361,14 @@ public final class WebAPI {
     /**
      * Will attempt to register the user using our backend
      *
-     * @param email The username
-     * @param password The password
+     * @param email           The username
+     * @param password        The password
      * @param permissionLevel The permission level
-     * @param callback The callback
+     * @param callback        The callback
      */
-    public static void register(String email, String password, User.PermissionLevel permissionLevel, Callbacks.AnyCallback<RegisterResult> callback) {
+    public static void register(String email, String password,
+                                User.PermissionLevel permissionLevel,
+                                Callbacks.AnyCallback<RegisterResult> callback) {
         try {
             JSONObject loginRequest = new JSONObject()
                     .put("email", email)
@@ -357,17 +391,25 @@ public final class WebAPI {
         }
     }
 
-    public static void addRatSighting(RatData rData, Callbacks.AnyCallback<RatDataResult> callback) {
+    public static void addRatSighting(RatData rData,
+                                      Callbacks.AnyCallback<RatDataResult> callback) {
         JSONObject json = rData.toJson();
         try {
             json.put("sessionid", Model.getInstance().getUserSessionId());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        webRequest("/api/postRatSightings", json, (JSONObject object) -> callback.callback(new RatDataResult(true, null)));
+        webRequest(
+                "/api/postRatSightings",
+                json,
+                (JSONObject object) -> callback.callback(
+                        new RatDataResult(true, null)
+                )
+        );
     }
 
-    public static void getRatSightingsAfter(int start_id, Callbacks.AnyCallback<List<RatData>> callback) {
+    public static void getRatSightingsAfter(int start_id,
+                                            Callbacks.AnyCallback<List<RatData>> callback) {
         JSONObject json = new JSONObject();
         try {
             json.put("sessionid", Model.getInstance().getUserSessionId());
@@ -385,10 +427,12 @@ public final class WebAPI {
             callback.callback(ratData);
         });
     }
+
     /**
      * A method to fetch RatData from the backend
      */
-    public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<? super List<RatData>> callback) {
+    public static void getRatSightings(int startId, int limit,
+                                       Callbacks.AnyCallback<? super List<RatData>> callback) {
         List<RatData> ratData = new ArrayList<>();
         JSONObject request = new JSONObject();
 
@@ -401,7 +445,7 @@ public final class WebAPI {
         }
 
         webRequest("/api/getRatSightings", request, (JSONObject results) -> {
-            //TODO this is a temporary fix, we need to figure out why it returns null sometimes
+            // TODO this is a temporary fix, we need to figure out why it returns null sometimes
             if (results == null) {
                 return;
             }

@@ -46,7 +46,11 @@ public class WebAPITest {
 
         if (loginResult.success) {
             sessionID = loginResult.sessionID;
-            Model.getInstance().updateUser(new JSONObject().put("email", username).put("sessionID", loginResult.sessionID).put("permLevel", loginResult.permissionLevel.ordinal()));
+            Model.getInstance().updateUser(
+                    new JSONObject().put("email", username)
+                            .put("sessionID", loginResult.sessionID)
+                            .put("permLevel", loginResult.permissionLevel.ordinal())
+            );
             System.out.println("Login Success; SessionID: " + sessionID);
         } else {
             System.out.println("Login Error: " + loginResult.errMsg);
@@ -61,7 +65,11 @@ public class WebAPITest {
             testLogin();
         }
 
-        WebAPI.getRatSightings(0, 5, (List<WebAPI.RatData> dat) -> getRatSightingsResult = new ArrayList<>(dat));
+        WebAPI.getRatSightings(
+                0,
+                5,
+                (List<WebAPI.RatData> dat) -> getRatSightingsResult = new ArrayList<>(dat)
+        );
 
         while (getRatSightingsResult == null) {
             Thread.sleep(1);

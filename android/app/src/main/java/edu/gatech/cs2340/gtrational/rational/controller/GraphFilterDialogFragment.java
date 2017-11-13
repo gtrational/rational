@@ -43,7 +43,6 @@ public class GraphFilterDialogFragment extends DialogFragment {
 
                 })
                 .setNegativeButton("Cancel", (DialogInterface dialog, int id) -> {
-                    // TODO Cancelled
                 })
                 .setView(R.layout.fragment_graph_filter);
         return builder.create();

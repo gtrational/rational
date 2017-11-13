@@ -97,7 +97,8 @@ public class ListFragment extends Fragment {
 
         ListView theList = view.findViewById(R.id.listview);
         ListAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout,
-                new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
+                new String[]{"line1", "line2", "line3"},
+                new int[]{R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
 
         theList.setOnItemClickListener((AdapterView<?> adapterView, View view1, int i, long l) -> {

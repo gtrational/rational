@@ -28,9 +28,7 @@
 
     <string name="action_logout">Logout</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello Dashboard Fragment</string>
-    <string name="hello_blank_fragment2">Hello Dashboard Fragment?</string>
     <string name="title_activity_settings">Settings</string>
 
     <string-array name="location_type">

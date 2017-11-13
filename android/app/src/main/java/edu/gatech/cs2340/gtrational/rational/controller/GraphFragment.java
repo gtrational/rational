@@ -11,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.Viewport;

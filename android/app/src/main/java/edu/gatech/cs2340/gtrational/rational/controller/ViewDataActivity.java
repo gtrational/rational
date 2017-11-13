@@ -30,7 +30,9 @@ public class ViewDataActivity extends AppCompatActivity {
 
         setTitle("Rat Sighting #" + bundle.getString("text"));
 
-        WebAPI.RatData data = Model.getInstance().getRatDataByKey(Integer.parseInt(bundle.getString("text")));
+        WebAPI.RatData data = Model.getInstance().getRatDataByKey(
+                Integer.parseInt(bundle.getString("text"))
+        );
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
 

@@ -28,12 +28,16 @@ public class NewSightingActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
 
         Spinner spinner = (Spinner) findViewById(R.id.location_type);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.location_type, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.location_type, android.R.layout.simple_spinner_item
+        );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
         Spinner boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
-        ArrayAdapter<CharSequence> boroughAdapter = ArrayAdapter.createFromResource(this, R.array.boroughs, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> boroughAdapter = ArrayAdapter.createFromResource(
+                this, R.array.boroughs, android.R.layout.simple_spinner_item
+        );
         boroughAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(boroughAdapter);
 
@@ -64,7 +68,7 @@ public class NewSightingActivity extends AppCompatActivity {
                 try {
                     zipCode = Integer.parseInt(zip.getText().toString());
                 } catch (Exception e) {
-                    //TODO Popup saying invalid zip code
+                    // TODO Popup saying invalid zip code
                     return true;
                 }
 
@@ -74,8 +78,19 @@ public class NewSightingActivity extends AppCompatActivity {
                     address += secondAddress;
                 }
 
-                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(), locationType.getSelectedItem().toString(),
-                        WebAPI.RatData.AddressInfo.of(address, city.getText().toString(), borough.getSelectedItem().toString(), zipCode, new WebAPI.RatData.LatLon(0, 0)));
+                WebAPI.RatData newRatData = new WebAPI.RatData(
+                        -1,
+                        System.currentTimeMillis(),
+                        locationType.getSelectedItem().toString(),
+                        WebAPI.RatData.AddressInfo.of(
+                                address,
+                                city.getText().toString(),
+                                borough.getSelectedItem().toString(),
+                                zipCode,
+                                new WebAPI.RatData.LatLon(0, 0)
+                        )
+                );
+
                 WebAPI.addRatSighting(newRatData, (WebAPI.RatDataResult result) -> {
                     if (result.success) {
                         finish();

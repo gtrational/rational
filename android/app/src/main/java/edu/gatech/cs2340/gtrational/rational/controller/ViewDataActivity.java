@@ -38,21 +38,21 @@ public class ViewDataActivity extends AppCompatActivity {
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
 
-            TextView createdDate = (TextView) findViewById(R.id.created_date);
+            TextView createdDate = findViewById(R.id.created_date);
             createdDate.setText(sdf.format(data.createdTime));
-            TextView locationType = (TextView) findViewById(R.id.location_type);
+            TextView locationType = findViewById(R.id.location_type);
             locationType.setText(data.locationType);
-            TextView zip = (TextView) findViewById(R.id.zip);
+            TextView zip = findViewById(R.id.zip);
             zip.setText(data.incidentZip + "");
-            TextView address = (TextView) findViewById(R.id.address);
+            TextView address = findViewById(R.id.address);
             address.setText(data.incidentAddress);
-            TextView city = (TextView) findViewById(R.id.city);
+            TextView city = findViewById(R.id.city);
             city.setText(data.city);
-            TextView borough = (TextView) findViewById(R.id.borough);
+            TextView borough = findViewById(R.id.borough);
             borough.setText(data.borough);
-            TextView latitude = (TextView) findViewById(R.id.latitude);
+            TextView latitude = findViewById(R.id.latitude);
             latitude.setText(data.latitude + "");
-            TextView longitude = (TextView) findViewById(R.id.longitude);
+            TextView longitude = findViewById(R.id.longitude);
             longitude.setText(data.longitude + "");
         }
     }

@@ -45,9 +45,9 @@ public class RegisterActivity extends AppCompatActivity {
      * @param view The View object
      */
     public void verifyRegister(View view) {
-        EditText usernameField = (EditText) findViewById(R.id.editTextUsername_R);
-        EditText passwordField = (EditText) findViewById(R.id.editTextPassword_R);
-        EditText confirmPasswordField = (EditText) findViewById(R.id.editTextPasswordConfirm_R);
+        EditText usernameField = findViewById(R.id.editTextUsername_R);
+        EditText passwordField = findViewById(R.id.editTextPassword_R);
+        EditText confirmPasswordField = findViewById(R.id.editTextPasswordConfirm_R);
 
         EditText[] requiredFields = {usernameField, passwordField, confirmPasswordField};
         String[] messages = {

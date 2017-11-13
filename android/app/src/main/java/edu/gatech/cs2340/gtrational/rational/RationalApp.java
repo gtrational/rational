@@ -11,11 +11,7 @@ import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 
 public class RationalApp extends Application {
 
-    private static final RationalApp instance;
-
-    static {
-        instance = new RationalApp();
-    }
+    private static RationalApp instance;
 
     /**
      * Returns the instance of rational app
@@ -23,6 +19,10 @@ public class RationalApp extends Application {
      */
     public static RationalApp getInstance() {
         return instance;
+    }
+
+    public RationalApp() {
+        instance = this;
     }
 
     @Override

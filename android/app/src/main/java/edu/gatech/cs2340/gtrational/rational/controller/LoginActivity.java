@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param view The View object.
      */
     public void verifyLogin(View view) {
-        EditText usernameField = (EditText) findViewById((R.id.editTextUsername));
-        EditText passwordField = (EditText) findViewById((R.id.editTextPassword));
+        EditText usernameField = findViewById((R.id.editTextUsername));
+        EditText passwordField = findViewById((R.id.editTextPassword));
 
         EditText[] requiredFields = {usernameField, passwordField};
         String[] messages = {"Please enter username", "Please enter password"};

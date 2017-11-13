@@ -27,14 +27,14 @@ public class NewSightingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
 
-        Spinner spinner = (Spinner) findViewById(R.id.location_type);
+        Spinner spinner = findViewById(R.id.location_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.location_type, android.R.layout.simple_spinner_item
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        Spinner boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
+        Spinner boroughSpinner = findViewById(R.id.borough_spinner);
         ArrayAdapter<CharSequence> boroughAdapter = ArrayAdapter.createFromResource(
                 this, R.array.boroughs, android.R.layout.simple_spinner_item
         );
@@ -57,12 +57,12 @@ public class NewSightingActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
-                Spinner locationType = (Spinner) findViewById(R.id.location_type);
-                EditText address1 = (EditText) findViewById((R.id.address_line1));
-                EditText address2 = (EditText) findViewById((R.id.address_line2));
-                EditText city = (EditText) findViewById((R.id.city));
-                EditText zip = (EditText) findViewById((R.id.ZIP));
-                Spinner borough = (Spinner) findViewById(R.id.borough_spinner);
+                Spinner locationType = findViewById(R.id.location_type);
+                EditText address1 = findViewById((R.id.address_line1));
+                EditText address2 = findViewById((R.id.address_line2));
+                EditText city = findViewById((R.id.city));
+                EditText zip = findViewById((R.id.ZIP));
+                Spinner borough = findViewById(R.id.borough_spinner);
 
                 int zipCode;
                 try {

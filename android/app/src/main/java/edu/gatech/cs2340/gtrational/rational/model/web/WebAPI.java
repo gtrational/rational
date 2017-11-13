@@ -25,7 +25,7 @@ import edu.gatech.cs2340.gtrational.rational.model.User;
  * Created by Robert on 10/1/2017.
  */
 
-public class WebAPI {
+public final class WebAPI {
 
     private static final String serverUrl = RationalConfig.getSetting(RationalConfig.HOSTURL);
     private static final boolean printWebRequests = true;
@@ -38,10 +38,10 @@ public class WebAPI {
      * A class to hold information about the login attempt
      */
     public static class LoginResult {
-        public boolean success;
-        public String errMsg;
-        public String sessionID;
-        public User.PermissionLevel permissionLevel;
+        public final boolean success;
+        public final String errMsg;
+        public final String sessionID;
+        public final User.PermissionLevel permissionLevel;
 
         public LoginResult(boolean success, String err, String sess, int permissionLevelOrdinal) {
             this.success = success;
@@ -55,8 +55,8 @@ public class WebAPI {
      * A class to hold information about the registration attempt
      */
     public static class RegisterResult {
-        public boolean success;
-        public String errMsg;
+        public final boolean success;
+        public final String errMsg;
 
         public RegisterResult(boolean success, String err) {
             this.success = success;
@@ -70,7 +70,8 @@ public class WebAPI {
     public static class RatData {
 
         public static class LatLon {
-            public double lat, lon;
+            public final double lat;
+            public final double lon;
 
             public LatLon(double lat, double lon) {
                 this.lat = lat;
@@ -79,11 +80,12 @@ public class WebAPI {
         }
 
         public static class AddressInfo {
-            public String address;
-            public String city;
-            public String borough;
-            public int zipCode;
-            public double lat, lon;
+            public final String address;
+            public final String city;
+            public final String borough;
+            public final int zipCode;
+            public final double lat;
+            public final double lon;
 
             private AddressInfo(String address, String city, String borough, int zipCode, LatLon latLon) {
                 this.address = address;
@@ -154,8 +156,8 @@ public class WebAPI {
     }
 
     public static class RatDataResult {
-        public boolean success;
-        public String error_message;
+        public final boolean success;
+        public final String error_message;
 
         public RatDataResult(boolean succ, String err) {
             success = succ;
@@ -235,7 +237,6 @@ public class WebAPI {
                         Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
                     }
                     callback.callback(respJson);
-                    return;
                 } catch (JSONException e) {
                     Log.w("tag", "Also got jexception " + e.toString());
                     try {
@@ -243,7 +244,6 @@ public class WebAPI {
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
-                    return;
                 }
             } catch (IOException e) {
                 Log.w("WebAPI", e);
@@ -252,7 +252,6 @@ public class WebAPI {
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
-                return;
             }
         });
     }
@@ -350,8 +349,6 @@ public class WebAPI {
     public static void getRatSightings(int startId, int limit, Callbacks.AnyCallback<? super List<RatData>> callback) {
         List<RatData> ratData = new ArrayList<>();
         JSONObject request = new JSONObject();
-
-        System.out.println("Sessionid: " + Model.getInstance().getUser().getSessionId());
 
         try {
             request.put("sessionid", Model.getInstance().getUser().getSessionId());

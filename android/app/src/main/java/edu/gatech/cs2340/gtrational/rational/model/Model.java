@@ -19,7 +19,7 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  * Created by shyamal on 10/2/17.
  */
 
-public class Model {
+public final class Model {
     /**
      * List of available topics
      */
@@ -88,7 +88,7 @@ public class Model {
      * @param topic topic to publish to
      * @param updateInfo JSONObject containing info about what data in the model was updated.
      */
-    public void publish(String topic, JSONObject updateInfo) {
+    private void publish(String topic, JSONObject updateInfo) {
         if (!updateListeners.containsKey(topic)) {
             return;
         }
@@ -195,9 +195,8 @@ public class Model {
             return;
         }
         getRatData(ratSightings.size(), 100, (Collection<WebAPI.RatData> list) -> {
-            if ((list == null) || list.size() == 0) {
+            if ((list == null) || list.isEmpty()) {
                 callback.callback();
-                return;
             } else {
                 recursiveDateCallBack(startDate, callback);
             }

@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import edu.gatech.cs2340.gtrational.rational.R;
@@ -37,8 +36,8 @@ public class GraphFragment extends Fragment {
 
     private static final Calendar calendar = Calendar.getInstance();
 
-    GraphView graph;
-    BarGraphSeries<DataPoint> series;
+    private GraphView graph;
+    private BarGraphSeries<DataPoint> series;
 
     public GraphFragment() {
         // Required empty public constructor

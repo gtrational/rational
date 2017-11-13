@@ -33,8 +33,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final double DEFAULT_LONG = -73.9376;
     private static final int DEFAULT_ZOOM = 11;
 
-    GoogleMap map;
-    MapView mapView;
+    private GoogleMap map;
+    private MapView mapView;
 
 
     public MapFragment() {
@@ -115,7 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressWarnings("FieldMayBeFinal")
     private class PlacePinsTask extends AsyncTask<Void, Void, Void> {
 
-        private List<WebAPI.RatData> rat_datas;
+        private final List<WebAPI.RatData> rat_datas;
 
         public PlacePinsTask(List<WebAPI.RatData> rat_datas) {
             this.rat_datas = rat_datas;

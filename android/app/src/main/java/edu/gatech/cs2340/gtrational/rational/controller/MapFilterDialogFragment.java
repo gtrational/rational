@@ -23,6 +23,7 @@ public class MapFilterDialogFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+    @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Filter")

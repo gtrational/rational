@@ -18,10 +18,6 @@ import edu.gatech.cs2340.gtrational.rational.R;
  */
 public class GraphFilterDialogFragment extends DialogFragment {
 
-    public GraphFilterDialogFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -39,7 +35,8 @@ public class GraphFilterDialogFragment extends DialogFragment {
                     try {
                         long startLong = MapFilterDialogFragment.dateToSeconds(startDate);
                         long endLong = MapFilterDialogFragment.dateToSeconds(endDate);
-                        ((MainDashboardActivity) getActivity()).setGraphData(startLong, endLong, year_button.isChecked());
+                        ((MainDashboardActivity) getActivity()).setGraphData(startLong, endLong,
+                                year_button.isChecked());
                     } catch (ParseException ex) {
                         ex.printStackTrace();
                     }

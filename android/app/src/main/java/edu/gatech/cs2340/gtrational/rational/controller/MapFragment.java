@@ -18,6 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.R;
@@ -37,6 +38,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
 
 
+    /**
+     * The constructor for map fragment
+     */
     public MapFragment() {
         // Required empty public constructor
         this.setHasOptionsMenu(true);
@@ -87,6 +91,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Model.getInstance().getRatData(0, 10, this::setMapPins);
     }
 
+    /**
+     * Sets the map pins to the provided list
+     * @param ratData The list of map pins
+     */
     public void setMapPins(List<WebAPI.RatData> ratData) {
         new PlacePinsTask(ratData).execute();
     }
@@ -118,7 +126,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         private final List<WebAPI.RatData> rat_data;
 
         public PlacePinsTask(List<WebAPI.RatData> rat_data) {
-            this.rat_data = rat_data;
+            this.rat_data = new ArrayList<>(rat_data);
         }
 
         @Override

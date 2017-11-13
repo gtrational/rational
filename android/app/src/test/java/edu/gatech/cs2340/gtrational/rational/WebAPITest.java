@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.cs2340.gtrational.rational.model.Model;
@@ -15,6 +16,7 @@ import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@SuppressWarnings({"AssignmentToStaticFieldFromInstanceMethod", "UseOfSystemOutOrSystemErr"})
 public class WebAPITest {
 
     private static String sessionID;
@@ -59,7 +61,7 @@ public class WebAPITest {
             testLogin();
         }
 
-        WebAPI.getRatSightings(0, 5, (List<WebAPI.RatData> dat) -> getRatSightingsResult = dat);
+        WebAPI.getRatSightings(0, 5, (List<WebAPI.RatData> dat) -> getRatSightingsResult = new ArrayList<>(dat));
 
         while (getRatSightingsResult == null) {
             Thread.sleep(1);

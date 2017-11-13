@@ -20,6 +20,9 @@ import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * A class to handle login activity
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final int GRAVITY_MAGIC_NUMBER = 20;
@@ -103,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * If user cancels login, login is terminated and activity finishes.
      */
-    public void cancelLogin() {
+    public void cancelLogin(View view) {
         finish();
     }
 }

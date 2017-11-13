@@ -19,6 +19,10 @@ public class GenSettings {
             "    <setting name=\"are_we_lazy\">yes</setting>\n" +
             "</resources>";
 
+    /**
+     * A test to generate the settings.xml file
+     * @throws Exception The exception
+     */
     @Test
     public void generateSettingsXml() throws Exception {
         File directory = new File("app/src/main/res/xml");

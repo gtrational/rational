@@ -12,6 +12,9 @@ import android.widget.Spinner;
 import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * A class for the new sighting activity
+ */
 public class NewSightingActivity extends AppCompatActivity {
 
     @Override

@@ -39,8 +39,10 @@ public class GraphFragment extends Fragment {
     private GraphView graph;
     private BarGraphSeries<DataPoint> series;
 
+    /**
+     * Empty constructor
+     */
     public GraphFragment() {
-        // Required empty public constructor
         this.setHasOptionsMenu(true);
     }
 
@@ -87,7 +89,7 @@ public class GraphFragment extends Fragment {
 //        Date d4 = calendar.getTime();
 
 
-        series = new BarGraphSeries<>(new DataPoint[] {});
+        series = new BarGraphSeries<>(new DataPoint[]{});
         graph.addSeries(series);
 
         series.setSpacing(GRAPH_SPACING);
@@ -139,7 +141,8 @@ public class GraphFragment extends Fragment {
         Log.w("Graphing", Arrays.toString(newData));
         series.resetData(newData);
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("yy", Locale.US)));
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(),
+                new SimpleDateFormat("yy", Locale.US)));
         graph.getGridLabelRenderer().setNumHorizontalLabels(buckets.length);
 
         // set manual x bounds to have nice steps
@@ -161,7 +164,8 @@ public class GraphFragment extends Fragment {
         int endYear = getYearFromTime(end);
         int endMonth = getMonthFrontTime(end);
 
-        int[] buckets = new int[(endMonth - startMonth) + (MONTHS_PER_YEAR * (endYear - startYear))];
+        int[] buckets = new int[(endMonth - startMonth) +
+                (MONTHS_PER_YEAR * (endYear - startYear))];
         for (WebAPI.RatData rat : ratData) {
             int ratMonth = getMonthFrontTime(rat.createdTime);
             int ratYear = getYearFromTime(rat.createdTime);
@@ -191,7 +195,8 @@ public class GraphFragment extends Fragment {
         calendar.set(endYear, endMonth, 1);
         graph.getViewport().setMaxX(calendar.getTime().getTime());
 
-        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("MM/yy", Locale.US)));
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(),
+                new SimpleDateFormat("MM/yy", Locale.US)));
         graph.getGridLabelRenderer().setNumHorizontalLabels(buckets.length);
 
         Log.w("Graphing", startYear + "-" + startMonth + " " + endYear + "-" + endMonth);
@@ -201,11 +206,12 @@ public class GraphFragment extends Fragment {
      * Changes the data in the graph based on the provided rat sightings, and the date range.
      *
      * @param ratData Rat data to use
-     * @param start Start date to graph
-     * @param end End date to graph
-     * @param byYear Whether to graph by year or by month
+     * @param start   Start date to graph
+     * @param end     End date to graph
+     * @param byYear  Whether to graph by year or by month
      */
-    public void setGraphData(Iterable<WebAPI.RatData> ratData, long start, long end, boolean byYear) {
+    public void setGraphData(Iterable<WebAPI.RatData> ratData, long start,
+                             long end, boolean byYear) {
         if (byYear) {
             setGraphDataByYear(ratData, start, end);
         } else {
@@ -217,6 +223,7 @@ public class GraphFragment extends Fragment {
 
     /**
      * Get the year as an integer from a millisecond time from epoch
+     *
      * @param time from epoch
      * @return year (e.g. 1998)
      */
@@ -226,6 +233,7 @@ public class GraphFragment extends Fragment {
 
     /**
      * Get the month as an integer from a millisecond time from epoch.
+     *
      * @param time from epoch
      * @return month (e.g. January = 0)
      */

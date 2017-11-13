@@ -15,6 +15,9 @@ import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.RationalConfig;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * A class to handle the main activity
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final boolean WE_ARE_LAZY = "yes".equals(RationalConfig.getSetting(RationalConfig.ARE_WE_LAZY));
@@ -36,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Switches to Login View
      */
-    public void openLogin() {
+    public void openLogin(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    public void openRegister() {
+    /**
+     * Switches to the register view
+     */
+    public void openRegister(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }

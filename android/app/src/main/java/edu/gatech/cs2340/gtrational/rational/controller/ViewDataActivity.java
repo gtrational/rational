@@ -13,6 +13,9 @@ import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * Class for view data activity
+ */
 public class ViewDataActivity extends AppCompatActivity {
 
     @Override

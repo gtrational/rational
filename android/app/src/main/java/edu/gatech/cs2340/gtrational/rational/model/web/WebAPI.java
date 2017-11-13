@@ -126,7 +126,7 @@ public final class WebAPI {
              * @param city    The city
              * @param borough The borough
              * @param zipCode The zip code
-             * @param latLon  The latitud-longitude object
+             * @param latLon  The latitude-longitude object
              * @return The address info
              */
             public static AddressInfo of(String address, String city, String borough, int zipCode,

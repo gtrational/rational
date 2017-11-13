@@ -21,6 +21,9 @@ public class RationalApp extends Application {
         return instance;
     }
 
+    /**
+     * Constructor to set the instance.
+     */
     public RationalApp() {
         instance = this;
     }

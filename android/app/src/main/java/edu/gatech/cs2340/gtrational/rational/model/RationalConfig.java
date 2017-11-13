@@ -26,6 +26,9 @@ public class RationalConfig {
 
     private static Map<String, String> settings;
 
+    /**
+     * Method to init the config
+     */
     public static void init() {
         settings = new HashMap<>();
         loadConfig();
@@ -36,6 +39,11 @@ public class RationalConfig {
         }
     }
 
+    /**
+     * Returns the setting
+     * @param key The key
+     * @return The setting value
+     */
     public static String getSetting(String key) {
         if (!settings.containsKey(key)) {
             throw new RuntimeException("Setting \"" + key + "\" has not been loaded");
@@ -43,6 +51,11 @@ public class RationalConfig {
         return settings.get(key);
     }
 
+    /**
+     * Sets a setting
+     * @param key The key
+     * @param value The new setting value
+     */
     public static void setSetting(String key, String value) {
         settings.put(key, value);
     }
@@ -66,13 +79,14 @@ public class RationalConfig {
         XmlResourceParser xrp = RationalApp.getInstance().getApplicationContext().getResources().getXml(settingsId);
 
         try {
-            int eventType;
-            while ((eventType = xrp.next()) != XmlPullParser.END_DOCUMENT) {
+            int eventType = xrp.next();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
                 if ((eventType == XmlPullParser.START_TAG) && "setting".equalsIgnoreCase(xrp.getName())) {
                     String setting = xrp.getAttributeValue(null, "name");
                     xrp.next();
                     settings.put(setting, xrp.getText());
                 }
+                eventType = xrp.next();
             }
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();

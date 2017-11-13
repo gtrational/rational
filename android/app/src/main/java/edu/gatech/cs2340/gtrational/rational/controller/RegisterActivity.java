@@ -17,6 +17,9 @@ import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.User;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * Class for register activity
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private static final int GRAVITY_MAGIC_NUMBER = 20;

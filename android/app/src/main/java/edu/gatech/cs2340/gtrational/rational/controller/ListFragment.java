@@ -38,36 +38,42 @@ public class ListFragment extends Fragment {
     private List<HashMap<String, String>> listItems;
     private Map<Integer, HashMap<String, String>> listMap;
 
-    public ListFragment() {
-        // Required empty public constructor
-    }
-
     private HashMap<String, String> buildRatData(WebAPI.RatData data) {
         HashMap<String, String> item = new HashMap<>();
         item.put("line1", data.uniqueKey + "");
-        item.put("line2", new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa").format(new Date(data.createdTime)) + "");
+        item.put("line2", new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa")
+                .format(new Date(data.createdTime)) + "");
         item.put("line3", data.borough + ", " + data.city);
         return item;
     }
 
+    /**
+     * Updates the rat data
+     * @param ratInfo The new data
+     */
     public void onRatUpdate(WebAPI.RatData ratInfo) {
         new ExecuteTask(ratInfo).execute();
     }
 
     private void fetchOldData() {
         Log.w("tag", "fetchOldData");
-        Model.getInstance().getRatData(listItems.size(), DEFAULT_RAT_NUM, (List<WebAPI.RatData> newData) -> {
+        Model.getInstance().getRatData(listItems.size(), DEFAULT_RAT_NUM,
+                (List<WebAPI.RatData> newData) -> {
             Log.w("tag", "olddat: " + newData);
             new ExecuteTask(newData, false).execute();
         });
     }
 
+    /**
+     * Will fetch new data
+     */
     public void fetchNewData() {
         Log.w("tag", "fetchNewData");
         Model.getInstance().getNewestRatData((List<WebAPI.RatData> newData) -> {
             Log.w("tag", "newdat: " + newData);
             new ExecuteTask(newData, true).execute();
-            @SuppressWarnings("ConstantConditions") SwipeRefreshLayout swipeLayout = getView().findViewById(R.id.swipe_layout);
+            @SuppressWarnings("ConstantConditions") SwipeRefreshLayout swipeLayout = getView()
+                    .findViewById(R.id.swipe_layout);
             swipeLayout.setRefreshing(false);
         });
     }
@@ -81,20 +87,23 @@ public class ListFragment extends Fragment {
      * @return returns View
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         listItems = new ArrayList<>();
         listMap = new HashMap<>();
 
         ListView theList = view.findViewById(R.id.listview);
-        ListAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout, new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
+        ListAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout,
+                new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
 
         theList.setOnItemClickListener((AdapterView<?> adapterView, View view1, int i, long l) -> {
             Intent intent = new Intent(getActivity(), ViewDataActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("text", (String) ((TextView) view1.findViewById(R.id.line1)).getText());
+            bundle.putString("text",
+                    (String) ((TextView) view1.findViewById(R.id.line1)).getText());
             intent.putExtras(bundle);
             startActivity(intent);
         });
@@ -130,7 +139,7 @@ public class ListFragment extends Fragment {
         }
 
         public ExecuteTask(List<WebAPI.RatData> newData, boolean isNew) {
-            this.newData = newData;
+            this.newData = new ArrayList<>(newData);
             this.isNew = isNew;
         }
 
@@ -163,7 +172,8 @@ public class ListFragment extends Fragment {
                 }
             }
 
-            @SuppressWarnings("ConstantConditions") ListView theList = getView().findViewById(R.id.listview);
+            @SuppressWarnings("ConstantConditions") ListView theList = getView()
+                    .findViewById(R.id.listview);
             BaseAdapter adapter = (BaseAdapter)theList.getAdapter();
             adapter.notifyDataSetChanged();
         }

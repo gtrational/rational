@@ -10,6 +10,10 @@ import org.json.JSONObject;
 @FunctionalInterface
 public interface ModelUpdateListener {
 
+    /**
+     * The void callback
+     * @param updateInfo The callback json data
+     */
     void callback(JSONObject updateInfo);
 
 }

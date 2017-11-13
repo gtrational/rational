@@ -30,13 +30,16 @@ import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * Class to handle the main dashboard activity
+ */
 public class MainDashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static class FragInfo {
-        public final Class<? extends Fragment> fragmentClass;
-        public final String title;
+        final Class<? extends Fragment> fragmentClass;
+        final String title;
 
-        public FragInfo(Class<? extends Fragment> fragmentClass, String title) {
+        FragInfo(Class<? extends Fragment> fragmentClass, String title) {
             this.fragmentClass = fragmentClass;
             this.title = title;
         }
@@ -46,6 +49,9 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     private Fragment activeFragment;
     private final List<Callbacks.VoidCallback> onDestroy;
 
+    /**
+     * Constructor for the main dashboard activity
+     */
     public MainDashboardActivity() {
         //Init Fragments
         fragments = new HashMap<>();
@@ -83,10 +89,14 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
      */
     public void setMapPins(long start, long end) {
         Model.getInstance().getDateRangeRatsData(start, end, (List<WebAPI.RatData> ratData) -> {
-            if (activeFragment instanceof MapFragment) {
+            if (isActiveFragment(MapFragment.class)) {
                 ((MapFragment)activeFragment).setMapPins(ratData);
             }
         });
+    }
+
+    private boolean isActiveFragment(Class<?> clazz) {
+        return activeFragment.getClass() == clazz;
     }
 
     /**
@@ -99,7 +109,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     public void setGraphData(long start, long end, boolean byYear) {
         Model.getInstance().getDateRangeRatsData(start, end, (Iterable<WebAPI.RatData> ratData) -> {
             Log.w("Dashboard", "Got Here");
-            if (activeFragment instanceof GraphFragment) {
+            if (isActiveFragment(GraphFragment.class)) {
                 ((GraphFragment) activeFragment).setGraphData(ratData, start, end, byYear);
             }
         });
@@ -111,7 +121,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
 
         //Subscribe to update
         onDestroy.add(Model.getInstance().registerListener(Model.RAT_SIGHTING_UPDATE, (JSONObject updateInfo) -> {
-            if (activeFragment instanceof ListFragment) {
+            if (isActiveFragment(ListFragment.class)) {
                 try {
                     ((ListFragment) activeFragment).onRatUpdate(new WebAPI.RatData(updateInfo));
                 } catch (JSONException e) {
@@ -191,7 +201,7 @@ public class MainDashboardActivity extends AppCompatActivity implements Navigati
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (activeFragment instanceof ListFragment) {
+        if (isActiveFragment(ListFragment.class)) {
             ((ListFragment)activeFragment).fetchNewData();
         }
     }

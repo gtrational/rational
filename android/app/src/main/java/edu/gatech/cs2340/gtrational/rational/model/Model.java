@@ -39,6 +39,10 @@ public final class Model {
         }
     }
 
+    /**
+     * Returns the user
+     * @return The user
+     */
     public User getUser() {
         return user;
     }
@@ -67,6 +71,7 @@ public final class Model {
      *
      * @param topic a string representing the topic of information being subscribed to
      * @param listener a callback to be passed information about the update which occurred
+     * @return A void callback
      */
     public Callbacks.VoidCallback registerListener(String topic, ModelUpdateListener listener) {
         if (updateListeners.containsKey(topic)) {
@@ -226,6 +231,12 @@ public final class Model {
             }
         }
     }*/
+
+    /**
+     * Returns the rat data
+     * @param uniqueKey The key corresponding to the rat data
+     * @return The rat data
+     */
     public WebAPI.RatData getRatDataByKey(int uniqueKey) {
         return ratDataMap.get(uniqueKey);
     }

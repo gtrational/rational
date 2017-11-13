@@ -14,6 +14,12 @@ public class User {
     private final PermissionLevel permissionLvl;
     private final String sessionId;
 
+    /**
+     * Constructor for user
+     * @param email The email
+     * @param sessionId The session id
+     * @param permissionLevel The permission level
+     */
     public User(String email, String sessionId, PermissionLevel permissionLevel) {
         this.email = email;
         this.sessionId = sessionId;

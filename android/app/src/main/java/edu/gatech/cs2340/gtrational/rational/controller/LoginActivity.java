@@ -20,6 +20,9 @@ import edu.gatech.cs2340.gtrational.rational.R;
 import edu.gatech.cs2340.gtrational.rational.model.Model;
 import edu.gatech.cs2340.gtrational.rational.model.web.WebAPI;
 
+/**
+ * A class to handle login activity
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private static final int GRAVITY_MAGIC_NUMBER = 20;

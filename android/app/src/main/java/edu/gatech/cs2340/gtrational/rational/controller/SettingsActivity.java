@@ -7,6 +7,9 @@ import android.view.MenuItem;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 
+/**
+ * Class for the settings activity
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -28,6 +31,9 @@ public class SettingsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Logs out the user
+     */
     public void logout() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

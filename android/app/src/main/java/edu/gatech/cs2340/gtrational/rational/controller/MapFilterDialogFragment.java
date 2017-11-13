@@ -19,10 +19,6 @@ import edu.gatech.cs2340.gtrational.rational.R;
  */
 public class MapFilterDialogFragment extends DialogFragment {
 
-    public MapFilterDialogFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -50,6 +46,12 @@ public class MapFilterDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    /**
+     * Converts date to seconds
+     * @param date The date
+     * @return The milliseconds
+     * @throws ParseException The exception
+     */
     public static long dateToSeconds(String date) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
         Date actual_date = format.parse(date);

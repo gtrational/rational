@@ -44,6 +44,13 @@ public final class WebAPI {
         public final String sessionID;
         public final User.PermissionLevel permissionLevel;
 
+        /**
+         * Constructor for login result
+         * @param success Successful or not
+         * @param err The error
+         * @param session The session
+         * @param permissionLevelOrdinal The ordinal of the permission level
+         */
         public LoginResult(boolean success, String err, String session, int permissionLevelOrdinal) {
             this.success = success;
             this.errMsg = err;
@@ -59,6 +66,11 @@ public final class WebAPI {
         public final boolean success;
         public final String errMsg;
 
+        /**
+         * Constructor for register result
+         * @param success Is it successful
+         * @param err The error
+         */
         public RegisterResult(boolean success, String err) {
             this.success = success;
             this.errMsg = err;
@@ -74,13 +86,18 @@ public final class WebAPI {
             public final double lat;
             public final double lon;
 
+            /**
+             * Constructor for latitude and longitude
+             * @param lat The latitude
+             * @param lon The longitude
+             */
             public LatLon(double lat, double lon) {
                 this.lat = lat;
                 this.lon = lon;
             }
         }
 
-        public static class AddressInfo {
+        public static final class AddressInfo {
             public final String address;
             public final String city;
             public final String borough;
@@ -97,6 +114,15 @@ public final class WebAPI {
                 this.lon = latLon.lon;
             }
 
+            /**
+             * Returns a new address info
+             * @param address The address
+             * @param city The city
+             * @param borough The borough
+             * @param zipCode The zip code
+             * @param latLon The latitud-longitude object
+             * @return The address info
+             */
             public static AddressInfo of(String address, String city, String borough, int zipCode, LatLon latLon) {
                 return new AddressInfo(address, city, borough, zipCode, latLon);
             }
@@ -112,6 +138,11 @@ public final class WebAPI {
         public double latitude;
         public double longitude;
 
+        /**
+         * Constructor for rat data
+         * @param obj The json data
+         * @throws JSONException The exception
+         */
         public RatData (JSONObject obj) throws JSONException {
             uniqueKey = obj.getInt("unique_key");
             createdTime = obj.getLong("created_date");
@@ -124,6 +155,13 @@ public final class WebAPI {
             longitude = obj.getDouble("longitude");
         }
 
+        /**
+         * Constructor for rat data
+         * @param uniqueKey The unique key
+         * @param createdTime The time it was created
+         * @param locationType The type of location
+         * @param addressInfo The address info
+         */
         public RatData (int uniqueKey, long createdTime, String locationType, AddressInfo addressInfo) {
             this.uniqueKey = uniqueKey;
             this.createdTime = createdTime;
@@ -136,6 +174,10 @@ public final class WebAPI {
             this.longitude = addressInfo.lon;
         }
 
+        /**
+         * Converts to json object
+         * @return The json object
+         */
         public JSONObject toJson() {
             RatData rData = this;
             JSONObject rData_json = new JSONObject();
@@ -176,9 +218,10 @@ public final class WebAPI {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             StringBuilder str = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
+            String line = reader.readLine();
+            while (line != null) {
                 str.append(line);
+                line = reader.readLine();
             }
             return str.toString();
 
@@ -218,31 +261,10 @@ public final class WebAPI {
                 outputStream.write(content.getBytes());
 
                 String resp = readStream(conn.getInputStream());
-
-                if (resp == null) {
-                    String err = readStream(conn.getErrorStream());
-                    Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
-                    try {
-                        callback.callback(null);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                }
-
                 try {
-                    JSONObject respJson = new JSONObject(resp);
-                    if (printWebRequests) {
-                        Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
-                    }
-                    callback.callback(respJson);
+                    callback.callback(webReqParseResp(resp, endpoint, conn));
                 } catch (JSONException e) {
-                    Log.w("tag", "Also got jexception " + e.toString());
-                    try {
-                        callback.callback(null);
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
-                    }
+                    e.printStackTrace();
                 }
             } catch (IOException e) {
                 Log.w("WebAPI", e);
@@ -255,11 +277,31 @@ public final class WebAPI {
         });
     }
 
+    private static JSONObject webReqParseResp(String resp, String endpoint, HttpURLConnection conn) throws IOException {
+        if (resp == null) {
+            String err = readStream(conn.getErrorStream());
+            Log.w("WebAPI", "Http Error (code " + conn.getResponseCode() + "): " + err);
+            return null;
+        }
+
+        try {
+            JSONObject respJson = new JSONObject(resp);
+            if (printWebRequests) {
+                Log.d("tag", "Got from " + endpoint + ": " + respJson.toString(2));
+            }
+            return respJson;
+        } catch (JSONException e) {
+            Log.w("tag", "Also got jexception " + e.toString());
+            return null;
+        }
+    }
+
     /**
      * Will attempt to login the user using our backend
      *
      * @param email The username
      * @param password The password
+     * @param callback The callback
      */
     public static void login(String email, String password, Callbacks.AnyCallback<LoginResult> callback) {
         try {
@@ -267,13 +309,15 @@ public final class WebAPI {
                     .put("email", email)
                     .put("password", password);
             webRequest("/api/login", loginRequest, (JSONObject response) -> {
+                LoginResult result;
                 if (response == null) {
-                    callback.callback(new LoginResult(false, "No server response", null, 0));
+                    result = new LoginResult(false, "No server response", null, 0);
                 } else if (response.has("err")) {
-                    callback.callback(new LoginResult(false, response.getString("err"), null, 0));
+                    result = new LoginResult(false, response.getString("err"), null, 0);
                 } else {
-                    callback.callback(new LoginResult(true, null, response.getString("sessionid"), response.getInt("permLevel")));
+                    result = new LoginResult(true, null, response.getString("sessionid"), response.getInt("permLevel"));
                 }
+                callback.callback(result);
             });
         } catch (JSONException e) {
             Log.w("WebAPI", e);
@@ -286,6 +330,8 @@ public final class WebAPI {
      *
      * @param email The username
      * @param password The password
+     * @param permissionLevel The permission level
+     * @param callback The callback
      */
     public static void register(String email, String password, User.PermissionLevel permissionLevel, Callbacks.AnyCallback<RegisterResult> callback) {
         try {
@@ -294,13 +340,15 @@ public final class WebAPI {
                     .put("password", password)
                     .put("permLevel", permissionLevel.ordinal());
             webRequest("/api/register", loginRequest, (JSONObject response) -> {
+                RegisterResult result;
                 if (response == null) {
-                    callback.callback(new RegisterResult(false, "No server response"));
+                    result = new RegisterResult(false, "No server response");
                 } else if (response.has("err")) {
-                    callback.callback(new RegisterResult(false, response.getString("err")));
+                    result = new RegisterResult(false, response.getString("err"));
                 } else {
-                    callback.callback(new RegisterResult(true, null));
+                    result = new RegisterResult(true, null);
                 }
+                callback.callback(result);
             });
         } catch (JSONException e) {
             Log.w("WebAPI", e);

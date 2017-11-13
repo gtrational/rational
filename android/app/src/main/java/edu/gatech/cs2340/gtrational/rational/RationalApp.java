@@ -13,12 +13,23 @@ public class RationalApp extends Application {
 
     private static RationalApp instance;
 
+    /**
+     * Returns the instance of rational app
+     * @return The instance
+     */
     public static RationalApp getInstance() {
         return instance;
     }
 
+    private static void setInstance(RationalApp instance) {
+        RationalApp.instance = instance;
+    }
+
+    /**
+     * Default constructor
+     */
     public RationalApp() {
-        instance = this;
+        RationalApp.setInstance(this);
     }
 
     @Override

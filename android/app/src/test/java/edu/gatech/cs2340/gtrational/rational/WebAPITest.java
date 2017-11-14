@@ -1,5 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,6 +22,9 @@ public class WebAPITest {
 
     private static String sessionID;
 
+    /**
+     * Set up testing
+     */
     @BeforeClass
     public static void setup() {
         try {
@@ -32,8 +36,14 @@ public class WebAPITest {
 
     private static volatile WebAPI.LoginResult loginResult;
 
+    /**
+     * Test logging in as a user
+     *
+     * @throws InterruptedException from Thread.sleep()
+     * @throws JSONException from JSON serialization
+     */
     @Test
-    public void testLogin() throws Exception {
+    public void testLogin() throws InterruptedException, JSONException {
 
         String username = "testuser";
         String password = "testpass";
@@ -46,7 +56,11 @@ public class WebAPITest {
 
         if (loginResult.success) {
             sessionID = loginResult.sessionID;
-            Model.getInstance().updateUser(new JSONObject().put("email", username).put("sessionID", loginResult.sessionID).put("permLevel", loginResult.permissionLevel.ordinal()));
+            Model.getInstance().updateUser(
+                    new JSONObject().put("email", username)
+                            .put("sessionID", loginResult.sessionID)
+                            .put("permLevel", loginResult.permissionLevel.ordinal())
+            );
             System.out.println("Login Success; SessionID: " + sessionID);
         } else {
             System.out.println("Login Error: " + loginResult.errMsg);
@@ -55,13 +69,23 @@ public class WebAPITest {
 
     private static volatile List<WebAPI.RatData> getRatSightingsResult;
 
+    /**
+     * Test getting rat sighting data from the server
+     *
+     * @throws InterruptedException from Thread.sleep()
+     * @throws JSONException from JSON serialization
+     */
     @Test
-    public void testGetRatSightings() throws Exception {
+    public void testGetRatSightings() throws InterruptedException, JSONException {
         if (sessionID == null) {
             testLogin();
         }
 
-        WebAPI.getRatSightings(0, 5, (List<WebAPI.RatData> dat) -> getRatSightingsResult = new ArrayList<>(dat));
+        WebAPI.getRatSightings(
+                0,
+                5,
+                (List<WebAPI.RatData> dat) -> getRatSightingsResult = new ArrayList<>(dat)
+        );
 
         while (getRatSightingsResult == null) {
             Thread.sleep(1);
@@ -69,7 +93,8 @@ public class WebAPITest {
 
         System.out.println("Got " + getRatSightingsResult.size() + " rat sightings:");
         for (WebAPI.RatData data : getRatSightingsResult) {
-            System.out.println(data.toJson().toString(2));
+            JSONObject dataJSON = data.toJson();
+            System.out.println(dataJSON.toString(2));
         }
     }
 }

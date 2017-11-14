@@ -48,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param view The View object.
      */
     public void verifyLogin(View view) {
-        EditText usernameField = (EditText) findViewById((R.id.editTextUsername));
-        EditText passwordField = (EditText) findViewById((R.id.editTextPassword));
+        EditText usernameField = findViewById((R.id.editTextUsername));
+        EditText passwordField = findViewById((R.id.editTextPassword));
 
         EditText[] requiredFields = {usernameField, passwordField};
         String[] messages = {"Please enter username", "Please enter password"};
@@ -64,7 +64,11 @@ public class LoginActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(getApplicationContext(), messages[i], Toast.LENGTH_SHORT);
 
                 //Display toast on right of screen at the y value of the input field
-                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER);
+                t.setGravity(
+                        Gravity.TOP | Gravity.RIGHT,
+                        0,
+                        loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER
+                );
                 t.show();
                 return;
             }
@@ -73,8 +77,15 @@ public class LoginActivity extends AppCompatActivity {
         //Hide keyboard if open
         View focused = getCurrentFocus();
         if (focused != null) {
-            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(focused.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            InputMethodManager inputManager =
+                    (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(
+                        focused.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS
+                );
+            }
         }
 
         String username = usernameField.getText().toString();
@@ -87,7 +98,11 @@ public class LoginActivity extends AppCompatActivity {
         WebAPI.login(username, password, (WebAPI.LoginResult result) -> {
             if (result.success) {
                 try {
-                    Model.getInstance().updateUser(new JSONObject().put("email", username).put("sessionID", result.sessionID).put("permLevel", result.permissionLevel.ordinal()));
+                    Model.getInstance().updateUser(
+                            new JSONObject().put("email", username)
+                                    .put("sessionID", result.sessionID)
+                                    .put("permLevel", result.permissionLevel.ordinal())
+                    );
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -105,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * If user cancels login, login is terminated and activity finishes.
+
+     * @param view the view
      */
     public void cancelLogin(View view) {
         finish();

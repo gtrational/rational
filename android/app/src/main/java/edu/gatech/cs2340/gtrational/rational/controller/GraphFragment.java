@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.Viewport;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -79,16 +80,6 @@ public class GraphFragment extends Fragment {
         graph = view.findViewById(R.id.graph);
         graph.setTitle("Rat Sighting History");
 
-//        calendar.set(2016, 0, 1);
-//        Date d1 = calendar.getTime();
-//        calendar.set(2017, 0, 1);
-//        Date d2 = calendar.getTime();
-//        calendar.set(2018, 0, 1);
-//        Date d3 = calendar.getTime();
-//        calendar.set(2019, 0, 1);
-//        Date d4 = calendar.getTime();
-
-
         series = new BarGraphSeries<>(new DataPoint[]{});
         graph.addSeries(series);
 
@@ -99,19 +90,14 @@ public class GraphFragment extends Fragment {
         series.setValuesOnTopColor(Color.RED);
         //series.setValuesOnTopSize(50);
 
-//        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(), new SimpleDateFormat("yy", Locale.US)));
-//        graph.getGridLabelRenderer().setNumHorizontalLabels(4);
-
         // set manual x bounds to have nice steps
-//        graph.getViewport().setMinX(d1.getTime());
-//        graph.getViewport().setMaxX(d4.getTime());
-        graph.getViewport().setXAxisBoundsManual(true);
+        Viewport vp = graph.getViewport();
+        vp.setXAxisBoundsManual(true);
 
-        graph.getViewport().setMinY(0);
-        graph.getViewport().setYAxisBoundsManual(true);
+        vp.setMinY(0);
+        vp.setYAxisBoundsManual(true);
 
-        // as we use dates as labels, the human rounding to nice readable numbers
-        // is not necessary
+        // as we use dates as labels, the human rounding to nice readable number is not necessary
         graph.getGridLabelRenderer().setHumanRounding(false);
 
         // Inflate the layout for this fragment
@@ -147,10 +133,10 @@ public class GraphFragment extends Fragment {
 
         // set manual x bounds to have nice steps
         calendar.set(startYear, 0, 1);
-        graph.getViewport().setMinX(calendar.getTime().getTime());
+        graph.getViewport().setMinX(calendar.getTimeInMillis());
 
         calendar.set(endYear, 0, 1);
-        graph.getViewport().setMaxX(calendar.getTime().getTime());
+        graph.getViewport().setMaxX(calendar.getTimeInMillis());
 
 
         Log.w("Graphing", startYear + " " + endYear);
@@ -190,10 +176,10 @@ public class GraphFragment extends Fragment {
 
         // set manual x bounds to have nice steps
         calendar.set(startYear, startMonth, 1);
-        graph.getViewport().setMinX(calendar.getTime().getTime());
+        graph.getViewport().setMinX(calendar.getTimeInMillis());
 
         calendar.set(endYear, endMonth, 1);
-        graph.getViewport().setMaxX(calendar.getTime().getTime());
+        graph.getViewport().setMaxX(calendar.getTimeInMillis());
 
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(),
                 new SimpleDateFormat("MM/yy", Locale.US)));
@@ -228,7 +214,8 @@ public class GraphFragment extends Fragment {
      * @return year (e.g. 1998)
      */
     private static int getYearFromTime(long time) {
-        return Integer.parseInt(new SimpleDateFormat("yyyy", Locale.US).format(new Date(time)));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy", Locale.US);
+        return Integer.parseInt(sdf.format(new Date(time)));
     }
 
     /**
@@ -238,7 +225,8 @@ public class GraphFragment extends Fragment {
      * @return month (e.g. January = 0)
      */
     private static int getMonthFrontTime(long time) {
-        return Integer.parseInt(new SimpleDateFormat("MM", Locale.US).format(new Date(time))) - 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("MM", Locale.US);
+        return Integer.parseInt(sdf.format(new Date(time))) - 1;
     }
 
 }

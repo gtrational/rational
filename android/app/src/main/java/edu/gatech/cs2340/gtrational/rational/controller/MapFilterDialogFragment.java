@@ -40,7 +40,6 @@ public class MapFilterDialogFragment extends DialogFragment {
 
                 })
                 .setNegativeButton("Cancel", (DialogInterface dialog, int id) -> {
-                    // TODO Cancelled
                 })
                 .setView(R.layout.fragment_map_filter);
         return builder.create();

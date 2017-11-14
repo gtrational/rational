@@ -87,12 +87,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(DEFAULT_LAT, DEFAULT_LONG), DEFAULT_ZOOM));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(DEFAULT_LAT, DEFAULT_LONG), DEFAULT_ZOOM
+        ));
         Model.getInstance().getRatData(0, 10, this::setMapPins);
     }
 
     /**
      * Sets the map pins to the provided list
+     *
      * @param ratData The list of map pins
      */
     public void setMapPins(List<WebAPI.RatData> ratData) {
@@ -139,7 +142,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             map.clear();
             for (int i = 0; i < rat_data.size(); i++) {
                 WebAPI.RatData data = rat_data.get(i);
-                map.addMarker(new MarkerOptions().position(new LatLng(data.latitude, data.longitude)).title(data.uniqueKey + ""));
+                map.addMarker(new MarkerOptions()
+                        .position(new LatLng(data.latitude, data.longitude))
+                        .title(data.uniqueKey + ""));
             }
         }
     }

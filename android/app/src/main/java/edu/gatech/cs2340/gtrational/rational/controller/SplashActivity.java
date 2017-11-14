@@ -7,7 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A splash screen that determines whether a user is logged in and directs them to the correct screen.
+ * A splash screen that determines whether a user is logged
+ * in and directs them to the correct screen.
  */
 public class SplashActivity extends AppCompatActivity {
 

@@ -21,15 +21,11 @@ public class RationalApp extends Application {
         return instance;
     }
 
-    private static void setInstance(RationalApp instance) {
-        RationalApp.instance = instance;
-    }
-
     /**
-     * Default constructor
+     * Constructor to set the instance.
      */
     public RationalApp() {
-        RationalApp.setInstance(this);
+        instance = this;
     }
 
     @Override

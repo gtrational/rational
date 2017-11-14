@@ -27,13 +27,17 @@ public class NewSightingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
 
-        Spinner spinner = (Spinner) findViewById(R.id.location_type);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.location_type, android.R.layout.simple_spinner_item);
+        Spinner spinner = findViewById(R.id.location_type);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.location_type, android.R.layout.simple_spinner_item
+        );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        Spinner boroughSpinner = (Spinner) findViewById(R.id.borough_spinner);
-        ArrayAdapter<CharSequence> boroughAdapter = ArrayAdapter.createFromResource(this, R.array.boroughs, android.R.layout.simple_spinner_item);
+        Spinner boroughSpinner = findViewById(R.id.borough_spinner);
+        ArrayAdapter<CharSequence> boroughAdapter = ArrayAdapter.createFromResource(
+                this, R.array.boroughs, android.R.layout.simple_spinner_item
+        );
         boroughAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         boroughSpinner.setAdapter(boroughAdapter);
 
@@ -53,18 +57,18 @@ public class NewSightingActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
-                Spinner locationType = (Spinner) findViewById(R.id.location_type);
-                EditText address1 = (EditText) findViewById((R.id.address_line1));
-                EditText address2 = (EditText) findViewById((R.id.address_line2));
-                EditText city = (EditText) findViewById((R.id.city));
-                EditText zip = (EditText) findViewById((R.id.ZIP));
-                Spinner borough = (Spinner) findViewById(R.id.borough_spinner);
+                Spinner locationType = findViewById(R.id.location_type);
+                EditText address1 = findViewById((R.id.address_line1));
+                EditText address2 = findViewById((R.id.address_line2));
+                EditText city = findViewById((R.id.city));
+                EditText zip = findViewById((R.id.ZIP));
+                Spinner borough = findViewById(R.id.borough_spinner);
 
                 int zipCode;
                 try {
                     zipCode = Integer.parseInt(zip.getText().toString());
                 } catch (Exception e) {
-                    //TODO Popup saying invalid zip code
+                    // TODO Popup saying invalid zip code
                     return true;
                 }
 
@@ -74,8 +78,19 @@ public class NewSightingActivity extends AppCompatActivity {
                     address += secondAddress;
                 }
 
-                WebAPI.RatData newRatData = new WebAPI.RatData(-1, System.currentTimeMillis(), locationType.getSelectedItem().toString(),
-                        WebAPI.RatData.AddressInfo.of(address, city.getText().toString(), borough.getSelectedItem().toString(), zipCode, new WebAPI.RatData.LatLon(0, 0)));
+                WebAPI.RatData newRatData = new WebAPI.RatData(
+                        -1,
+                        System.currentTimeMillis(),
+                        locationType.getSelectedItem().toString(),
+                        WebAPI.RatData.AddressInfo.of(
+                                address,
+                                city.getText().toString(),
+                                borough.getSelectedItem().toString(),
+                                zipCode,
+                                new WebAPI.RatData.LatLon(0, 0)
+                        )
+                );
+
                 WebAPI.addRatSighting(newRatData, (WebAPI.RatDataResult result) -> {
                     if (result.success) {
                         finish();

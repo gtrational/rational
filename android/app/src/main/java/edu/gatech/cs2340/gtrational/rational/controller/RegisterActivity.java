@@ -45,13 +45,16 @@ public class RegisterActivity extends AppCompatActivity {
      * @param view The View object
      */
     public void verifyRegister(View view) {
-        EditText usernameField = (EditText) findViewById(R.id.editTextUsername_R);
-        EditText passwordField = (EditText) findViewById(R.id.editTextPassword_R);
-        EditText confirmPasswordField = (EditText) findViewById(R.id.editTextPasswordConfirm_R);
+        EditText usernameField = findViewById(R.id.editTextUsername_R);
+        EditText passwordField = findViewById(R.id.editTextPassword_R);
+        EditText confirmPasswordField = findViewById(R.id.editTextPasswordConfirm_R);
 
         EditText[] requiredFields = {usernameField, passwordField, confirmPasswordField};
-        String[] messages = {"Please enter username", "Please enter password", "Please confirm password"};
-
+        String[] messages = {
+                "Please enter username",
+                "Please enter password",
+                "Please confirm password"
+        };
 
         //Display toast if one of the required fields is left blank
         for (int i = 0; i < requiredFields.length; i++) {
@@ -63,7 +66,11 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast t = Toast.makeText(getApplicationContext(), messages[i], Toast.LENGTH_SHORT);
 
                 //Display toast on right of screen at the y value of the input field
-                t.setGravity(Gravity.TOP | Gravity.RIGHT, 0, loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER);
+                t.setGravity(
+                        Gravity.TOP | Gravity.RIGHT,
+                        0,
+                        loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER
+                );
                 t.show();
                 return;
             }
@@ -72,8 +79,14 @@ public class RegisterActivity extends AppCompatActivity {
         //Hide keyboard if open
         View focused = getCurrentFocus();
         if (focused != null) {
-            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(focused.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            InputMethodManager inputManager
+                    = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(
+                        focused.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS
+                );
+            }
         }
 
         String username = usernameField.getText().toString();
@@ -109,6 +122,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     /**
      * If user presses "cancel", registration is cancelled and activity finishes.
+     * @param view the view
      */
     public void cancelRegister(View view) {
         finish();

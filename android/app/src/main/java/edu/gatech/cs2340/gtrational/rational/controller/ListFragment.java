@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import edu.gatech.cs2340.gtrational.rational.R;
@@ -39,10 +40,10 @@ public class ListFragment extends Fragment {
     private Map<Integer, HashMap<String, String>> listMap;
 
     private HashMap<String, String> buildRatData(WebAPI.RatData data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa", Locale.US);
         HashMap<String, String> item = new HashMap<>();
         item.put("line1", data.uniqueKey + "");
-        item.put("line2", new SimpleDateFormat("yyyy/MM/dd KK:mm:ss aa")
-                .format(new Date(data.createdTime)) + "");
+        item.put("line2", sdf.format(new Date(data.createdTime)) + "");
         item.put("line3", data.borough + ", " + data.city);
         return item;
     }
@@ -70,7 +71,7 @@ public class ListFragment extends Fragment {
     public void fetchNewData() {
         Log.w("tag", "fetchNewData");
         Model.getInstance().getNewestRatData((List<WebAPI.RatData> newData) -> {
-            Log.w("tag", "newdat: " + newData);
+            Log.w("ListFragment", "newdat: " + newData);
             new ExecuteTask(newData, true).execute();
             @SuppressWarnings("ConstantConditions") SwipeRefreshLayout swipeLayout = getView()
                     .findViewById(R.id.swipe_layout);
@@ -96,7 +97,8 @@ public class ListFragment extends Fragment {
 
         ListView theList = view.findViewById(R.id.listview);
         ListAdapter sa = new SimpleAdapter(this.getActivity(), listItems, R.layout.row_layout,
-                new String[]{"line1", "line2", "line3"}, new int[]{R.id.line1, R.id.line2, R.id.line3});
+                new String[]{"line1", "line2", "line3"},
+                new int[]{R.id.line1, R.id.line2, R.id.line3});
         theList.setAdapter(sa);
 
         theList.setOnItemClickListener((AdapterView<?> adapterView, View view1, int i, long l) -> {
@@ -172,10 +174,12 @@ public class ListFragment extends Fragment {
                 }
             }
 
-            @SuppressWarnings("ConstantConditions") ListView theList = getView()
-                    .findViewById(R.id.listview);
-            BaseAdapter adapter = (BaseAdapter)theList.getAdapter();
-            adapter.notifyDataSetChanged();
+            View view = getView();
+            if (view != null) {
+                ListView theList = getView().findViewById(R.id.listview);
+                BaseAdapter adapter = (BaseAdapter)theList.getAdapter();
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 }

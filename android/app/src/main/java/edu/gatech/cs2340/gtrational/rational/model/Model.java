@@ -40,11 +40,12 @@ public final class Model {
     }
 
     /**
-     * Returns the user
-     * @return The user
+     * Get the current user's session ID
+     *
+     * @return User's session ID as a string
      */
-    public User getUser() {
-        return user;
+    public String getUserSessionId() {
+        return user.getSessionId();
     }
 
     /**
@@ -60,22 +61,24 @@ public final class Model {
 
     /**
      * Static method to access singleton instance.
+     *
      * @return singleton instance
      */
-    public static Model getInstance(){
+    public static Model getInstance() {
         return instance;
     }
 
     /**
      * Register a new listener to the model on the given topic
      *
-     * @param topic a string representing the topic of information being subscribed to
+     * @param topic    a string representing the topic of information being subscribed to
      * @param listener a callback to be passed information about the update which occurred
      * @return A void callback
      */
     public Callbacks.VoidCallback registerListener(String topic, ModelUpdateListener listener) {
         if (updateListeners.containsKey(topic)) {
-            updateListeners.get(topic).add(listener);
+            List<ModelUpdateListener> listeners = updateListeners.get(topic);
+            listeners.add(listener);
         } else {
             List<ModelUpdateListener> newListener = new ArrayList<>();
             newListener.add(listener);
@@ -83,13 +86,16 @@ public final class Model {
             updateListeners.put(topic, newListener);
         }
 
-        return () -> updateListeners.get(topic).remove(listener);
+        return () -> {
+            List<ModelUpdateListener> listeners = updateListeners.get(topic);
+            listeners.remove(listener);
+        };
     }
 
     /**
      * Public info to all listeners for a certain topic about an update to data in the model.
      *
-     * @param topic topic to publish to
+     * @param topic      topic to publish to
      * @param updateInfo JSONObject containing info about what data in the model was updated.
      */
     private void publish(String topic, JSONObject updateInfo) {
@@ -104,11 +110,16 @@ public final class Model {
 
     /**
      * Format: {email, sessionID, permLevel}
+     *
      * @param userInfo Information about the user
      */
     public void updateUser(JSONObject userInfo) {
         try {
-            user = new User(userInfo.getString("email"), userInfo.getString("sessionID"), User.PermissionLevel.values()[userInfo.getInt("permLevel")]);
+            user = new User(
+                    userInfo.getString("email"),
+                    userInfo.getString("sessionID"),
+                    User.PermissionLevel.values()[userInfo.getInt("permLevel")]
+            );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,37 +128,40 @@ public final class Model {
 
     /**
      * Updates the list with the newest rat sightings
+     *
      * @param callback The callback to be executed once data is updated
      */
     public void getNewestRatData(Callbacks.AnyCallback<List<WebAPI.RatData>> callback) {
         if (ratSightings.isEmpty()) {
             return;
         }
-        WebAPI.getRatSightingsAfter(ratSightings.get(0).uniqueKey, (List<WebAPI.RatData> ratList) -> {
-            ratSightings.addAll(0, ratList);
-            mapRatList(ratList);
-            callback.callback(ratList);
-        });
+        WebAPI.getRatSightingsAfter(
+                ratSightings.get(0).uniqueKey,
+                (List<WebAPI.RatData> ratList) -> {
+                    ratSightings.addAll(0, ratList);
+                    mapRatList(ratList);
+                    callback.callback(ratList);
+                });
     }
 
     /**
-     *
-     * @param start The starting index of the desired block
-     * @param size The size of the desired block
+     * @param start    The starting index of the desired block
+     * @param size     The size of the desired block
      * @param callback The function to be executed
      */
-    public void getRatData(int start, int size, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
+    public void getRatData(int start, int size,
+                           Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
         if ((start + size) > ratSightings.size()) {
             int lastKey = 0;
             if (!ratSightings.isEmpty()) {
                 lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
             }
-            WebAPI.getRatSightings(lastKey, size, (Collection<WebAPI.RatData> list ) -> {
+            WebAPI.getRatSightings(lastKey, size, (Collection<WebAPI.RatData> list) -> {
                 Log.w("tag", "Model resp: " + list);
                 ratSightings.addAll(list);
                 mapRatList(list);
                 List<WebAPI.RatData> query = new ArrayList<>();
-                synchronized(ratSightings) {
+                synchronized (ratSightings) {
                     for (int i = start; i < (start + size); i++) {
                         query.add(ratSightings.get(i));
                     }
@@ -156,7 +170,7 @@ public final class Model {
             });
         } else {
             List<WebAPI.RatData> query = new ArrayList<>();
-            synchronized(ratSightings) {
+            synchronized (ratSightings) {
                 for (int i = start; i < (start + size); i++) {
                     query.add(ratSightings.get(i));
                 }
@@ -166,17 +180,18 @@ public final class Model {
     }
 
     /**
-     *
      * @param startDate The start date for the search
-     * @param endDate The end date of the search
-     * @param callback The function to be executed on the data
+     * @param endDate   The end date of the search
+     * @param callback  The function to be executed on the data
      */
-    public void getDateRangeRatsData(long startDate, long endDate, Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
-        recursiveDateCallBack(startDate, ()-> {
+    public void getDateRangeRatsData(long startDate, long endDate,
+                                     Callbacks.AnyCallback<? super List<WebAPI.RatData>> callback) {
+        recursiveDateCallBack(startDate, () -> {
             synchronized (ratSightings) {
                 List<WebAPI.RatData> valid = new ArrayList<>();
-                for(int i = 0; i < ratSightings.size(); i++) {
-                    if ((ratSightings.get(i).createdTime >= startDate) && (ratSightings.get(i).createdTime <= endDate)) {
+                for (int i = 0; i < ratSightings.size(); i++) {
+                    if ((ratSightings.get(i).createdTime >= startDate)
+                            && (ratSightings.get(i).createdTime <= endDate)) {
                         valid.add(ratSightings.get(i));
                     }
                 }
@@ -188,12 +203,12 @@ public final class Model {
     }
 
     /**
-     *
      * @param startDate Continually asks for more data until we have data older than startDate
-     * @param callback The function to be executed once all the data is populated
+     * @param callback  The function to be executed once all the data is populated
      */
     private void recursiveDateCallBack(long startDate, Callbacks.VoidCallback callback) {
-        if (!ratSightings.isEmpty() && (ratSightings.get(ratSightings.size() - 1).createdTime < startDate)) {
+        if (!ratSightings.isEmpty()
+                && (ratSightings.get(ratSightings.size() - 1).createdTime < startDate)) {
             callback.callback();
             return;
         }
@@ -234,6 +249,7 @@ public final class Model {
 
     /**
      * Returns the rat data
+     *
      * @param uniqueKey The key corresponding to the rat data
      * @return The rat data
      */

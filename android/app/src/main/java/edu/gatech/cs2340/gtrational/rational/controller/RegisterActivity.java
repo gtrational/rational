@@ -113,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
 
-        if (!fields[2].equals(fields[3])) {
+        if (!fields[1].equals(fields[2])) {
             return null;
         }
 

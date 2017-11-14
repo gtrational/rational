@@ -56,24 +56,34 @@ public class RegisterActivity extends AppCompatActivity {
                 "Please confirm password"
         };
 
-        //Display toast if one of the required fields is left blank
-        for (int i = 0; i < requiredFields.length; i++) {
-            EditText field = requiredFields[i];
-            if (field.getText().toString().isEmpty()) {
-                int[] loc = new int[2];
-                field.getLocationOnScreen(loc);
+        String[] fields = new String[3];
+        fields[0] = usernameField.getText().toString();
+        fields[1] = passwordField.getText().toString();
+        fields[2] = confirmPasswordField.getText().toString();
 
-                Toast t = Toast.makeText(getApplicationContext(), messages[i], Toast.LENGTH_SHORT);
+        String answer = verifyRegister(fields, messages);
+        int index = verifyRegister(requiredFields);
 
-                //Display toast on right of screen at the y value of the input field
-                t.setGravity(
-                        Gravity.TOP | Gravity.RIGHT,
-                        0,
-                        loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER
-                );
-                t.show();
-                return;
-            }
+        if (!answer.equals(null) && !answer.equals("Success")) {
+            int[] loc = new int[2];
+            EditText field = requiredFields[index];
+            field.getLocationOnScreen(loc);
+
+            Toast t = Toast.makeText(getApplicationContext(), answer, Toast.LENGTH_SHORT);
+
+            //Display toast on right of screen at the y value of the input field
+            t.setGravity(
+                    Gravity.TOP | Gravity.RIGHT,
+                    0,
+                    loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER
+            );
+            t.show();
+            return;
+        } else if (answer.equals(null)) {
+            Snackbar snackbar = Snackbar.make(view, "Passwords don't match", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        } else if (answer.equals("Success")) {
+            tryRegister(view, fields[0], fields[1]);
         }
 
         //Hide keyboard if open
@@ -88,17 +98,35 @@ public class RegisterActivity extends AppCompatActivity {
                 );
             }
         }
+    }
 
-        String username = usernameField.getText().toString();
-        String password = passwordField.getText().toString();
-        String confirmPassword = confirmPasswordField.getText().toString();
-
-        if (password.equals(confirmPassword)) {
-            tryRegister(view, username, password);
-        } else {
-            Snackbar snackbar = Snackbar.make(view, "Passwords don't match", Snackbar.LENGTH_LONG);
-            snackbar.show();
+    /**
+     *
+     * @param fields
+     * @param messages
+     * @return
+     */
+    public static String verifyRegister(String[] fields, String[] messages) {
+        for (int i = 0; i < fields.length; i++) {
+            if (fields[i].isEmpty()) {
+                return messages[i];
+            }
         }
+
+        if (!fields[2].equals(fields[3])) {
+            return null;
+        }
+
+        return "Success";
+    }
+
+    public int verifyRegister(EditText[] reqfields) {
+        for (int i = 0; i < reqfields.length; i++) {
+            if (reqfields[i].getText().toString().isEmpty()) {
+                return i;
+            }
+        }
+        return 0;
     }
 
     private void tryRegister(View view, String username, String password) {

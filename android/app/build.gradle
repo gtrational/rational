@@ -23,6 +23,10 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -41,4 +45,5 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.json:json:20140107'
+    testCompile group: 'com.sun.net.httpserver', name: 'http', version: '20070405'
 }

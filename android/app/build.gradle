@@ -23,6 +23,10 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -43,4 +47,5 @@ dependencies {
     testCompile 'org.json:json:20140107'
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile("com.android.support.test.espresso:espresso-intents:3.0.1")
+    testCompile group: 'com.sun.net.httpserver', name: 'http', version: '20070405'
 }

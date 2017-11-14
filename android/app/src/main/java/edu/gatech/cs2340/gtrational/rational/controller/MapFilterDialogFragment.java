@@ -11,6 +11,7 @@ import android.widget.EditText;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import edu.gatech.cs2340.gtrational.rational.R;
 
@@ -55,7 +56,7 @@ public class MapFilterDialogFragment extends DialogFragment {
         if (date == null) {
             throw new NullPointerException("Date cannot be null");
         }
-        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+        SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
         Date actual_date = format.parse(date);
         return actual_date.getTime();
     }

@@ -43,6 +43,19 @@ public class RegisterUnitTest {
         assertEquals(correct_answer, answer);
 
         fields[0] = "";
-        
+        answer = RegisterActivity.verifyRegister(fields, messages);
+        correct_answer = messages[0];
+        assertEquals(correct_answer, answer);
+
+        fields[1] = "";
+        answer = RegisterActivity.verifyRegister(fields, messages);
+        correct_answer = messages[1];
+        assertEquals(correct_answer, answer);
+
+        fields[2] = "";
+        answer = RegisterActivity.verifyRegister(fields, messages);
+        correct_answer = messages[2];
+        assertEquals(correct_answer, answer);
+
     }
 }

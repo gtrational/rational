@@ -1,7 +1,6 @@
 package edu.gatech.cs2340.gtrational.rational;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import junit.framework.Assert;
@@ -84,6 +83,7 @@ public class WebAPITest {
      * Tests all login cases
      *
      * @throws InterruptedException from Thread.sleep()
+     * @throws JSONException from json
      */
     @Test
     public void testLogin() throws InterruptedException, JSONException {

@@ -48,6 +48,15 @@ public final class Model {
         return user.getSessionId();
     }
 
+
+    /**
+     * Get the user
+     * @return the user
+     */
+    public User getUser() {
+        return user;
+    }
+
     /**
      * Map of listeners from topics to callbacks
      */
@@ -114,16 +123,21 @@ public final class Model {
      * @param userInfo Information about the user
      */
     public void updateUser(JSONObject userInfo) {
+        if (userInfo == null) {
+            return;
+        }
+
         try {
             user = new User(
                     userInfo.getString("email"),
                     userInfo.getString("sessionID"),
                     User.PermissionLevel.values()[userInfo.getInt("permLevel")]
             );
+            publish(USER_UPDATE, userInfo);
+
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.w("Model", e);
         }
-        publish(USER_UPDATE, userInfo);
     }
 
     /**

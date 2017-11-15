@@ -53,6 +53,9 @@ public class MapFilterDialogFragment extends DialogFragment {
      * @throws ParseException The exception
      */
     public static long dateToSeconds(String date) throws ParseException {
+        if (date == null) {
+            throw new NullPointerException("Date cannot be null");
+        }
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
         Date actual_date = format.parse(date);
         return actual_date.getTime();

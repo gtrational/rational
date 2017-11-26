@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -33,8 +34,13 @@ public class GraphFilterDialogFragment extends DialogFragment {
                     RadioButton year_button = getDialog().findViewById(R.id.year);
 
                     try {
+                        Log.d("GraphFilter", "About to parse dates");
                         long startLong = MapFilterDialogFragment.dateToSeconds(startDate);
                         long endLong = MapFilterDialogFragment.dateToSeconds(endDate);
+                        Log.d(
+                                "GraphFilter",
+                                "Parsed dates as " + startLong + " and " + endLong
+                        );
                         ((MainDashboardActivity) getActivity()).setGraphData(startLong, endLong,
                                 year_button.isChecked());
                     } catch (ParseException ex) {

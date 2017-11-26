@@ -170,8 +170,10 @@ public final class Model {
             if (!ratSightings.isEmpty()) {
                 lastKey = (ratSightings.get(ratSightings.size() - 1)).uniqueKey;
             }
+            Log.d("Model", "Requesting " + size + " rats starting at " + lastKey);
+
             WebAPI.getRatSightings(lastKey, size, (Collection<WebAPI.RatData> list) -> {
-                Log.w("tag", "Model resp: " + list);
+                Log.w("Model", "Model resp: " + list);
                 ratSightings.addAll(list);
                 mapRatList(list);
                 List<WebAPI.RatData> query = new ArrayList<>();

@@ -463,16 +463,17 @@ public final class WebAPI {
         webRequest("/api/getRatSightings", request, (JSONObject results) -> {
             // TODO this is a temporary fix, we need to figure out why it returns null sometimes
             if (results == null) {
+                Log.e("WebAPI", "getRatSightings webRequest returned null");
                 return;
             }
-            Log.d("tag", "Results: " + results.toString(2));
-            // extract result, put the into callback
+            Log.d("WebAPI", "Results: " + results.toString(2));
+            // extract result, put into callback
             JSONArray array_results = results.getJSONArray("ratData");
             for (int i = 0; i < limit; i++) {
                 ratData.add(new RatData(array_results.getJSONObject(i)));
             }
 
-            Log.d("tag", "Calling callback");
+            Log.d("WebAPI", "Calling callback");
             callback.callback(ratData);
         });
     }

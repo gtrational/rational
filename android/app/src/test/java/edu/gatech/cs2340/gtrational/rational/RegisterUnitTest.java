@@ -1,6 +1,5 @@
 package edu.gatech.cs2340.gtrational.rational;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import edu.gatech.cs2340.gtrational.rational.controller.RegisterActivity;
@@ -19,6 +18,8 @@ public class RegisterUnitTest {
      */
     @Test
     public void verify_register_correctly() throws Exception {
+        RegisterActivity act = new RegisterActivity();
+
         String[] messages = {
                 "Please enter username",
                 "Please enter password",
@@ -30,30 +31,31 @@ public class RegisterUnitTest {
                 "password",
                 "password"
         };
-        String answer = RegisterActivity.verifyRegister(fields, messages);
+        String answer = act.checkFields(fields, messages);
         String correct_answer = "Success";
 
         assertEquals(correct_answer, answer);
 
         fields[2] = "password2";
 
-        answer = RegisterActivity.verifyRegister(fields, messages);
-        correct_answer = "null";
+        answer = act.checkFields(fields, messages);
 
-        assertEquals(correct_answer, answer);
+        assertEquals(null, answer);
 
         fields[0] = "";
-        answer = RegisterActivity.verifyRegister(fields, messages);
+        answer = act.checkFields(fields, messages);
         correct_answer = messages[0];
         assertEquals(correct_answer, answer);
 
+        fields[0] = "username";
         fields[1] = "";
-        answer = RegisterActivity.verifyRegister(fields, messages);
+        answer = act.checkFields(fields, messages);
         correct_answer = messages[1];
         assertEquals(correct_answer, answer);
 
+        fields[1] = "password";
         fields[2] = "";
-        answer = RegisterActivity.verifyRegister(fields, messages);
+        answer = act.checkFields(fields, messages);
         correct_answer = messages[2];
         assertEquals(correct_answer, answer);
 

@@ -43,7 +43,7 @@ public class ViewDataActivity extends AppCompatActivity {
             TextView locationType = findViewById(R.id.location_type);
             locationType.setText(data.locationType);
             TextView zip = findViewById(R.id.zip);
-            zip.setText(data.incidentZip + "");
+            zip.setText(String.valueOf(data.incidentZip));
             TextView address = findViewById(R.id.address);
             address.setText(data.incidentAddress);
             TextView city = findViewById(R.id.city);
@@ -51,9 +51,9 @@ public class ViewDataActivity extends AppCompatActivity {
             TextView borough = findViewById(R.id.borough);
             borough.setText(data.borough);
             TextView latitude = findViewById(R.id.latitude);
-            latitude.setText(data.latitude + "");
+            latitude.setText(String.valueOf(data.latitude));
             TextView longitude = findViewById(R.id.longitude);
-            longitude.setText(data.longitude + "");
+            longitude.setText(String.valueOf(data.longitude));
         }
     }
 

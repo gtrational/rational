@@ -38,7 +38,7 @@ public class RegisterUnitTest {
         fields[2] = "password2";
 
         answer = RegisterActivity.verifyRegister(fields, messages);
-        correct_answer = "null";
+        correct_answer = null;
 
         assertEquals(correct_answer, answer);
 

@@ -3,7 +3,7 @@ import config from '../config/config';
 var fs = require('fs');
 
 //Load database
-var Database = require('./database').Database;
+import {Database, RatData} from '../database';
 var db = new Database(config.mysql);
 
 //Load csv lib
@@ -35,9 +35,9 @@ function parseTime(str) {
     return date.getTime();
 }
 
-var stream = fs.createReadStream('data/Rat_Sightings.csv');
+var stream = fs.createReadStream('/home/daniel/Downloads/Rat_Sightings.csv');
 var i = 0;
-var max: number = 100649;
+var max: number = 100639;
 var lastPerc: string = '';
 
 var proms: Array<any> = [];
@@ -51,7 +51,7 @@ function doProm() {
     var cur: any = proms.splice(0, 1)[0];
     cur.then(function () {
         done++;
-        var perc: string = (Math.floor(done * 10000 / max) / 100) + '';
+        var perc: string = Math.floor(done * 100 / max) + '';
         if (perc != lastPerc) {
             console.log(perc + '% uploaded to db');
             lastPerc = perc;
@@ -60,12 +60,22 @@ function doProm() {
     });
 }
 
-var csvStream = csv()
+let csvStream = csv()
     .on("data", function (data) {
         if (i > 0) {
-            var createdDate = data[1];
-            var millis = parseTime(createdDate);
-            var row = [data[0], millis, data[7], data[8], data[9], data[16], data[23], data[49], data[50]];
+            let createdDate = data[1];
+            let millis = parseTime(createdDate);
+            let row: RatData = {
+                unique_key: data[0], 
+                created_date: millis, 
+                locationType: data[7], 
+                incident_zip: data[8], 
+                incidentAddress: data[9], 
+                city: data[16], 
+                borough: data[23], 
+                latitude: data[49], 
+                longitude: data[50]
+            };
             proms.push(db.addRatSighting(row));
         }
         i++;

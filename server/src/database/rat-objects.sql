@@ -30,3 +30,16 @@ create table if not exists users
 
     , primary key (id)
 );
+
+
+--
+-- Table of user sessionIds
+--
+create table if not exists usersessions
+(
+        userid                  int(11) unsigned    not null
+    ,   sessionid               varchar(512)        not null
+    ,   expires                 bigint(20)          not null
+    
+    ,   primary key (sessionid)
+);

@@ -9,6 +9,7 @@
     "@types/mysql": "0.0.34",
     "body-parser": "^1.18.2",
     "copyfiles": "^1.2.0",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "fast-csv": "^2.4.1",
     "mysql": "^2.13.0",

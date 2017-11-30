@@ -29,7 +29,6 @@ create table if not exists users
     ,   perm_level              tinyint(4)          not null
 
     , primary key (id)
-<<<<<<< HEAD
 );
 
 
@@ -43,6 +42,4 @@ create table if not exists usersessions
     ,   expires                 bigint(20)          not null
     
     ,   primary key (sessionid)
-=======
->>>>>>> 2ed7365f1919a7608454b0c97fe146b635d6070e
 );

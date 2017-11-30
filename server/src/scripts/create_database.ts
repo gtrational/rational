@@ -25,10 +25,7 @@ connection.beginTransaction((err) => {
     if (err) {
         throw err;
     }
-<<<<<<< HEAD
     console.log('Creating database ratdb and user ratuser')
-=======
->>>>>>> 2ed7365f1919a7608454b0c97fe146b635d6070e
     connection.query(queries, (err, result) => {
         if (err) {
             connection.rollback(() => {

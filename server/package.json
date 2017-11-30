@@ -33,7 +33,6 @@
     "start": "npm-run-all clean build --parallel watch:build watch:server --print-label",
 
     "create-db": "node \"build/scripts/create_database.js\"",
-<<<<<<< HEAD
     "create-database": "npm-run-all clean build create-db",
 
     "drop-obj": "node \"build/scripts/drop_objects.js\"",
@@ -41,9 +40,6 @@
 
     "create-obj": "node \"build/scripts/create_objects.js\"",
     "create-objects": "npm-run-all clean build create-obj"
-=======
-    "create-database": "npm-run-all clean build create-db"
->>>>>>> 2ed7365f1919a7608454b0c97fe146b635d6070e
   },
 
   "repository": {

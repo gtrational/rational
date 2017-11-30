@@ -32,7 +32,7 @@ interface UserInfo {
     permLevel: number;
 }
 
-export interface RatData {
+interface RatData {
     unique_key?: number;
     created_date: number;
     locationType: string;
@@ -112,7 +112,7 @@ export class Database {
             _this.getUserByEmail(info.email).then(function () {
                 reject({err: 'User already registered with this email'});
             }, function () {
-                _this.dbCall('INSERT INTO users(email, password, perm_level) VALUES(?, ?, ?)', [info.email, info.password, info.permLevel], function (results, resolve, reject) {
+                _this.dbCall('INSERT INTO users(email, password, permLevel) VALUES(?, ?, ?)', [info.email, info.password, info.permLevel], function (results, resolve, reject) {
                     resolve({userId: results.insertId});
                 }).then(resolve, reject);
             });

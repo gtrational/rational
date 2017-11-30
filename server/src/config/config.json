@@ -17,6 +17,9 @@
     "user": "root",
     "password": "",
     "reconnectdelay": 3000
+  },
+
+  "config_overrides_defaults": {
   }
 
 }

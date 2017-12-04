@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 
 
-public class dateToSecondsJUnit {
+public class DateToSecondsJUnit {
     /**
      * Tests November 13, 2017
      * @throws Exception The exception

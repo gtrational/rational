@@ -64,7 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
         String result = checkFields(fieldStrings, messages);
         int index = verifyRegister(requiredFields);
 
-        if (result != null && !result.equals("Success")) {
+        if (result != null && !"Success".equals(result)) {
             int[] loc = new int[2];
             EditText field = requiredFields[index];
             field.getLocationOnScreen(loc);
@@ -73,7 +73,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             // Display toast on right of screen at the y value of the input field
             t.setGravity(
-                    Gravity.TOP | Gravity.RIGHT,
+                    Gravity.TOP | Gravity.END,
                     0,
                     loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER
             );

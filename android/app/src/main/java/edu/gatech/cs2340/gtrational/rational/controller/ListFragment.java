@@ -82,7 +82,7 @@ public class ListFragment extends Fragment {
     /**
      * Creates the List Fragment View
      *
-     * @param inflater           Layout Inflator object
+     * @param inflater           Layout Inflater object
      * @param container          Container object
      * @param savedInstanceState State object
      * @return returns View

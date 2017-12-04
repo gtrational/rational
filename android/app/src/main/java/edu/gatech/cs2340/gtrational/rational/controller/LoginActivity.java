@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 //Display toast on right of screen at the y value of the input field
                 t.setGravity(
-                        Gravity.TOP | Gravity.RIGHT,
+                        Gravity.TOP | Gravity.END,
                         0,
                         loc[1] - (field.getHeight() / 2) - GRAVITY_MAGIC_NUMBER
                 );

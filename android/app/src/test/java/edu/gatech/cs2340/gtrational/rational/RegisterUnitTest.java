@@ -38,9 +38,10 @@ public class RegisterUnitTest {
 
         fields[2] = "password2";
 
-        answer = act.checkFields(fields, messages);
+        answer = RegisterActivity.verifyRegister(fields, messages);
+        correct_answer = null;
 
-        assertEquals(null, answer);
+        assertEquals(correct_answer, answer);
 
         fields[0] = "";
         answer = act.checkFields(fields, messages);

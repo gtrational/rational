@@ -5,6 +5,7 @@
  */
 package rational;
 
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,50 +23,74 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.lynden.gmapsfx.*;
+import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.InfoWindow;
+import com.lynden.gmapsfx.javascript.object.InfoWindowOptions;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MapOptions;
+import com.lynden.gmapsfx.javascript.object.Marker;
+import com.lynden.gmapsfx.javascript.object.MarkerOptions;
+import com.sun.prism.PhongMaterial.MapType;
+import java.util.ResourceBundle;
+import javafx.fxml.Initializable;
 
 /**
  *
  * @author james
  */
-public class Rational extends Application {
+public class Rational extends Application implements MapComponentInitializedListener {
     
     private boolean hasSession = false;
     boolean loginSuccess = false;
     boolean registerSuccess = false;
+    
+    private GoogleMap map;
+    private GoogleMapView mapView;
     
     private static final int DEFAULT_RAT_NUM = 20;
     
@@ -368,10 +393,48 @@ public class Rational extends Application {
         return false;
     }
     
+    
+    @Override
+    public void mapInitialized() {
+        MapOptions mapOptions = new MapOptions();
+
+        mapOptions.center(new LatLong(40.7143, -73.9376))
+                .overviewMapControl(false)
+                .panControl(true)
+                .rotateControl(false)
+                .scaleControl(true)
+                .streetViewControl(false)
+                .zoomControl(true)
+                .zoom(11);
+
+        map = mapView.createMap(mapOptions);
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
+        
+        for (ListItem item : data) {
+            WebAPI.RatData thing = Model.getInstance().getRatDataByKey(Integer.parseInt(item.getId()));
+            MarkerOptions newMarker = new MarkerOptions();
+            newMarker.position(new LatLong(thing.latitude, thing.longitude));
+            Marker newerMarker = new Marker(newMarker);
+            map.addMarker(newerMarker);
+            
+            InfoWindowOptions windowOptions = new InfoWindowOptions();
+            windowOptions.content("<h2>#" + thing.uniqueKey + "</h2>"
+                    + "Date & Time: " + sdf.format(thing.createdTime)
+                    + "Coordinates: (" + thing.latitude + ", " + thing.longitude);
+            
+            InfoWindow newInfo = new InfoWindow(windowOptions);
+            newInfo.open(map, newerMarker);
+        }
+    }
+    
     private void startMain() {
         Stage stage = new Stage();
         stage.setTitle("rational");
         
+        mapView = new GoogleMapView();
+        mapView.addMapInializedListener(this);
+
         TableView allSightingsView = new TableView();
         allSightingsView.setEditable(false);
         allSightingsView.setFixedCellSize(25);
@@ -386,6 +449,33 @@ public class Rational extends Application {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         boroughCol.setCellValueFactory(new PropertyValueFactory<>("borough"));
         
+        allSightingsView.setRowFactory(tv -> {
+            TableRow<ListItem> row = new TableRow<>();
+                row.setOnMouseClicked(event -> {
+                    if (! row.isEmpty() && event.getButton() == MouseButton.PRIMARY 
+                         && event.getClickCount() == 2) {
+                        ListItem clickedRow = row.getItem();
+                        System.out.println(clickedRow.getId());
+                        
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss aa", Locale.US);
+                        
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Detailed Rat Information");
+                        alert.setHeaderText("Rat Sighting Detail: #" + clickedRow.getId());
+                        WebAPI.RatData selected = Model.getInstance().getRatDataByKey(Integer.parseInt(clickedRow.getId()));
+                        alert.setContentText("Date & Time: " + sdf.format(selected.createdTime)
+                                + "\nCoordinates: " + selected.latitude + ", " + selected.longitude
+                                + "\nLocation Type: " + selected.locationType
+                                + "\n\nAddress: \n" + selected.incidentAddress
+                                + "\n" + selected.city + " " + selected.incidentZip
+                                + "\nBorough: " + selected.borough);
+
+                        alert.showAndWait();
+                    }
+                });
+                return row ;
+        });
+        
         timestampCol.setMinWidth(200);
         idCol.setMinWidth(50);
         boroughCol.setMinWidth(300);
@@ -399,27 +489,42 @@ public class Rational extends Application {
 
         Tab dashboardTab = new Tab("Dashboard");
         Tab graphTab = new Tab("Graphs");
-        Tab mapTab = new Tab("Map");
+        Tab mapTab = new Tab("Map", mapView);
         Tab allSightingsTab = new Tab("All Sightings", allSightingsView);
         
         tabPane.getTabs().addAll(dashboardTab, graphTab, mapTab, allSightingsTab);
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         
-        Button createSighting = new Button("Create New Sighting");
+        VBox vbox = new VBox(0);
+        Scene scene = new Scene(vbox, 800, 500);
         
+        Button createSighting = new Button("Create New Sighting");
+        createSighting.prefWidthProperty().bind(scene.widthProperty());
+        
+//        mapView.prefWidthProperty().bind(scene.widthProperty());
+//        mapView.prefHeightProperty().bind(scene.heightProperty());
+
         createSighting.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent e) {
                 createNew();
             }
         });
         
-        VBox vbox = new VBox(0);
+        vbox.setAlignment(Pos.CENTER);
         vbox.getChildren().addAll(createSighting, tabPane);
-
-        Scene scene = new Scene(vbox, 800, 500);
 
         stage.setScene(scene);
         stage.show();
+        
+        ScrollBar listViewScrollBar = getTableScrollBar(allSightingsView);
+        listViewScrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+            double position = newValue.doubleValue();
+            ScrollBar scrollBar = getTableScrollBar(allSightingsView);
+            if (position == scrollBar.getMax()) {
+                System.out.println("SDLKFJSDFLKJSDF");
+                fetchOldData();
+            }
+        });
     }
 
     /**
@@ -452,5 +557,18 @@ public class Rational extends Application {
                 }
             }
         });
+    }
+    
+    private ScrollBar getTableScrollBar(TableView<?> table) {
+        ScrollBar scrollbar = null;
+        for (Node node : table.lookupAll(".scroll-bar")) {
+            if (node instanceof ScrollBar) {
+                ScrollBar bar = (ScrollBar) node;
+                if (bar.getOrientation().equals(Orientation.VERTICAL)) {
+                    scrollbar = bar;
+                }
+            }
+        }
+        return scrollbar;
     }
 }

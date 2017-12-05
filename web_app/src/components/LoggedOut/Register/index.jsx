@@ -4,9 +4,8 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
-import axios from 'axios';
 
-import {register} from '../../services/WebAPI';
+import {register} from '../../../services/WebAPI';
 
 class Register extends Component {
 
@@ -88,9 +87,9 @@ class Register extends Component {
         <br/>
         <br/>
 
-        <RadioButtonGroup defaultSelected="user">
-          <RadioButton name="User" value="user" label="User"/>
-          <RadioButton name="Admin" value="admin" label="Admin"/>
+        <RadioButtonGroup defaultSelected="user" style={{ display: 'flex', justifyContent: 'center'}}>
+          <RadioButton name="User" value="user" label="User" style={{ width: 'auto' }} align="centers"/>
+          <RadioButton name="Admin" value="admin" label="Admin" style={{ width: 'auto' }} align="center"/>
 
         </RadioButtonGroup>
         <br/>

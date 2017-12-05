@@ -27,11 +27,11 @@ export default class App extends Component {
                     <Navigation />
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo"/>
-                        <h1 className="App-title">Welcome to React</h1>
+                        <h1 className="App-title">Welcome to Rational</h1>
                     </header>
                     <Switch>
-                        <Route path='/' component={LoggedOut}/>
                         <Route path='/user' component={LoggedIn} onEnter={requireLoggedIn}/>
+                        <Route path='/' component={LoggedOut}/>
                         <Route path='*' component={NotFound}/>
                     </Switch>
                 </div>

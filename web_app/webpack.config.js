@@ -23,6 +23,20 @@ module.exports = {
                 test : /\.(js|jsx|es6)$/,
                 include : APP_DIR,
                 loader : 'babel-loader'
+            },
+            {
+                test : /\.(css)/,
+                loaders: ['style-loader', 'css-loader'],
+                include : APP_DIR
+            },
+            {
+                test: /\.(svg|jpe?g|png|gif)$/i,
+                loaders: [
+    'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+]
+,
+                include : APP_DIR
             }
         ]
     },
@@ -32,4 +46,3 @@ module.exports = {
     plugins: [HtmlWebpackPluginConfig],
 	target: 'web'
 };
-

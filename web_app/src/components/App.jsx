@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
-import NotFound from '../components/global/NotFound'
+import NotFound from './global/NotFound'
+import Navigation from './global/Navigation'
 
-import LoggedOut from '../components/LoggedOut'
-import Home from '../components/LoggedOut/Home'
+import LoggedOut from './LoggedOut'
+import Home from './LoggedOut/Home'
 
-import LoggedIn from '../components/LoggedIn'
+import LoggedIn from './LoggedIn'
 
 import logo from '../logo.svg';
 import './App.css';
@@ -23,13 +24,11 @@ export default class App extends Component {
         return (
             <Router>
                 <div className='App'>
+                    <Navigation />
                     <header className="App-header">
                         <img src={logo} className="App-logo" alt="logo" />
                         <h1 className="App-title">Welcome to React</h1>
                     </header>
-                    <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                    </p>
                     <Switch>
                         <Route path='/' component={LoggedOut} />
                         <Route path='/user' component={LoggedIn} onEnter={requireLoggedIn} />

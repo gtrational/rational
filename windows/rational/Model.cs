@@ -44,6 +44,16 @@ namespace rational
             return RatDataList[RatDataList.Count - 1].UniqueKey;
         }
 
+        private int GetFirstRatId()
+        {
+            if (RatDataList.Count == 0)
+            {
+                return 0;
+            }
+
+            return RatDataList[0].UniqueKey;
+        }
+
         public void LoadMoreRats(CallbackVoid callback)
         {
             WebAPI.RatListCallback cb = resp =>
@@ -57,6 +67,23 @@ namespace rational
             };
 
             WebAPI.GetRatSightings(GetLastRatId(), PER_PAGE, cb);
+        }
+
+        public void LoadNewRats(CallbackVoid callback)
+        {
+            WebAPI.RatListCallback cb = resp =>
+            {
+                for (var i = 0; i < resp.Count; i++)
+                {
+                    RatDataList.Insert(0, resp[i]);
+                }
+
+                callback();
+            };
+
+
+            Console.WriteLine("After " + GetFirstRatId());
+            WebAPI.GetRatSightingsAfter(GetFirstRatId(), cb);
         }
     }
 }

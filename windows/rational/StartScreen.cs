@@ -26,10 +26,10 @@ namespace rational
 
         private void label2_Click(object sender, EventArgs e)
         {
-
+            
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void TryLogin()
         {
             WebAPI.LoginCallback cb = resp =>
             {
@@ -38,6 +38,9 @@ namespace rational
                 {
                     Hide();
                     mainScreen = new MainScreen();
+
+                    mainScreen.FormClosed += MainScreen_FormClosed;
+
                     mainScreen.Show();
                 }
                 else
@@ -47,6 +50,16 @@ namespace rational
             };
 
             WebAPI.Login(textBox1.Text, textBox2.Text, cb);
+        }
+
+        private void MainScreen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            TryLogin();
         }
 
         private void button2_Click(object sender, EventArgs e)

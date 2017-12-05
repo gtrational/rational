@@ -42,7 +42,7 @@ namespace rational
 
             List<String> errorList = new List<String>();
 
-            int n = 0;
+            int zipCode = 0;
 
             if (string.IsNullOrEmpty(locationType))
             {
@@ -64,7 +64,7 @@ namespace rational
                 errorList.Add("State");
             }
 
-            if (string.IsNullOrEmpty(addressZIP) || !int.TryParse(addressZIP, out n))
+            if (string.IsNullOrEmpty(addressZIP) || !int.TryParse(addressZIP, out zipCode))
             {
                 errorList.Add("ZIP Code");
             }
@@ -76,9 +76,20 @@ namespace rational
 
             if (errorList.Count == 0)
             {
-                // Process thing
-                Console.WriteLine("YAY!!!");
-                this.Close();
+                WebAPI.BooleanCallback cb = resp =>
+                {
+                    if (resp.Success)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to add rat sighting");
+                    }
+                };
+
+                RatData rat = new RatData(0, WebAPI.Now(), locationType, zipCode, addressLine1 + addressLine2, addressCity, borough, 0, 0);
+                WebAPI.AddRatSighting(rat, cb);
             }
             else
             {

@@ -160,6 +160,11 @@ namespace rational
             return settings.GetType().GetProperty(name) != null;
         }
 
+        public static long Now()
+        {
+            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        }
+
         private static async void PostRequest(string endpoint, dynamic args, Callback callback)
         {
             var content = new ByteArrayContent(Encoding.UTF8.GetBytes(Stringify(args)));

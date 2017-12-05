@@ -17,10 +17,7 @@ namespace rational
             InitializeComponent();
         }
 
-        private string ParseTime(long time)
-        {
-            return time + "";
-        }
+        
 
         private void RefreshView()
         {
@@ -31,7 +28,8 @@ namespace rational
             for (var i = 0; i < rats.Count; i++)
             {
                 RatData rat = rats[i];
-                var item = new ListViewItem(new string[] { ParseTime(rat.CreatedTime), rat.UniqueKey + "", rat.Borough });
+                var item = new ListViewItem(new string[] { WebAPI.ParseTime(rat.CreatedTime), rat.UniqueKey + "", rat.Borough });
+                item.Tag = rat;
                 listView1.Items.Add(item);
             }
 
@@ -109,6 +107,16 @@ namespace rational
         private void button1_Click(object sender, EventArgs e)
         {
             LoadMoreOld();
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            ListViewItem item = listView1.SelectedItems[0];
+
+            RatData data = (RatData)item.Tag;
+
+            MessageBox.Show(data.ToString(), data.UniqueKey + "");
         }
     }
 }

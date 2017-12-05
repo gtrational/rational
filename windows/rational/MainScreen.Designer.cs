@@ -71,7 +71,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(368, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(468, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -136,7 +136,7 @@
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 547);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(368, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(468, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -146,7 +146,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(368, 523);
+            this.panel1.Size = new System.Drawing.Size(468, 523);
             this.panel1.TabIndex = 3;
             // 
             // tabControl1
@@ -163,7 +163,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(10);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(368, 523);
+            this.tabControl1.Size = new System.Drawing.Size(468, 523);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabControl1.TabIndex = 0;
             this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.refresh_data);
@@ -208,7 +208,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Margin = new System.Windows.Forms.Padding(0);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(360, 490);
+            this.tabPage4.Size = new System.Drawing.Size(460, 490);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "All Sightings";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -226,7 +226,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(360, 490);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(460, 490);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
             // listView1
@@ -236,13 +236,15 @@
             this.ID,
             this.Borough});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.FullRowSelect = true;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(354, 454);
+            this.listView1.Size = new System.Drawing.Size(454, 454);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged_1);
+            this.listView1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseDoubleClick);
             // 
             // Timestamp
             // 
@@ -252,12 +254,12 @@
             // ID
             // 
             this.ID.Text = "ID";
-            this.ID.Width = 40;
+            this.ID.Width = 96;
             // 
             // Borough
             // 
             this.Borough.Text = "Borough";
-            this.Borough.Width = 200;
+            this.Borough.Width = 106;
             // 
             // panel2
             // 
@@ -265,7 +267,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 463);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(354, 24);
+            this.panel2.Size = new System.Drawing.Size(454, 24);
             this.panel2.TabIndex = 1;
             // 
             // button1
@@ -291,7 +293,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(368, 569);
+            this.ClientSize = new System.Drawing.Size(468, 569);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);

@@ -122,6 +122,19 @@ namespace rational
             json.longitude = Longitude;
             return json;
         }
+
+        public string ToString()
+        {
+            return "Unique Key: " + UniqueKey +
+                "\nCreated Date: " + WebAPI.ParseTime(CreatedTime) +
+                "\nLocation Type: " + LocationType +
+                "\nZip Code: " + IncidentZip +
+                "\nAddress: " + IncidentAddress +
+                "\nCity: " + City +
+                "\nBorough: " + Borough +
+                "\nLatitude: " + Latitude +
+                "\nLongitude: " + Longitude;
+        }
     }
 
     public class WebAPI
@@ -163,6 +176,11 @@ namespace rational
         public static long Now()
         {
             return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        }
+
+        public static string ParseTime(long time)
+        {
+            return time + "";
         }
 
         private static async void PostRequest(string endpoint, dynamic args, Callback callback)

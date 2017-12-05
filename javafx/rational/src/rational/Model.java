@@ -123,6 +123,8 @@ public final class Model {
         if (userInfo == null) {
             return;
         }
+        
+        System.out.println(userInfo);
 
         try {
             user = new User(
@@ -133,7 +135,7 @@ public final class Model {
             publish(USER_UPDATE, userInfo);
 
         } catch (JSONException e) {
-//            Log.w("Model", e);
+            e.printStackTrace();
         }
     }
 
@@ -173,7 +175,7 @@ public final class Model {
                 mapRatList(list);
                 List<WebAPI.RatData> query = new ArrayList<>();
                 synchronized (ratSightings) {
-                    for (int i = start; i < (start + size); i++) {
+                    for (int i = start; i < (start + size) - 1; i++) {
                         query.add(ratSightings.get(i));
                     }
                 }

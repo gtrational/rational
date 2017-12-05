@@ -3,9 +3,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-  template: './public/index.html',
-  filename: 'index.html',
-  inject: 'body'
+    template: './public/index.html',
+    filename: 'index.html',
+    inject: 'body'
 })
 
 const BUILD_DIR = path.resolve(__dirname, 'public/');
@@ -32,10 +32,9 @@ module.exports = {
             {
                 test: /\.(svg|jpe?g|png|gif)$/i,
                 loaders: [
-    'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
-    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
-]
-,
+                    'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+                    'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+                ],
                 include : APP_DIR
             }
         ]

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -14,7 +15,8 @@ class Login extends Component {
     this.state={
       username:'',
       password:'',
-      error:''
+      error:'',
+      redirect:false
     }
   }
 
@@ -27,20 +29,26 @@ class Login extends Component {
       this.setState({error:"Please enter username"})
     } else if (this.state.password == '') {
       this.setState({error:"Please enter password"})
+    } else {
+
+      login(this.state.username, this.state.password)
+        .then(response => {
+            console.log(response) // success, error, permissionID,
+            if (response.success) {
+              this.setState({redirect: true})
+            }
+          }, err => {
+              console.log(err)
+              this.setState({error:"Invalid Username/Password"})
+          })
     }
-
-    login(this.state.username, this.state.password)
-      .then(function (response) {
-          console.log(response) // success, error, permissionID,
-        }, function(err) {
-            console.log(err)
-            this.setState({error:"Invalid Username/Password"})
-        })
-
 
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to='/user'/>
+    }
     return (
       <div>
         <MuiThemeProvider>
@@ -58,6 +66,7 @@ class Login extends Component {
         <TextField
         hintText="Enter Password"
         floatingLabel="Password"
+        type="password"
         onChange = {(event, newValue) => this.setState({password:newValue})}
         />
         <br/>

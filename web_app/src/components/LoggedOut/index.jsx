@@ -12,7 +12,7 @@ export default class LoggedOut extends Component {
                 <Switch>
                     <Route exact path='/' component={Home} />
                     <Route path='/login' component={Login} />
-                    <Route path='/register' component={Register} />                    
+                    <Route path='/register' component={Register} />
                 </Switch>
             </div>
         )

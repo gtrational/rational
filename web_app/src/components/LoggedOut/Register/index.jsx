@@ -87,9 +87,9 @@ class Register extends Component {
         <br/>
         <br/>
 
-        <RadioButtonGroup defaultSelected="user">
-          <RadioButton name="User" value="user" label="User"/>
-          <RadioButton name="Admin" value="admin" label="Admin"/>
+        <RadioButtonGroup defaultSelected="user" style={{ display: 'flex', justifyContent: 'center'}}>
+          <RadioButton name="User" value="user" label="User" style={{ width: 'auto' }} align="centers"/>
+          <RadioButton name="Admin" value="admin" label="Admin" style={{ width: 'auto' }} align="center"/>
 
         </RadioButtonGroup>
         <br/>

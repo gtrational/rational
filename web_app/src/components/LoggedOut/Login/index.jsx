@@ -4,9 +4,8 @@ import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TextField from 'material-ui/TextField';
-import axios from 'axios';
 
-import {login} from '../../services/WebAPI';
+import {login} from '../../../services/WebAPI';
 
 class Login extends Component {
 
@@ -14,7 +13,7 @@ class Login extends Component {
     super(props);
     this.state={
       username:'',
-      password:''
+      password:'',
       error:''
     }
   }

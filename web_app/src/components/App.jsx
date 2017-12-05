@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, IndexRoute } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import NotFound from '../components/global/NotFound'
 
@@ -30,12 +30,11 @@ export default class App extends Component {
                     <p className="App-intro">
                     To get started, edit <code>src/App.js</code> and save to reload.
                     </p>
-                    
-                    <Route path='/' component={LoggedOut}>
-                        <IndexRoute component={Home} />
-                    </Route>
-                    <Route path='/user' component={LoggedIn} onEnter={requireLoggedIn} />
-                    <Route path='*' component={NotFound} />
+                    <Switch>
+                        <Route path='/' component={LoggedOut} />
+                        <Route path='/user' component={LoggedIn} onEnter={requireLoggedIn} />
+                        <Route path='*' component={NotFound} />
+                    </Switch>
                 </div>
             </Router>
         )

@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import React, {Component} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
-import NotFound from './global/NotFound'
-import Navigation from './global/Navigation'
+import NotFound from './global/NotFound';
+import Navigation from './global/Navigation';
 
-import LoggedOut from './LoggedOut'
-import Home from './LoggedOut/Home'
+import LoggedOut from './LoggedOut';
+import Home from './LoggedOut/Home';
 
-import LoggedIn from './LoggedIn'
+import LoggedIn from './LoggedIn';
 
 import logo from '../logo.svg';
 import './App.css';
@@ -20,42 +20,43 @@ function requireLoggedIn(nextState, replaceState) {
 
 
 export default class App extends Component {
-    render() {            
+    render() {
         return (
             <Router>
                 <div className='App'>
                     <Navigation />
                     <header className="App-header">
-                        <img src={logo} className="App-logo" alt="logo" />
+                        <img src={logo} className="App-logo" alt="logo"/>
                         <h1 className="App-title">Welcome to React</h1>
                     </header>
                     <Switch>
-                        <Route path='/' component={LoggedOut} />
-                        <Route path='/user' component={LoggedIn} onEnter={requireLoggedIn} />
-                        <Route path='*' component={NotFound} />
+                        <Route path='/' component={LoggedOut}/>
+                        <Route path='/user' component={LoggedIn} onEnter={requireLoggedIn}/>
+                        <Route path='*' component={NotFound}/>
                     </Switch>
                 </div>
             </Router>
-        )
-    }
+        );
+    };
 }
 
-new Promise(function(resolve, reject) {
+/*
+new Promise(function (resolve, reject) {
     WebAPI.login("Oinkers", "ROOFTOWN")
         .then(function (response) {
-            console.log(response)
-            resolve(response)
-        }, function(err) {
-            reject(err)
-            console.log(err)
-        })
+            console.log(response);
+            resolve(response);
+        }, function (err) {
+            reject(err);
+            console.log(err);
+        });
 })
-    .then(function(response) {
-        WebAPI.getRatSightings(1000000000000,100)
+    .then(function () {
+        WebAPI.getRatSightings(1000000000000, 100)
             .then(function (response) {
-                console.log(response)
-            }, function(err) {
-                console.log(err)
-            })
-    })
-
+                console.log(response);
+            }, function (err) {
+                console.log(err);
+            });
+    });
+*/

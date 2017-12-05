@@ -1,0 +1,23 @@
+{
+  "name": "web_app",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.jsx",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "html-webpack-plugin": "^2.30.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17",
+    "webpack": "^3.9.1",
+    "webpack-dev-server": "^2.9.5"
+  },
+  "scripts": {
+    "dev-server": "webpack-dev-server",
+    "build": "webpack -p"
+  }
+}

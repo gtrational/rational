@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using rational;
 
 namespace WindowsFormsApp1
 {
@@ -17,9 +18,28 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
+        private void LoadMore()
+        {
+            Model.CallbackVoid cb = () =>
+            {
+                listView1.Items.Clear();
+
+                List<RatData> rats = Model.GetInstance().RatDataList;
+
+                for (var i = 0; i < rats.Count; i++)
+                {
+                    RatData rat = rats[i];
+                    var item = new ListViewItem(new string[] { rat.UniqueKey + "", rat.Borough});
+                    listView1.Items.Add(item);
+                }
+            };
+
+            Model.GetInstance().LoadMoreRats(cb);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            LoadMore();
         }
 
         private void label1_Click(object sender, EventArgs e)

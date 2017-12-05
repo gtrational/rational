@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace rational
 {
     public partial class NewSightingDialog : Form
     {
@@ -42,6 +42,8 @@ namespace WindowsFormsApp1
 
             List<String> errorList = new List<String>();
 
+            int n = 0;
+
             if (string.IsNullOrEmpty(locationType))
             {
                 errorList.Add("Location Type");
@@ -62,7 +64,7 @@ namespace WindowsFormsApp1
                 errorList.Add("State");
             }
 
-            if (string.IsNullOrEmpty(addressZIP) || !int.TryParse(addressZIP, out int n))
+            if (string.IsNullOrEmpty(addressZIP) || !int.TryParse(addressZIP, out n))
             {
                 errorList.Add("ZIP Code");
             }

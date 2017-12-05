@@ -147,6 +147,11 @@ namespace rational
 
         public static bool HasProperty(dynamic settings, string name)
         {
+            if (settings is JObject)
+            {
+                JToken val;
+                return ((JObject)settings).TryGetValue(name, out val);
+            }
             if (settings == null)
                 return false;
             if (settings is ExpandoObject)
@@ -163,6 +168,8 @@ namespace rational
             var response = await client.PostAsync(baseUrl + endpoint, content);
 
             var responseString = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine("Resp: " + responseString);
 
             callback(ParseJSON(responseString));
         }

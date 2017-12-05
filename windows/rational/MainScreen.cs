@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using rational;
 
-namespace WindowsFormsApp1
+namespace rational
 {
     public partial class MainScreen : Form
     {

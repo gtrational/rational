@@ -47,5 +47,14 @@ namespace WindowsFormsApp1
         {
 
         }
+
+        private void refresh_data(object sender, TabControlCancelEventArgs e)
+        {
+            Console.WriteLine(tabControl1.SelectedIndex);
+            if (tabControl1.SelectedIndex == 3)
+            {
+
+            }
+        }
     }
 }

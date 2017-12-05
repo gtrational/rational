@@ -127,3 +127,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/linux,macos,emacs,windows
+/javafx/rational/nbproject/private/
+/javafx/rational/build/
+/javafx/JSON/nbproject/private/
+/javafx/JSON/build/

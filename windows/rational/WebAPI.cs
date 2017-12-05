@@ -175,12 +175,22 @@ namespace rational
 
         public static long Now()
         {
-            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            return (long)DateTime.Now.ToUniversalTime().Subtract(
+                new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                ).TotalMilliseconds;
+        }
+
+        private static DateTime FromMS(long milliSec)
+        {
+            DateTime startTime = new DateTime(1970, 1, 1);
+
+            TimeSpan time = TimeSpan.FromMilliseconds(milliSec);
+            return startTime.Add(time);
         }
 
         public static string ParseTime(long time)
         {
-            return time + "";
+            return FromMS(time).ToString("MM/dd/yy HH:mm:ss");
         }
 
         private static async void PostRequest(string endpoint, dynamic args, Callback callback)

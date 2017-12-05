@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace rational
 {
     public partial class NewSightingDialog : Form
     {
@@ -42,6 +42,8 @@ namespace WindowsFormsApp1
 
             List<String> errorList = new List<String>();
 
+            int zipCode = 0;
+
             if (string.IsNullOrEmpty(locationType))
             {
                 errorList.Add("Location Type");
@@ -62,7 +64,7 @@ namespace WindowsFormsApp1
                 errorList.Add("State");
             }
 
-            if (string.IsNullOrEmpty(addressZIP) || !int.TryParse(addressZIP, out int n))
+            if (string.IsNullOrEmpty(addressZIP) || !int.TryParse(addressZIP, out zipCode))
             {
                 errorList.Add("ZIP Code");
             }
@@ -74,9 +76,20 @@ namespace WindowsFormsApp1
 
             if (errorList.Count == 0)
             {
-                // Process thing
-                Console.WriteLine("YAY!!!");
-                this.Close();
+                WebAPI.BooleanCallback cb = resp =>
+                {
+                    if (resp.Success)
+                    {
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to add rat sighting");
+                    }
+                };
+
+                RatData rat = new RatData(0, WebAPI.Now(), locationType, zipCode, addressLine1 + addressLine2, addressCity, borough, 0, 0);
+                WebAPI.AddRatSighting(rat, cb);
             }
             else
             {

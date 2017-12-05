@@ -56,22 +56,22 @@ public class RegisterActivity extends AppCompatActivity {
                 "Please confirm password"
         };
 
-        String[] fields = new String[3];
-        fields[0] = usernameField.getText().toString();
-        fields[1] = passwordField.getText().toString();
-        fields[2] = confirmPasswordField.getText().toString();
+        String[] fieldStrings = new String[requiredFields.length];
+        for (int i = 0; i < requiredFields.length; i++) {
+            fieldStrings[i] = requiredFields[i].getText().toString();
+        }
 
-        String answer = verifyRegister(fields, messages);
+        String result = checkFields(fieldStrings, messages);
         int index = verifyRegister(requiredFields);
 
-        if (answer != null && !"Success".equals(answer)) {
+        if (result != null && !"Success".equals(result)) {
             int[] loc = new int[2];
             EditText field = requiredFields[index];
             field.getLocationOnScreen(loc);
 
-            Toast t = Toast.makeText(getApplicationContext(), answer, Toast.LENGTH_SHORT);
+            Toast t = Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT);
 
-            //Display toast on right of screen at the y value of the input field
+            // Display toast on right of screen at the y value of the input field
             t.setGravity(
                     Gravity.TOP | Gravity.END,
                     0,
@@ -79,14 +79,20 @@ public class RegisterActivity extends AppCompatActivity {
             );
             t.show();
             return;
-        } else if (answer.equals(null)) {
-            Snackbar snackbar = Snackbar.make(view, "Passwords don't match", Snackbar.LENGTH_LONG);
+
+        } else if (result == null) {
+
+            Snackbar snackbar = Snackbar.make(
+                    view, "Passwords don't match", Snackbar.LENGTH_LONG
+            );
             snackbar.show();
-        } else if (answer.equals("Success")) {
-            tryRegister(view, fields[0], fields[1]);
+
+        } else if (result.equals("Success")) {
+
+            tryRegister(view, fieldStrings[0], fieldStrings[1]);
         }
 
-        //Hide keyboard if open
+        // Hide keyboard if open
         View focused = getCurrentFocus();
         if (focused != null) {
             InputMethodManager inputManager
@@ -101,12 +107,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     /**
+     * Check the required fields to make sure they exist and are valid.
      *
-     * @param fields the field
-     * @param messages the messages
-     * @return the string "success" or null or error messages
+     * @param fields list of strings from the fields
+     * @param messages List of messages for if the fields are missing
+     * @return null if fields are invalid, otherwise either an error message or the string "Success"
      */
-    public static String verifyRegister(String[] fields, String[] messages) {
+    public String checkFields(String[] fields, String[] messages) {
         for (int i = 0; i < fields.length; i++) {
             if (fields[i].isEmpty()) {
                 return messages[i];

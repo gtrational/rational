@@ -1,4 +1,5 @@
 import bodyParser = require("body-parser");
+import cors = require('cors');
 import express = require("express");
 import socketio = require("socket.io");
 import {Database} from "./database";
@@ -36,6 +37,7 @@ export class Web {
         //Setup middleware
         app.use(bodyParser.urlencoded({extended: true}));
         app.use(bodyParser.json());
+        app.use(cors());
 
         //Create http server
         this.httpServer = new http.Server(app);
@@ -84,11 +86,11 @@ export class Web {
             }, sendObject(res));
         }));
 
-        app.post('/api/getRatSightings', this.routeAuthWithArgs(['startid', 'limit'], function (req, res, user) {
+        app.post('/api/getRatSightings', this.routeAuthWithArgs(['startid', 'limit'], function (req, res) {
             db.getRatSightings(parseInt(req.body.startid), parseInt(req.body.limit)).then(sendObject(res), sendObject(res));
         }));
 
-        app.post('/api/getRatSightingsAfter', this.routeAuthWithArgs(['startid'], function (req, res, user) {
+        app.post('/api/getRatSightingsAfter', this.routeAuthWithArgs(['startid'], function (req, res) {
             db.getRatSightingsAfter(parseInt(req.body.startid)).then(sendObject(res), sendObject(res));
         }));
 

@@ -55,6 +55,7 @@ namespace rational
         private void MainScreen_FormClosed(object sender, FormClosedEventArgs e)
         {
             Close();
+            Environment.Exit(0);
         }
 
         private void button1_Click(object sender, EventArgs e)

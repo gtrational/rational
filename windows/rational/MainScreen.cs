@@ -7,17 +7,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using GMap.NET.WindowsForms;
+using GMap.NET.MapProviders;
+using GMap.NET.WindowsForms.Markers;
+using GMap.NET;
 
 namespace rational
 {
     public partial class MainScreen : Form
     {
+        private GMapControl map;
+        private GMapOverlay overlay;
+
         public MainScreen()
         {
             InitializeComponent();
+
+            overlay = new GMapOverlay();
+
+            map = new GMapControl();
+            map.MapProvider = GMapProviders.OpenStreetMap;
+            map.Position = new PointLatLng(40.7143, -73.9376);
+            map.MinZoom = 1;
+            map.MaxZoom = 24;
+            map.Zoom = 11;
+            map.Size = mapPanel.Size;
+            map.CanDragMap = true;
+
+            map.Overlays.Add(overlay);
+
+            mapPanel.Controls.Add(map);
+
+            map.OnMarkerClick += Map_OnMarkerClick;
         }
 
-        
+        private void Map_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            DisplayRatData((RatData)item.Tag);
+        }
+
+        private void ReInitMap()
+        {
+            overlay.Markers.Clear();
+
+            List<RatData> rats = Model.GetInstance().RatDataList;
+
+            for (var i = 0; i < rats.Count; i++)
+            {
+                RatData rat = rats[i];
+                GMapMarker marker = new GMarkerGoogle(new PointLatLng(rat.Latitude, rat.Longitude), GMarkerGoogleType.arrow);
+                marker.ToolTipText = rat.UniqueKey + "";
+                marker.Tag = rat;
+                marker.ToolTipMode = MarkerTooltipMode.Always;
+                overlay.Markers.Add(marker);
+            }
+        }
 
         private void RefreshView()
         {
@@ -97,10 +141,14 @@ namespace rational
 
         private void refresh_data(object sender, TabControlCancelEventArgs e)
         {
-            Console.WriteLine(tabControl1.SelectedIndex);
-            if (tabControl1.SelectedIndex == 3)
+            switch (tabControl1.SelectedIndex)
             {
-                LoadNew();
+                case 2:
+                    ReInitMap();
+                    break;
+                case 3:
+                    LoadNew();
+                    break;
             }
         }
 
@@ -116,7 +164,18 @@ namespace rational
 
             RatData data = (RatData)item.Tag;
 
+            DisplayRatData(data);
+        }
+
+        private void DisplayRatData(RatData data)
+        {
             MessageBox.Show(data.ToString(), data.UniqueKey + "");
+        }
+
+        private void MainScreen_Resize(object sender, EventArgs e)
+        {
+            mapPanel.Size = tabPage3.Size;
+            map.Size = mapPanel.Size;
         }
     }
 }

@@ -81,8 +81,6 @@ export class Database {
             _this.conn.query(query, values, function (error, results) {
                 if (checkErrorCallback(error, reject)) return;
 
-                console.log('Executed:',query,'with',values,';',results);
-
                 callback(results, resolve, reject);
             });
         });

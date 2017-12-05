@@ -126,7 +126,7 @@ namespace rational
 
     public class WebAPI
     {
-        private static readonly string baseUrl = "http://localhost:8081";
+        private static readonly string baseUrl = "http://rational.tk";
 
         private static readonly HttpClient client = new HttpClient();
 
@@ -167,7 +167,11 @@ namespace rational
 
         private static async void PostRequest(string endpoint, dynamic args, Callback callback)
         {
-            var content = new ByteArrayContent(Encoding.UTF8.GetBytes(Stringify(args)));
+            var stringArgs = Stringify(args);
+
+            Console.WriteLine("Calling " + endpoint + " with args " + stringArgs);
+
+            var content = new ByteArrayContent(Encoding.UTF8.GetBytes(stringArgs));
 
             content.Headers.Add("Content-Type", "application/json");
             var response = await client.PostAsync(baseUrl + endpoint, content);

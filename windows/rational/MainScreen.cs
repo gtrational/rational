@@ -34,6 +34,8 @@ namespace rational
                 var item = new ListViewItem(new string[] { ParseTime(rat.CreatedTime), rat.UniqueKey + "", rat.Borough });
                 listView1.Items.Add(item);
             }
+
+            listView1.Items[listView1.Items.Count - 1].EnsureVisible();
         }
 
         private void LoadMoreOld()
@@ -102,6 +104,11 @@ namespace rational
             {
                 LoadNew();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LoadMoreOld();
         }
     }
 }

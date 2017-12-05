@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp1
+namespace rational
 {
     public partial class MainScreen : Form
     {
@@ -17,9 +17,48 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
+        
+
+        private void RefreshView()
+        {
+            listView1.Items.Clear();
+
+            List<RatData> rats = Model.GetInstance().RatDataList;
+
+            for (var i = 0; i < rats.Count; i++)
+            {
+                RatData rat = rats[i];
+                var item = new ListViewItem(new string[] { WebAPI.ParseTime(rat.CreatedTime), rat.UniqueKey + "", rat.Borough });
+                item.Tag = rat;
+                listView1.Items.Add(item);
+            }
+
+            listView1.Items[listView1.Items.Count - 1].EnsureVisible();
+        }
+
+        private void LoadMoreOld()
+        {
+            Model.CallbackVoid cb = () =>
+            {
+                RefreshView();
+            };
+
+            Model.GetInstance().LoadMoreRats(cb);
+        }
+
+        private void LoadNew()
+        {
+            Model.CallbackVoid cb = () =>
+            {
+                RefreshView();
+            };
+
+            Model.GetInstance().LoadNewRats(cb);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            LoadMoreOld();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -40,7 +79,15 @@ namespace WindowsFormsApp1
         private void newSightingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewSightingDialog dialog = new NewSightingDialog();
+
+            dialog.FormClosed += Dialog_FormClosed;
+
             dialog.Show();
+        }
+
+        private void Dialog_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            LoadNew();
         }
 
         private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -53,8 +100,23 @@ namespace WindowsFormsApp1
             Console.WriteLine(tabControl1.SelectedIndex);
             if (tabControl1.SelectedIndex == 3)
             {
-
+                LoadNew();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            LoadMoreOld();
+        }
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (listView1.SelectedItems.Count == 0) return;
+            ListViewItem item = listView1.SelectedItems[0];
+
+            RatData data = (RatData)item.Tag;
+
+            MessageBox.Show(data.ToString(), data.UniqueKey + "");
         }
     }
 }

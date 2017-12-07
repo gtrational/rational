@@ -67,6 +67,7 @@ class Register extends Component {
         <TextField
         hintText="Enter Password"
         floatingLabel="Password"
+        type="password"
         onChange = {(event, newValue) => this.setState({password:newValue})}
         />
         <br/>
@@ -74,6 +75,7 @@ class Register extends Component {
         <TextField
         hintText="Confirm Password"
         floatingLabel="Confirm Password"
+        type="password"
         onChange = {(event, newValue) => this.setState({confirm_password:newValue})}
         />
         <br/>

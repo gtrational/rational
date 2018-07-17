@@ -30,24 +30,22 @@ class Register extends Component {
       this.setState({error:"Please enter password"})
     } else if (this.state.confirm_password == '') {
       this.setState({error:"Please confirm password"})
-    } else if (this.state.email == '') {
-      this.setState({error:"Please enter email"})
+    } else if (this.state.password != this.state.confirm_password) {
+      this.setState({error:"Passwords do not match"})
     } else {
-      if (this.state.password != this.state.confirm_password) {
-        this.setState({error:"Passwords do not match"})
-      } else {
-        this.setState({error:""})
-      }
+      this.setState({error:""})
+      register(this.state.username, this.state.password, 0)
+          .then(response => {
+              console.log(response)
+              if (response.success) {
+                this.setState({error:"Success"})
+              }
+            }, err => {
+              console.log(err)
+              this.setState({error:"Registration Error"})
+          })
     }
 
-    register(this.state.username, this.state.password)
-        .then(function (response) {
-            console.log(response)
-            // Route Stuff
-        }, function(err) {
-            console.log(err)
-            this.setState({error:"Registration Error"})
-        })
 
   }
 
@@ -58,12 +56,6 @@ class Register extends Component {
         <AppBar
           title="Register"
         />
-        <TextField
-        hintText="Enter Email"
-        floatingLabel="Email"
-        onChange = {(event, newValue) => this.setState({email:newValue})}
-        />
-        <br/>
 
         <TextField
         hintText="Enter Username"
@@ -75,6 +67,7 @@ class Register extends Component {
         <TextField
         hintText="Enter Password"
         floatingLabel="Password"
+        type="password"
         onChange = {(event, newValue) => this.setState({password:newValue})}
         />
         <br/>
@@ -82,6 +75,7 @@ class Register extends Component {
         <TextField
         hintText="Confirm Password"
         floatingLabel="Confirm Password"
+        type="password"
         onChange = {(event, newValue) => this.setState({confirm_password:newValue})}
         />
         <br/>
